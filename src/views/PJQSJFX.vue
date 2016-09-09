@@ -129,7 +129,7 @@
                         let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString().padStart(2, '0') + date3.getDate().toString().padStart(2, '0');
 // create new date of day before
                         let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6);
-                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString().padStart(2, '0') + date4.getDate().toString().padStart(2, '0');
+                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString().padStart(2, '0') + date4.getDate().toString();
                         this.myPeriod.per='lastWeek';
                         this.myPeriod.start=Monday;
                         this.myPeriod.end=Sunday;
@@ -138,9 +138,9 @@
                     break;
                     case "近半年":
                         let dt = new Date();
-                        let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
+                        let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
                         dt.setMonth(dt.getMonth() - 5);
-                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
+                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString();
                         this.myPeriod.per='halfYear';
                         this.myPeriod.start=today;
                         this.myPeriod.end=halfYear;

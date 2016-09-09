@@ -40,12 +40,12 @@
                                 <div>时间筛选</div>
                             </div>
                             <ul class="filterItem" @click="selectItem">
-                                <li v-for="item in periodArr" :key="item">
+                                <!--                                <li v-for="item in periodArr" :key="item">-->
+                                <!--                                    <div data-id="jqfl">{{item}}</div>-->
+                                <!--                                </li>-->
+                                <li v-for="item in periodArr1" :key="item">
                                     <div data-id="jqfl">{{item}}</div>
                                 </li>
-                                <!--<li v-for="item in periodArr1" :key="item">
-                                    <div data-id="jqfl">{{item}}</div>
-                                </li>-->
                             </ul>
                         </div>
                     </div>
@@ -184,6 +184,7 @@
             return {
                 //今天的日期
                 todayIndex: '',
+                threeDaysAgo:'',
                 sevenDaysAgo: '',
                 // select: true,
                 // 接口
@@ -209,9 +210,9 @@
                 scale: 1,
                 //筛选选项
                 periodArr: ['近7日', '上周', '上上周'],
-                // periodArr1: ['今天', '昨天', '前三天'],
+                periodArr1: ['今天', '昨天', '前天'],
                 //默认获取本周数据
-                jqfl: {start: '', end: '', per: ''},
+                jqfl: {date:'', per: ''},
                 jjlx: {start: '', end: '', per: ''},
                 lhlx: {start: '', end: '', per: ''},
                 bjfs: {start: '', end: '', per: ''},
@@ -230,7 +231,7 @@
                 //    近期警情统计  y
                 jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500],
                 //  近期警情统计  x
-                jqjqtjXdata: ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
+                // jqjqtjXdata: ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
 
                 //    警情分类数据分析
                 jqflsjfxSource: [
@@ -1131,6 +1132,15 @@
                     case "halfYear":
                         item[0].childNodes[2].childNodes[0].classList.add('active');
                         break;
+                    case "today":
+                        item[0].firstChild.firstChild.classList.add('active');
+                        break;
+                    case "yesterday":
+                        item[0].childNodes[1].firstChild.classList.add('active');
+                        break;
+                    case "threeDaysAgo":
+                        item[0].childNodes[2].childNodes[0].classList.add('active');
+                        break;
                     default:
                         console.log('false');
                 }
@@ -1222,16 +1232,56 @@
                                 // set to previous Monday
                                 let date5 = new Date(dt.setDate(dt.getDate() - 14));
 
-                                let beforeMonday = date5.getFullYear().toString() + ((date5.getMonth() + 1).toString()).padStart(2,0) + (date5.getDate().toString()).padStart(2,0);
+                                let beforeMonday = date5.getFullYear().toString() + ((date5.getMonth() + 1).toString()).padStart(2, 0) + (date5.getDate().toString()).padStart(2, 0);
                                 // create new date of day before
                                 let date6 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 6);
-                                let beforeSunday = date6.getFullYear().toString() + ((date6.getMonth() + 1).toString()).padStart(2,0) + (date6.getDate().toString()).padStart(2,0);
+                                let beforeSunday = date6.getFullYear().toString() + ((date6.getMonth() + 1).toString()).padStart(2, 0) + (date6.getDate().toString()).padStart(2, 0);
 
                                 e.target.parentNode.parentNode.parentNode.style.display = 'none';
                                 let type3 = e.target.getAttribute('data-id');
                                 this[type3].end = beforeSunday;
                                 this[type3].start = beforeMonday;
                                 this[type3].per = 'halfYear';
+                                for (let i = 0; i < children.length; i++) {
+                                    children[i].childNodes[0].classList.remove('active');
+                                }
+                                e.target.classList.add('active');
+                                break;
+                            case'今天':
+                                let type4 = e.target.getAttribute('data-id');
+                                this[type4].date = this.todayIndex;
+                                this[type4].per = 'today';
+                                e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                                // this.start = this.todayIndex;
+                                // console.log(value.childNodes[1].childNodes);
+                                for (let i = 0; i < children.length; i++) {
+                                    children[i].childNodes[0].classList.remove('active');
+                                }
+                                e.target.classList.add('active');
+                                break;
+                            case'昨天':
+                                let timestamp = (new Date()).getTime();
+                                let day = timestamp - 24 * 60 * 60 * 1000;
+                                let date1 = new Date(day);
+                                let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
+                                e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                                let type5 = e.target.getAttribute('data-id');
+                                this[type5].date = start1;
+                                this[type5].per = 'yesterday';
+                                // this.start = this.todayIndex;
+                                // console.log(value.childNodes[1].childNodes);
+                                for (let i = 0; i < children.length; i++) {
+                                    children[i].childNodes[0].classList.remove('active');
+                                }
+                                e.target.classList.add('active');
+                                break;
+                            case'前天':
+                                e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                                let type6 = e.target.getAttribute('data-id');
+                                this[type6].date = this.threeDaysAgo;
+                                this[type6].per = 'threeDaysAgo';
+                                // this.start = this.todayIndex;
+                                // console.log(value.childNodes[1].childNodes);
                                 for (let i = 0; i < children.length; i++) {
                                     children[i].childNodes[0].classList.remove('active');
                                 }
@@ -1291,23 +1341,22 @@
                     this.bjfs = JSON.parse(sessionStorage.getItem('bjfs'));
                     this.lhlx = JSON.parse(sessionStorage.getItem('lhlx'));
                 } else {
-                    let date1 = new Date();
-                    let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
-                    let timestamp = (new Date()).getTime();
-                    let day = timestamp - 6 * 24 * 60 * 60 * 1000;
-                    let date2 = new Date(day);
-                    let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
-                    this.jjlx.end = end1;
-                    this.jjlx.start = start1;
+                    // let date1 = new Date();
+                    // let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
+                    // let timestamp = (new Date()).getTime();
+                    // let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                    // let date2 = new Date(day);
+                    // let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
+                    this.jjlx.end = this.todayIndex;
+                    this.jjlx.start = this.sevenDaysAgo;
                     this.jjlx.per = 'week';
-                    this.bjfs.end = end1;
-                    this.bjfs.start = start1;
+                    this.bjfs.end = this.todayIndex;
+                    this.bjfs.start = this.sevenDaysAgo;
                     this.bjfs.per = 'week';
-                    this.jqfl.end = end1;
-                    this.jqfl.start = start1;
-                    this.jqfl.per = 'week';
-                    this.lhlx.end = end1;
-                    this.lhlx.start = start1;
+                    this.jqfl.date = this.todayIndex;
+                    this.jqfl.per = 'today';
+                    this.lhlx.end = this.todayIndex;
+                    this.lhlx.start = this.sevenDaysAgo;
                     this.lhlx.per = 'week';
                     sessionStorage.setItem('jqfl', JSON.stringify(this.jqfl));
                     sessionStorage.setItem('jjlx', JSON.stringify(this.jjlx));
@@ -1426,7 +1475,7 @@
             },
             // 警情分类数据分析
             getFlsj() {
-                let that=this;
+                let that = this;
                 this.$http({
                     method: 'post',
                     url: this.apiRoot + this.findUrl[2],
@@ -1459,11 +1508,11 @@
                             return item;
                         });
                         // console.log(res.data);
-                        let arr=[];
-                        for (let i=0;i<res.data.length;i++){
-                            if (res.data[i].name===undefined){
-                                res.data.slice(i,1);
-                            }else {
+                        let arr = [];
+                        for (let i = 0; i < res.data.length; i++) {
+                            if (res.data[i].name === undefined) {
+                                res.data.slice(i, 1);
+                            } else {
                                 arr.push(res.data[i]);
                             }
                         }
@@ -1620,7 +1669,7 @@
                         }
                         // console.log(narr1);
                         // that.sevenjjlxsjfxSource.log=narr1;
-                        that.sevensjfx1('sevenjjlxsjfxChart', narr1, that.jrjjlxsjfxSourceColor,dateArr);
+                        that.sevensjfx1('sevenjjlxsjfxChart', narr1, that.jrjjlxsjfxSourceColor, dateArr);
                     })
             },
             // 今日报警方式数据分析
@@ -1726,7 +1775,7 @@
                                 narr1[n].value.push(data[i].value)
                             }
                         }
-                        that.sevensjfx1('sevenbjfssjfxChart', narr1, that.jrbjfssjfxColor,dateArr);
+                        that.sevensjfx1('sevenbjfssjfxChart', narr1, that.jrbjfssjfxColor, dateArr);
                     })
 
             },
@@ -1833,7 +1882,7 @@
                             }
                         }
                         // console.log(narr1);
-                        that.sevensjfx1('sevenlhlxsjfxChart', narr1, that.jrrlhlxsjfxColor,dateArr);
+                        that.sevensjfx1('sevenlhlxsjfxChart', narr1, that.jrrlhlxsjfxColor, dateArr);
                     })
 
             },
@@ -1842,7 +1891,10 @@
                 let date = new Date();
                 this.todayIndex = date.getFullYear().toString() + (date.getMonth() + 1).toString().padStart(2, '0') + date.getDate().toString().padStart(2, '0');
                 let timestamp = date.getTime();
+                let day1=timestamp-2 * 24 * 60 * 60 * 1000;
                 let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                let date1=new Date(day1);
+                this.threeDaysAgo=date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
                 let date2 = new Date(day);
                 this.sevenDaysAgo = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
             },
