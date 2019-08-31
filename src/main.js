@@ -22,7 +22,7 @@ Vue.prototype.$echarts = echarts;
 //温馨提示注意同步修改ueditor.config.js
 
 // Vue.prototype.apiRoot = 'http://192.168.1.237:8083/dataDisplay/'//kun
-// Vue.prototype.apiRoot = 'http://192.168.1.252:8086/alarmSystem/'//su
+Vue.prototype.apiRoot = 'http://192.168.1.252:8082/dataDisplay/'//su
 
 
 // Vue.prototype.apiRoot ='http://my.ityyedu.com/alarmSystem/';

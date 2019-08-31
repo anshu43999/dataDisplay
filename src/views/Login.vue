@@ -18,14 +18,14 @@
 
                         <div class="inputs_wrap">
                             <div>账号</div>
-                            <input type="text">
+                            <input type="text" v-model="name">
                             <i class="iconfont iconusername icons"></i>
                         </div>
 
                         <div class="inputs_wrap">
 
                             <div>密码</div>
-                            <input type="password">
+                            <input type="password" v-model="password"  @keyup.enter="submit()">
                             <i class="iconfont iconmima   icons"></i>
 
                         </div>
@@ -59,15 +59,33 @@
         data () {
             return {
                 active : false,
+                name : '',
+                password : '',
             }
         },
         methods : {
             submit(){
+                console.log('进入判断');
+                let that = this;
                  this.active = true;
-                 this.$router.push({name:'首页'})
+                //  this.$router.push({name:'首页'})
+                if(this.name === 'admin' && this.password === 'asdf0987'){
+                    console.log('ok');
+                    //   this.active = false;
+                    sessionStorage.setItem("user",1);
+                    this.$router.push({name:'首页'})
+                    setTimeout(function () { 
+                        that.active = false;
+                     },300)
+
+                }
+                setTimeout(function () { 
+                    that.active = false;
+                },300)
+                
 
 
-                //   this.active = false;
+
 
             },
 

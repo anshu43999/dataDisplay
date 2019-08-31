@@ -161,8 +161,13 @@
 
                 startDate:'',
                 endDate:'',
-                myPeriod:{}
-            };
+                myPeriod:{},
+                xAxisData :[],    //近七日接警类型数据分析     x 轴
+                findUrl : [
+                    'recJJLXTJB/findSAlarmData',   //省 近七日接警类型数据分析
+                ],
+                tableData :[],
+             };
         },
 //监听属性 类似于data概念
         computed: {},
@@ -175,9 +180,11 @@
                 this.scale = localStorage.getItem('scale');
             },
             //趋势图
-            sevensjfx(chartContainer, sourceArr, colorList) {
+            sevensjfx(xAxisData,chartContainer, sourceArr, colorList) {
                 let seriesArr = [];
-                let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
+                // let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
+                let dateArr = xAxisData;
+
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
                 this.chartsObj[chartContainer] = myChart;
                 for (let i = 0; i < sourceArr.length; i++) {
@@ -459,6 +466,7 @@
                             '119报警',
                             '综合报警'
                         ];
+                        // this.xAxisData 
                         this.trendChartSource = [
                             {name: '110报警', value: [436, 413, 439, 506, 431, 426, 434]},
                             {name: '122报警', value: [320, 370, 350, 412, 346, 348, 427]},
@@ -467,23 +475,25 @@
                             {name: '其他接警类型', value: [14, 15, 14, 10, 12, 15, 17]},
                         ];
                         this.trendChartColor = ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'];
-                        this.proportionSource = [
-                            {name: '110报警', value: 12},
-                            {name: '122报警', value: 5},
-                            {name: '119报警', value: 21},
-                            {name: '综合报警', value: 22},
-                            {name: '其他接警类型', value: 10},
-                        ];
-                        this.subClassSource1 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.proportionSource = [
+                        //     {name: '110报警', value: 12},
+                        //     {name: '122报警', value: 5},
+                        //     {name: '119报警', value: 21},
+                        //     {name: '综合报警', value: 22},
+                        //     {name: '其他接警类型', value: 10},
+                        // ];
+                        // this.subClassSource1 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];    //110报警
                         this.subClassColorList1 = ['#6ffeff', '#00a0a6'];
 
-                        this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //122报警
                         this.subClassColorList2 = ['#7fd7fc', '#0083ba'];
 
-                        this.subClassSource3 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource3 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //119报警
                         this.subClassColorList3 = ['#6f87ff', '#0024dd'];
 
-                        this.subClassSource4 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        
+
+                        // this.subClassSource4 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //综合报警
                         this.subClassColorList4 = ['#ff6cfa', '#a0009b'];
 
 
@@ -599,12 +609,14 @@
                         ], that.refreshCharts)
                     },
                     loadData() {
-                        that.sevensjfx('trendChart', that.trendChartSource, that.trendChartColor);
-                        that.percent();
-                        that.subclassBar('subClassChart1', that.subClassSource1, that.subClassColorList1);
-                        that.subclassBar('subClassChart2', that.subClassSource2, that.subClassColorList2);
-                        that.subclassBar('subClassChart3', that.subClassSource3, that.subClassColorList3);
-                        that.subclassBar('subClassChart4', that.subClassSource4, that.subClassColorList4);
+                        that.sevensjfx(that.xAxisData,'trendChart', that.trendChartSource, that.trendChartColor);  //近七日接警类型数据分析  
+                        that.percent();  // 警情数据占比分析
+                        that.subclassBar('subClassChart1', that.subClassSource1, that.subClassColorList1);   //110报警
+                        that.subclassBar('subClassChart2', that.subClassSource2, that.subClassColorList2);   //122报警
+                        that.subclassBar('subClassChart3', that.subClassSource3, that.subClassColorList3);    //119报警
+                        that.subclassBar('subClassChart4', that.subClassSource4, that.subClassColorList4);   //综合报警
+
+                        console.log(this.subClassSource1)
 
                         if (that.show) return;
                         setTimeout(function () {
@@ -635,6 +647,88 @@
                 } else {
                     this.$emit('filter_btn', false)
                 }
+            },
+            getShen(){
+                // let start
+                // let endTime
+                console.log(this.startDate);
+                console.log(this.endDate);
+                let str = JSON.parse(sessionStorage.getItem('jjlx'));
+                console.log(str);
+                
+
+
+                this.$http.get( this.apiRoot+this.findUrl[0],{
+                    params : {
+                        startTime : str['start'],
+                        endTime : str['end'],
+                    }
+                })
+                .then(function (res) { 
+                    console.log(res);
+                    this.tableData =   res['data'];
+
+
+                    if(this.tableData){
+                        console.log(this.tableData);
+
+
+                        let obj1 =  this.tableData['110报警'];
+                        this.citySource.forEach((item,index)=>{
+
+                                this.subClassSource1[index] = parseInt(obj1[item]) ;
+                        })
+
+                        let obj2 =  this.tableData['122报警'];   
+                        this.citySource.forEach((item,index)=>{
+
+                                this.subClassSource2[index] = parseInt(obj2[item]) ;
+                        })
+
+                        let obj3 =  this.tableData['119报警'];
+                        this.citySource.forEach((item,index)=>{
+        
+                                this.subClassSource3[index] = parseInt(obj3[item]) ;
+                        })
+
+                        let obj4 =  this.tableData['综合报警'];
+                        this.citySource.forEach((item,index)=>{
+
+                                this.subClassSource4[index] = parseInt(obj4[item]) ;
+                        })
+
+                        // 警情数据占比分析  proportionSource
+                        this.proportionSource = [
+                            {name: '110报警', value: 12},
+                            {name: '122报警', value: 5},
+                            {name: '119报警', value: 21},
+                            {name: '综合报警', value: 22},
+                            {name: '其他接警类型', value: 10},
+                        ];
+
+                        let obj5 = this.tableData['proportion'];
+                        // console.log(obj5['110报警'])
+
+
+                        console.log(obj5['其他接警类型'])
+                        this.proportionSource[0]['value'] =  obj5['110报警'];
+                        this.proportionSource[1]['value'] =  obj5['122报警'];
+                        this.proportionSource[2]['value'] =  obj5['119报警'];
+                        this.proportionSource[3]['value'] =  obj5['综合报警'];
+                        this.proportionSource[4]['value'] =  obj5['其他接警类型'];
+
+                        // 近七日接警类型数据分析
+
+
+
+
+                        this.renderChart();
+
+                        
+
+
+                    }
+                }.bind(this))
             }
 
         },
@@ -644,9 +738,20 @@
         },
 //生命周期 - 挂载完成（可以访问DOM元素）
         mounted() {
-            this.pdFilter_btn();
-            this.getScale();
-            this.renderChart();
+           
+            this.pdFilter_btn();   // 判断筛选框是否显示
+            this.getScale();    //获取缩放值
+            // this.renderChart();
+            // console.log(this.tableData);
+             this.getShen();
+
+            
+
+
+
+            // this.renderChart();
+            
+
 
 
         },

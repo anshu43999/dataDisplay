@@ -117,4 +117,27 @@ const router = new VueRouter({
     routes
 })
 
+
+//通过全局导航守卫检查权限？
+router.beforeEach((to, from, next) => {
+    var userAuth = sessionStorage.getItem('user');
+
+
+
+    //	验证登录状态
+    if (! userAuth && to.path !== '/login') {
+        console.log('登陆成功')
+        next({
+            path: '/login',//离线时屏蔽
+        });
+    }else if(to.path == '/login' ) {
+
+        next();
+        
+    }else{
+        next();
+    }
+})
+
+
 export default router

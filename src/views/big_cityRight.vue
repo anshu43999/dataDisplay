@@ -115,7 +115,11 @@
 
     export default {
 //import引入的组件需要注入到对象中才能使用
+
+        props : ['tableData'],
+        
         components: {},
+       
         data() {
 //这里存放数据
             return {
@@ -147,6 +151,7 @@
                 //细类6
                 subClassSource6: [],
                 subClassColorList6: [],
+                // 
             };
         },
 //监听属性 类似于data概念
@@ -456,14 +461,7 @@
             this.getScale();
             this.renderChart();
             // console.log(1111);
-
-
-
-            // if (window.performance.navigation.type == 1) {
-            //     console.log("页面被刷新1111111111")
-            // }else{
-            //     console.log("首次被加载1111111")
-            // }
+            console.log(this.tableData)
 
 
            
