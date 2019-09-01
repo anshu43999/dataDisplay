@@ -94,11 +94,11 @@
                 switch (e.target.innerText) {
                     case "近7日":
                         let date1 = new Date();
-                        let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                        let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
                         let timestamp = (new Date()).getTime();
                         let day = timestamp - 6 * 24 * 60 * 60 * 1000;
                         let date2 = new Date(day);
-                        let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                        let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
                         this.myPeriod.per='week';
                         this.myPeriod.start=start1;
                         this.myPeriod.end=end1;

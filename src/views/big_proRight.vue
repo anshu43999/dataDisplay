@@ -165,6 +165,8 @@
                 xAxisData :[],    //近七日接警类型数据分析     x 轴
                 findUrl : [
                     'recJJLXTJB/findSAlarmData',   //省 近七日接警类型数据分析
+                    'recBJFSTJB/findSAlarmMode',   //省 近七日报警类型数据分析
+
                 ],
                 tableData :[],
              };
@@ -467,13 +469,13 @@
                             '综合报警'
                         ];
                         // this.xAxisData 
-                        this.trendChartSource = [
-                            {name: '110报警', value: [436, 413, 439, 506, 431, 426, 434]},
-                            {name: '122报警', value: [320, 370, 350, 412, 346, 348, 427]},
-                            {name: '119报警', value: [240, 274, 245, 260, 248, 278, 272]},
-                            {name: '综合报警', value: [142, 152, 107, 168, 146, 164, 151]},
-                            {name: '其他接警类型', value: [14, 15, 14, 10, 12, 15, 17]},
-                        ];
+                        // this.trendChartSource = [
+                        //     {name: '110报警', value: [436, 413, 439, 506, 431, 426, 434]},
+                        //     {name: '122报警', value: [320, 370, 350, 412, 346, 348, 427]},
+                        //     {name: '119报警', value: [240, 274, 245, 260, 248, 278, 272]},
+                        //     {name: '综合报警', value: [142, 152, 107, 168, 146, 164, 151]},
+                        //     {name: '其他接警类型', value: [14, 15, 14, 10, 12, 15, 17]},
+                        // ];
                         this.trendChartColor = ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'];
                         // this.proportionSource = [
                         //     {name: '110报警', value: 12},
@@ -504,7 +506,7 @@
                     case '全省报警方式数据分析':
                         this.show = true;
                         this.chartTitle = [
-                            '近七日接警类型数据分析',
+                            '近七日报警类型数据分析',
                             '报警方式数据占比分析',
                             '电话报警',
                             '来人（来电）报警',
@@ -596,7 +598,7 @@
                         this.endDate=this.myPeriod.end;
                         break;
                     default:
-                        console.log('false');
+                        // console.log('false');
                         break;
                 }
                 // console.log(this.startDate);
@@ -616,7 +618,7 @@
                         that.subclassBar('subClassChart3', that.subClassSource3, that.subClassColorList3);    //119报警
                         that.subclassBar('subClassChart4', that.subClassSource4, that.subClassColorList4);   //综合报警
 
-                        console.log(this.subClassSource1)
+                        // console.log(this.subClassSource1)
 
                         if (that.show) return;
                         setTimeout(function () {
@@ -633,7 +635,7 @@
                 };
                 Index.init();
                 // Index.loadData()
-                console.log(this.myPeriod);
+                // console.log(this.myPeriod);
             },
 
             pdFilter_btn() {
@@ -654,81 +656,130 @@
                 console.log(this.startDate);
                 console.log(this.endDate);
                 let str = JSON.parse(sessionStorage.getItem('jjlx'));
-                console.log(str);
+                // console.log(str);
                 
 
-
-                this.$http.get( this.apiRoot+this.findUrl[0],{
-                    params : {
-                        startTime : str['start'],
-                        endTime : str['end'],
-                    }
-                })
-                .then(function (res) { 
-                    console.log(res);
-                    this.tableData =   res['data'];
-
-
-                    if(this.tableData){
-                        console.log(this.tableData);
-
-
-                        let obj1 =  this.tableData['110报警'];
-                        this.citySource.forEach((item,index)=>{
-
-                                this.subClassSource1[index] = parseInt(obj1[item]) ;
+                switch (this.$route.query.title) {
+                    case ''  :
+                        this.$http.get( this.apiRoot+this.findUrl[0],{
+                            params : {
+                                startTime : str['start'],
+                                endTime : str['end'],
+                            }
                         })
+                        .then(function (res) { 
+                            // console.log(res);
+                            this.tableData =   res['data'];
+                            if(this.tableData){
+                                let obj1 =  this.tableData['110报警'];
+                                this.citySource.forEach((item,index)=>{
 
-                        let obj2 =  this.tableData['122报警'];   
-                        this.citySource.forEach((item,index)=>{
+                                        this.subClassSource1[index] = parseInt(obj1[item]) ;
+                                })
 
-                                this.subClassSource2[index] = parseInt(obj2[item]) ;
-                        })
+                                let obj2 =  this.tableData['122报警'];   
+                                this.citySource.forEach((item,index)=>{
 
-                        let obj3 =  this.tableData['119报警'];
-                        this.citySource.forEach((item,index)=>{
-        
-                                this.subClassSource3[index] = parseInt(obj3[item]) ;
-                        })
+                                        this.subClassSource2[index] = parseInt(obj2[item]) ;
+                                })
 
-                        let obj4 =  this.tableData['综合报警'];
-                        this.citySource.forEach((item,index)=>{
+                                let obj3 =  this.tableData['119报警'];
+                                this.citySource.forEach((item,index)=>{
+                
+                                        this.subClassSource3[index] = parseInt(obj3[item]) ;
+                                })
 
-                                this.subClassSource4[index] = parseInt(obj4[item]) ;
-                        })
+                                let obj4 =  this.tableData['综合报警'];
+                                this.citySource.forEach((item,index)=>{
 
-                        // 警情数据占比分析  proportionSource
-                        this.proportionSource = [
-                            {name: '110报警', value: 12},
-                            {name: '122报警', value: 5},
-                            {name: '119报警', value: 21},
-                            {name: '综合报警', value: 22},
-                            {name: '其他接警类型', value: 10},
-                        ];
+                                        this.subClassSource4[index] = parseInt(obj4[item]) ;
+                                })
 
-                        let obj5 = this.tableData['proportion'];
-                        // console.log(obj5['110报警'])
+                                // 警情数据占比分析  proportionSource
+                                this.proportionSource = [
+                                    {name: '110报警', value: 12},
+                                    {name: '122报警', value: 5},
+                                    {name: '119报警', value: 21},
+                                    {name: '综合报警', value: 22},
+                                    {name: '其他接警类型', value: 10},
+                                ];
 
-
-                        console.log(obj5['其他接警类型'])
-                        this.proportionSource[0]['value'] =  obj5['110报警'];
-                        this.proportionSource[1]['value'] =  obj5['122报警'];
-                        this.proportionSource[2]['value'] =  obj5['119报警'];
-                        this.proportionSource[3]['value'] =  obj5['综合报警'];
-                        this.proportionSource[4]['value'] =  obj5['其他接警类型'];
-
-                        // 近七日接警类型数据分析
-
+                                let obj5 = this.tableData['proportion'];
+                                // console.log(obj5['110报警'])
 
 
+                                // console.log(obj5['其他接警类型'])
+                                this.proportionSource[0]['value'] =  obj5['110报警'];
+                                this.proportionSource[1]['value'] =  obj5['122报警'];
+                                this.proportionSource[2]['value'] =  obj5['119报警'];
+                                this.proportionSource[3]['value'] =  obj5['综合报警'];
+                                this.proportionSource[4]['value'] =  obj5['其他接警类型'];
 
-                        this.renderChart();
+                                // 近七日接警类型数据分析
 
-                        
+                                // x 轴  数据
+                                let obj6 = this.tableData['sevenDays']['110报警'];
+                                let str1 ;
+                                let qian ;
+                                let hou ; 
+                                // console.log(obj6 );
+                                this.xAxisData = [];
+                                obj6.forEach((item,index)=>{
+                                    str1 = item['tjrq'] ;
+                                    str1 = str1.substring(4,8);
+                                    qian = str1.substring(0,2);
+                                    hou = str1.substring(2,4);
+                                    str1 = qian + '-' + hou;
+                                    this.xAxisData.push(str1);
+
+                                })
+
+                                this.trendChartSource = [
+                                    {name: '110报警', value: []},
+                                    {name: '122报警', value: []},
+                                    {name: '119报警', value: []},
+                                    {name: '综合报警', value: []},
+                                    {name: '其他接警类型', value: []},
+                                ];
+                                let obj7 = this.tableData['sevenDays']
+                                for(let key in obj7){
+                                    switch (key) {
+                                        case '110报警':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[0]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '119报警':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[2]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '122报警':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[1]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '其它接警类型':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[4]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '综合报警':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[3]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                    }
+                                }
+                                this.renderChart();
+                            }
+                        }.bind(this))
+                    
 
 
-                    }
-                }.bind(this))
+                }
+
+                
             }
 
         },
@@ -768,7 +819,7 @@
         destroyed() {
         }, //生命周期 - 销毁完成
         activated() {
-            console.log('缓存')
+            // console.log('缓存')
         }, //如果页面有keep-alive缓存功能，这个函数会触发
     }
 </script>

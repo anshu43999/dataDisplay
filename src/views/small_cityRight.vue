@@ -247,6 +247,21 @@
                                 color: function (value, index) {
                                     return colorList[index];
                                 }
+                            },
+                            interval: 0,
+                            formatter:function (value,index) {
+                                let type=index%2===0?'up':'down';
+                                return '{'+type+'|'+value+'}'
+                            },
+                            rich:{
+                                up:{
+                                    height:5,
+                                    fontSize:20*this.scale,
+                                },
+                                down:{
+                                    height:25,
+                                    fontSize:20*this.scale,
+                                }
                             }
                         },
                         data: xData,
@@ -267,7 +282,8 @@
                         },
                         axisLabel: {
                             show: true,
-                            formatter: '{value} %'
+                            formatter: '{value} %',
+                            fontSize:20*this.scale,
                         }
                     },
                     series: {
@@ -291,16 +307,21 @@
                                 position: 'top',
                                 formatter: function (params) {
                                     return params.value + '%'
-                                }
+                                },
+                                fontSize:20*this.scale,
                             }
                         },
                         data: sourceArr,
                         z: 10
                     },
-                    tooltip: {},
+                    tooltip: {
+                        formatter:function (params) {
+                            return params.marker+params.data.name+'：'+params.data.value+'%';
+                        }
+                    },
                     grid: {
                         top: 90 * this.scale,
-                        bottom: 90 * this.scale,
+                        bottom: 114 * this.scale,
                         left: 140 * this.scale
                     }
                 };
@@ -473,6 +494,102 @@
                 });
                 e.target.classList.add('active')
             },
+            getCityData(){
+                let that=this;
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot + 'recJQFLTJB/findJQFLNumXZQH',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        // startTime: this.jjlx.start,
+                        // endTime: this.jjlx.end,
+                        tjTime: '20160909',
+                        xzqhdm:'140300'
+                    }
+                })
+                    .then(function (res) {
+                        console.log(res);
+                        /*let r =[];
+                        let narr=[];
+                        for(let i =0;i<res.data.length;i++){
+                            // arr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl});
+                            let n = r.indexOf(res.data[i].sjdmmc);
+                            if(n == -1){
+                                r.push(res.data[i].sjdmmc);
+                                narr.push({"name":res.data[i].sjdmmc,dataArr:[{name:res.data[i].fldmmc,value:res.data[i].jjsl}]});
+                            }else{
+                                narr[n].dataArr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl})
+                            }
+                        }
+                        console.log(narr);
+                        that.totalSource=narr;
+                        for (let i=0;i<narr.length;i++){
+                            if (narr[i].name===undefined){
+                                narr.slice(i,1);
+                            }else {
+                                that.selectOptions.push(narr[i].name);
+                            }
+                        }*/
+                        // console.log(that.selectOptions);
+                    })
+            },
+            getCityData1(){
+                let that=this;
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot + 'recJQFLTJB/findJQFLsecondNumXZQH',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        // startTime: this.jjlx.start,
+                        // endTime: this.jjlx.end,
+                        tjTime: '20160909',
+                        xzqhdm:'140300'
+                    }
+                })
+                    .then(function (res) {
+                        console.log(res);
+                        /*let r =[];
+                        let narr=[];
+                        for(let i =0;i<res.data.length;i++){
+                            // arr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl});
+                            let n = r.indexOf(res.data[i].sjdmmc);
+                            if(n == -1){
+                                r.push(res.data[i].sjdmmc);
+                                narr.push({"name":res.data[i].sjdmmc,dataArr:[{name:res.data[i].fldmmc,value:res.data[i].jjsl}]});
+                            }else{
+                                narr[n].dataArr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl})
+                            }
+                        }
+                        console.log(narr);
+                        that.totalSource=narr;
+                        for (let i=0;i<narr.length;i++){
+                            if (narr[i].name===undefined){
+                                narr.slice(i,1);
+                            }else {
+                                that.selectOptions.push(narr[i].name);
+                            }
+                        }*/
+                        // console.log(that.selectOptions);
+                    })
+            },
             pdFilter_btn(){
                 let str = this.$route.query.title;
 
@@ -492,6 +609,7 @@
             this.setName();
             this.renderChart();
             this.selectedItem();
+            this.getCityData1();
         },
     }
 </script>

@@ -23,8 +23,8 @@
                 <h3>{{this.chartTitle[2]}}</h3>
                 <div class="selectListBox">
                     <ul @click="selectItem">
-                        <li v-for="item in jqflsjfxSource" :key="item.name">
-                            <div>{{item.name}}</div>
+                        <li v-for="item in selectOptions" :key="item">
+                            <div>{{item}}</div>
                         </li>
                     </ul>
                 </div>
@@ -77,7 +77,7 @@
                     {name: '投诉监督', value: 12}
                 ],
                 detailSource: [
-                    {name: '危害国家安全', value: 3},
+                    /*{name: '危害国家安全', value: 3},
                     {name: '危害公共安全', value: 12},
                     {name: '防火', value: 4},
                     {name: '爆炸', value: 1},
@@ -97,12 +97,14 @@
                     {name: '金融诈骗 ', value: 9},
                     {name: '侵犯财产 ', value: 6},
                     {name: '破坏环境资源 ', value: 16},
-                    {name: '其他刑事警情 ', value: 15},
+                    {name: '其他刑事警情 ', value: 15},*/
                 ],
+                totalSource:[],
 
+                selectOptions:[],
                 startDate:'',
                 endDate:'',
-                myPeriod:{}
+                myPeriod:{},
             }
         },
         methods: {
@@ -493,6 +495,7 @@
             selectedItem(){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
                 item[0].classList.add('active');
+                console.log(item[0]);
             },
             selectItem(e){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
@@ -500,7 +503,14 @@
                 item.forEach((value) => {
                     value.classList.remove('active');
                 });
-                e.target.classList.add('active')
+                e.target.classList.add('active');
+                this.totalSource.forEach(value => {
+                    if (e.target.innerText===value.name){
+                        this.detailSource=value.dataArr;
+                        console.log(this.detailSource);
+                        this.detailChart();
+                    }
+                })
             },
             pdFilter_btn(){
                 console.log('zheshi zhixing ');
@@ -514,13 +524,60 @@
                 }else{
                     this.$emit('filter_btn',false)
                 }
-            }
+            },
+            getProData(){
+                let that=this;
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot + 'recJQFLTJB/findJQFLsecondNum',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        // startTime: this.jjlx.start,
+                        // endTime: this.jjlx.end,
+                        tjTime: '20160909',
+                    }
+                })
+                    .then(function (res) {
+                        // console.log(res);
+                        let r =[];
+                        let narr=[];
+                        for(let i =0;i<res.data.length;i++){
+                            // arr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl});
+                            let n = r.indexOf(res.data[i].sjdmmc);
+                            if(n == -1){
+                                r.push(res.data[i].sjdmmc);
+                                narr.push({"name":res.data[i].sjdmmc,dataArr:[{name:res.data[i].fldmmc,value:res.data[i].jjsl}]});
+                            }else{
+                                narr[n].dataArr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl})
+                            }
+                        }
+                        // console.log(narr);
+                        that.totalSource=narr;
+                        for (let i=0;i<narr.length;i++){
+                            if (narr[i].name===undefined){
+                                narr.slice(i,1);
+                            }else {
+                                that.selectOptions.push(narr[i].name);
+                            }
+                        }
+                    })
+            },
         },
         mounted() {
             this.pdFilter_btn();
             this.getScale();
             this.setName();
             this.renderChart();
+            this.getProData();
             this.selectedItem();
         },
     }
