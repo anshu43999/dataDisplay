@@ -60,22 +60,23 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
     background-image: url('../assets/images/index/top.png');
     background-repeat: no-repeat;
     background-size: contain;
-    background-position: 99% center;
+    background-position: 99% 90%;
+    // height: 7rem;
     #header_main{
         height: 100%;
     }
     #header_title{
-        height: 5rem;
+        height: 7rem;
         overflow: hidden;
-        line-height: 5rem;
+        line-height: 7rem;
         text-align: center;
-        font-size: 3rem;
+        font-size: 4rem;
     }
     #headerTime{
         margin-left: 1rem;
-        height: 5rem;
+        height: 7rem;
         overflow: hidden;
-        line-height: 5rem;
+        line-height: 7rem;
         font-size: 1rem;
 
     }

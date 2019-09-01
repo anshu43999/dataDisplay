@@ -50,6 +50,7 @@
                 axisesColor: '#36b2ae',
                 //标题
                 chartTitle: [],
+
                 jqflsjfxSource: [
                     {name: '刑事', value: 1300},
                     {name: '行政(治安)', value: 1500},
@@ -495,7 +496,6 @@
             selectedItem(){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
                 item[0].classList.add('active');
-                console.log(item[0]);
             },
             selectItem(e){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
@@ -507,8 +507,8 @@
                 this.totalSource.forEach(value => {
                     if (e.target.innerText===value.name){
                         this.detailSource=value.dataArr;
-                        console.log(this.detailSource);
                         this.detailChart();
+                        this.detailProportionChart();
                     }
                 })
             },
@@ -517,7 +517,7 @@
                 let str = this.$route.query.title;
 
                 str = str.substring(0,1);
-                console.log(str);
+                // console.log(str);
 
                 if(str == '全'){
                     this.$emit('filter_btn',true)
@@ -569,7 +569,12 @@
                                 that.selectOptions.push(narr[i].name);
                             }
                         }
-                    })
+                        that.detailSource=that.totalSource[0].dataArr;
+                        that.detailChart();
+                        that.detailProportionChart();
+                    }).then(()=>{
+                    that.selectedItem();
+                })
             },
         },
         mounted() {
@@ -578,7 +583,6 @@
             this.setName();
             this.renderChart();
             this.getProData();
-            this.selectedItem();
         },
     }
 </script>

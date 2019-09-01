@@ -50,6 +50,13 @@
         </div>
 
 
+
+        <div class="copyright">山西硬汉网络科技有限公司 版权所有:Copyright©2018—2019</div>
+
+
+
+
+
     </div>
 </template>
 
@@ -157,8 +164,17 @@ input{
     border: none;
     color: white;
 }
+.copyright{
+     width: 100%;
+    color: #f8fbff;
+    position: absolute;
+    left: 0;
+    bottom: 1rem;
+    text-align: center;
+}
 
 #login{
+    position: relative;
     background : url('../assets/images/index/login_bg.png');
     width: 100%;
         height: 100%;

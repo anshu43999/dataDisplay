@@ -166,6 +166,7 @@
                 findUrl : [
                     'recJJLXTJB/findSAlarmData',   //省 近七日接警类型数据分析
                     'recBJFSTJB/findSAlarmMode',   //省 近七日报警类型数据分析
+                    'recLHLXTJB/findSIncomingType' //省 近七日来话类型数据分析
 
                 ],
                 tableData :[],
@@ -513,31 +514,31 @@
                             '技防报警',
                             '短信报警'
                         ];
-                        this.trendChartSource = [
-                            {name: '电话报警', value: [436, 413, 439, 506, 431, 426, 434]},
-                            {name: '来人来电报警', value: [320, 370, 350, 412, 346, 348, 427]},
-                            {name: '技防报警', value: [240, 274, 245, 260, 248, 278, 272]},
-                            {name: '短信报警', value: [142, 152, 107, 168, 146, 164, 151]},
-                            {name: '其他报警方式', value: [14, 15, 14, 10, 12, 15, 17]}
-                        ];
+                        // this.trendChartSource = [
+                        //     {name: '电话报警', value: [436, 413, 439, 506, 431, 426, 434]},
+                        //     {name: '来人来电报警', value: [320, 370, 350, 412, 346, 348, 427]},
+                        //     {name: '技防报警', value: [240, 274, 245, 260, 248, 278, 272]},
+                        //     {name: '短信报警', value: [142, 152, 107, 168, 146, 164, 151]},
+                        //     {name: '其他报警方式', value: [14, 15, 14, 10, 12, 15, 17]}
+                        // ];
                         this.trendChartColor = ['#ffd75d', '#00a3c0', '#0d28a6', '#e344ff', '#6400cb'];
-                        this.proportionSource = [
-                            {name: '电话报警', value: 12},
-                            {name: '来人来电报警', value: 5},
-                            {name: '技防报警', value: 21},
-                            {name: '短信报警', value: 22},
-                            {name: '其他报警方式', value: 10},
-                        ];
-                        this.subClassSource1 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.proportionSource = [
+                        //     {name: '电话报警', value: 12},
+                        //     {name: '来人来电报警', value: 5},
+                        //     {name: '技防报警', value: 21},
+                        //     {name: '短信报警', value: 22},
+                        //     {name: '其他报警方式', value: 10},
+                        // ];
+                        // this.subClassSource1 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //电话报警
                         this.subClassColorList1 = ['#ffebaf', '#ffd75e'];
 
-                        this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700]; //来人（来电）报警
                         this.subClassColorList2 = ['#7fd7fc', '#0083ba'];
 
-                        this.subClassSource3 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource3 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //技防报警
                         this.subClassColorList3 = ['#6f87ff', '#0024dd'];
 
-                        this.subClassSource4 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource4 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                         this.subClassColorList4 = ['#a650ff', '#5200a7'];
 
                         this.myPeriod=JSON.parse(sessionStorage.getItem('bjfs'));
@@ -556,41 +557,41 @@
                             '骚扰电话',
                             '系统测试'
                         ];
-                        this.trendChartSource = [
-                            {name: '报警求助、举报投诉', value: [560, 525, 494, 568, 516, 554, 523]},
-                            {name: '处警反馈', value: [451, 450, 438, 443, 468, 461, 431]},
-                            {name: '信息咨询', value: [382, 380, 351, 384, 345, 387, 364]},
-                            {name: '重复报警', value: [301, 298, 310, 320, 316, 302, 286]},
-                            {name: '骚扰电话', value: [230, 231, 204, 215, 228, 209, 232]},
-                            {name: '系统测试', value: [123, 130, 128, 110, 125, 135, 120]},
-                            {name: '其他来话类型', value: [15, 13, 20, 18, 16, 17, 18]}
-                        ];
+                        // this.trendChartSource = [
+                        //     {name: '报警求助、举报投诉', value: [560, 525, 494, 568, 516, 554, 523]},
+                        //     {name: '处警反馈', value: [451, 450, 438, 443, 468, 461, 431]},
+                        //     {name: '信息咨询', value: [382, 380, 351, 384, 345, 387, 364]},
+                        //     {name: '重复报警', value: [301, 298, 310, 320, 316, 302, 286]},
+                        //     {name: '骚扰电话', value: [230, 231, 204, 215, 228, 209, 232]},
+                        //     {name: '系统测试', value: [123, 130, 128, 110, 125, 135, 120]},
+                        //     {name: '其他来话类型', value: [15, 13, 20, 18, 16, 17, 18]}
+                        // ];
                         this.trendChartColor = ['#6c96ff', '#4160fb', '#2626e7', '#e344ff', '#00b3e9', '#803ff7', '#6905c6', '#17fff3'];
-                        this.proportionSource = [
-                            {name: '报警求助、举报投诉', value: 12},
-                            {name: '处警反馈', value: 5},
-                            {name: '信息咨询', value: 21},
-                            {name: '重复报警', value: 22},
-                            {name: '骚扰电话', value: 10},
-                            {name: '系统测试', value: 19},
-                            {name: '其他来话类型', value: 6},
-                        ];
-                        this.subClassSource1 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.proportionSource = [
+                        //     {name: '报警求助、举报投诉', value: 12},
+                        //     {name: '处警反馈', value: 5},
+                        //     {name: '信息咨询', value: 21},
+                        //     {name: '重复报警', value: 22},
+                        //     {name: '骚扰电话', value: 10},
+                        //     {name: '系统测试', value: 19},
+                        //     {name: '其他来话类型', value: 6},
+                        // ];
+                        // this.subClassSource1 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //报警求助、举报投诉
                         this.subClassColorList1 = ['#ff6cfa', '#a0009b'];
 
-                        this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //处警反馈
                         this.subClassColorList2 = ['#8298ff', '#324fcc'];
 
-                        this.subClassSource3 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource3 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //信息查询
                         this.subClassColorList3 = ['#6163ff', '#3032d7'];
 
-                        this.subClassSource4 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource4 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //重复报警
                         this.subClassColorList4 = ['#ad81ff', '#733be3'];
 
-                        this.subClassSource5 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource5 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];  //骚扰电话
                         this.subClassColorList5 = ['#8919ee', '#620ab4'];
 
-                        this.subClassSource6 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        // this.subClassSource6 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];   //系统测试
                         this.subClassColorList6 = ['#b0fffb', '#119b9d'];
 
                         this.myPeriod=JSON.parse(sessionStorage.getItem('lhlx'));
@@ -619,8 +620,9 @@
                         that.subclassBar('subClassChart4', that.subClassSource4, that.subClassColorList4);   //综合报警
 
                         // console.log(this.subClassSource1)
-
+                        console.log(this.show);
                         if (that.show) return;
+                        // console.log('进入settimeout')
                         setTimeout(function () {
                             that.subclassBar('subClassChart5', that.subClassSource1, that.subClassColorList1);
                             that.subclassBar('subClassChart6', that.subClassSource2, that.subClassColorList2);
@@ -656,11 +658,14 @@
                 console.log(this.startDate);
                 console.log(this.endDate);
                 let str = JSON.parse(sessionStorage.getItem('jjlx'));
-                // console.log(str);
+                console.log(str);
+
+                let str1 = JSON.parse(sessionStorage.getItem('bjfs'));
+                console.log(str1);
                 
 
                 switch (this.$route.query.title) {
-                    case ''  :
+                    case '全省接警类型数据分析'  :
                         this.$http.get( this.apiRoot+this.findUrl[0],{
                             params : {
                                 startTime : str['start'],
@@ -774,7 +779,294 @@
                                 this.renderChart();
                             }
                         }.bind(this))
+
+                        break;
                     
+                    case '全省报警方式数据分析':
+                        this.$http.get( this.apiRoot+this.findUrl[1],{
+                            params : {
+                                startTime : str1['start'],
+                                endTime : str1['end'],
+                            }
+                        })
+                        .then(function (res) { 
+                            // console.log(res);
+                            this.tableData =   res['data'];
+                            if(this.tableData){
+                                let obj1 =  this.tableData['电话报警'];
+                                this.citySource.forEach((item,index)=>{
+
+                                        this.subClassSource1[index] = parseInt(obj1[item]) ;
+                                })
+
+                                let obj2 =  this.tableData['来人(来电)报警'];   
+                                this.citySource.forEach((item,index)=>{
+
+                                        this.subClassSource2[index] = parseInt(obj2[item]) ;
+                                })
+
+                                let obj3 =  this.tableData['技防报警'];
+                                this.citySource.forEach((item,index)=>{
+                
+                                        this.subClassSource3[index] = parseInt(obj3[item]) ;
+                                })
+
+                                let obj4 =  this.tableData['短信报警'];
+                                this.citySource.forEach((item,index)=>{
+
+                                        this.subClassSource4[index] = parseInt(obj4[item]) ;
+                                })
+
+                                // 报警方式数据占比分析  proportionSource
+                                this.proportionSource = [
+                                    {name: '电话报警', value: 12},
+                                    {name: '来人来电报警', value: 5},
+                                    {name: '技防报警', value: 21},
+                                    {name: '短信报警', value: 22},
+                                    {name: '其他报警方式', value: 10},
+                                ];
+
+                                let obj5 = this.tableData['proportion'];
+                                // console.log(obj5['110报警'])
+
+
+                                // console.log(obj5['其他接警类型'])
+                                this.proportionSource[0]['value'] =  obj5['电话报警'];
+                                this.proportionSource[1]['value'] =  obj5['来人来电报警'];
+                                this.proportionSource[2]['value'] =  obj5['技防报警'];
+                                this.proportionSource[3]['value'] =  obj5['短信报警'];
+                                this.proportionSource[4]['value'] =  obj5['其他报警方式'];
+
+                                // 近七日接警类型数据分析
+
+                                // x 轴  数据
+                                let obj6 = this.tableData['sevenDays']['电话报警'];
+                                let str1 ;
+                                let qian ;
+                                let hou ; 
+                                // console.log(obj6 );
+                                this.xAxisData = [];
+                                obj6.forEach((item,index)=>{
+                                    str1 = item['tjrq'] ;
+                                    str1 = str1.substring(4,8);
+                                    qian = str1.substring(0,2);
+                                    hou = str1.substring(2,4);
+                                    str1 = qian + '-' + hou;
+                                    this.xAxisData.push(str1);
+
+                                })
+
+                                this.trendChartSource = [
+                                    {name: '电话报警', value: []},
+                                    {name: '来人来电报警', value: []},
+                                    {name: '技防报警', value: []},
+                                    {name: '短信报警', value: []},
+                                    {name: '其他报警方式', value: []},
+
+
+                                ];
+                                let obj7 = this.tableData['sevenDays']
+                                for(let key in obj7){
+                                    switch (key) {
+                                        case '电话报警':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[0]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '来人来电报警':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[1]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '技防报警':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[2]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '短信报警':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[3]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '其他报警方式':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[4]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                    }
+                                }
+
+
+
+                                this.renderChart();
+                            }
+                        }.bind(this))
+
+
+
+                        break;
+
+                    case '全省来话类型数据分析':
+                        this.$http.get(this.apiRoot+this.findUrl[2],{
+                            params : {
+                                startTime : str1['start'],
+                                endTime : str1['end'],
+                            }
+                        })
+                        .then(function (res) { 
+                            console.log(res);
+                            this.tableData =   res['data'];
+                            console.log(this.tableData)
+                            if(this.tableData){
+                                let obj1 =  this.tableData['报警求助、举报投诉'];
+                                this.citySource.forEach((item,index)=>{
+
+                                        this.subClassSource1[index] = parseInt(obj1[item]) ;
+                                })
+
+                                let obj2 =  this.tableData['处警反馈'];   
+                                this.citySource.forEach((item,index)=>{
+
+                                        this.subClassSource2[index] = parseInt(obj2[item]) ;
+                                })
+
+                                let obj3 =  this.tableData['信息咨询'];
+                                this.citySource.forEach((item,index)=>{
+                
+                                        this.subClassSource3[index] = parseInt(obj3[item]) ;
+                                })
+
+                                let obj4 =  this.tableData['重复报警'];
+                                this.citySource.forEach((item,index)=>{
+
+                                        this.subClassSource4[index] = parseInt(obj4[item]) ;
+                                })
+
+                                let obj8 =  this.tableData['骚扰电话'];
+                                this.citySource.forEach((item,index)=>{
+
+                                        this.subClassSource5[index] = parseInt(obj8[item]) ;
+                                })
+
+                                let obj9 =  this.tableData['系统测试'];
+                                this.citySource.forEach((item,index)=>{
+
+                                        this.subClassSource6[index] = parseInt(obj9[item]) ;
+                                })
+                                console.log(this.subClassSource1)
+
+                                
+
+
+
+                                // 报警方式数据占比分析  proportionSource
+                                this.proportionSource = [
+                                    {name: '报警求助、举报投诉', value: 0},
+                                    {name: '处警反馈', value: 0},
+                                    {name: '信息咨询', value: 0},
+                                    {name: '重复报警', value: 0},
+                                    {name: '骚扰电话', value: 0},
+                                    {name: '系统测试', value: 0},
+                                    {name: '其他来话类型', value: 0},
+                                ];
+
+                                let obj5 = this.tableData['proportion'];
+                                // console.log(obj5['110报警'])
+
+
+                                // console.log(obj5['其他接警类型'])
+                                this.proportionSource[0]['value'] =  obj5['报警求助、举报投诉'];
+                                this.proportionSource[1]['value'] =  obj5['处警反馈'];
+                                this.proportionSource[2]['value'] =  obj5['信息咨询'];
+                                this.proportionSource[3]['value'] =  obj5['重复报警'];
+                                this.proportionSource[4]['value'] =  obj5['骚扰电话'];
+                                this.proportionSource[5]['value'] =  obj5['系统测试'];
+                                this.proportionSource[6]['value'] =  obj5['其他来话类型'];
+
+
+                                // // 近七日接警类型数据分析
+
+                                // // x 轴  数据
+                                let obj6 = this.tableData['sevenDays']['信息咨询'];
+                                let str1 ;
+                                let qian ;
+                                let hou ; 
+                                // console.log(obj6 );
+                                this.xAxisData = [];
+                                obj6.forEach((item,index)=>{
+                                    str1 = item['tjrq'] ;
+                                    str1 = str1.substring(4,8);
+                                    qian = str1.substring(0,2);
+                                    hou = str1.substring(2,4);
+                                    str1 = qian + '-' + hou;
+                                    this.xAxisData.push(str1);
+
+                                })
+
+                                this.trendChartSource = [
+                                    {name: '报警求助、举报投诉', value: []},
+                                    {name: '处警反馈', value: []},
+                                    {name: '信息咨询', value: []},
+                                    {name: '重复报警', value: []},
+                                    {name: '骚扰电话', value: []},
+                                    {name: '系统测试', value: []},
+                                    {name: '其他来话类型', value: []}
+                                ];
+                                let obj7 = this.tableData['sevenDays']
+                                for(let key in obj7){
+                                    switch (key) {
+                                        case '报警求助、举报投诉':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[0]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '处警反馈':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[1]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '信息咨询':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[2]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '重复报警':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[3]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '骚扰电话':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[4]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '系统测试':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[5]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        case '其他来话类型':
+                                            obj7[key].forEach((item,index)=>{
+                                                this.trendChartSource[6]['value'].push(item['jjsl']) ;
+                                            })
+                                            break;
+                                        
+                                    }
+                                   
+                                }
+
+
+
+                                this.renderChart();
+                            }
+                        }.bind(this))
+
+
+
+                        break;
+
+                    
+
 
 
                 }
