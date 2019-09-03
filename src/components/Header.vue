@@ -61,6 +61,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
     background-repeat: no-repeat;
     background-size: contain;
     background-position: 99% 90%;
+    overflow: hidden;
     // height: 7rem;
     #header_main{
         height: 100%;
@@ -76,7 +77,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
         margin-left: 1rem;
         height: 7rem;
         overflow: hidden;
-        line-height: 7rem;
+        line-height:8rem;
         font-size: 1rem;
 
     }

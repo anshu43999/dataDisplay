@@ -470,6 +470,9 @@
             },
             renderChart() {
                 console.log(2);
+                this.myPeriod=JSON.parse(sessionStorage.getItem('jqfl'));
+                this.startDate=this.myPeriod.start;
+                this.endDate=this.myPeriod.end;
                 let myCharts = document.querySelectorAll('.chart');
                 myCharts.forEach(value => {
                     this.refreshCharts.push(value.getAttribute('id'))
@@ -489,9 +492,6 @@
                     },
                 };
                 Index.init();
-                this.myPeriod=JSON.parse(sessionStorage.getItem('jqfl'));
-                this.startDate=this.myPeriod.start;
-                this.endDate=this.myPeriod.end;
             },
             selectedItem(){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
@@ -525,7 +525,7 @@
                     this.$emit('filter_btn',false)
                 }
             },
-            getProData(){
+            getProDetail(){
                 let that=this;
                 this.$http({
                     method: 'post',
@@ -576,13 +576,60 @@
                     that.selectedItem();
                 })
             },
+            getFlsj() {
+                let that = this;
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot + this.findUrl[2],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        // startTime: this.bjfs.start,
+                        // endTime: this.bjfs.end
+                        tjTime: '20160909',
+                        // endTime: '20160915',
+                    }
+                })
+                    .then(function (res) {
+                        // console.log(res);
+                        res.data.map(item => {
+                            item.name = item.fldm;
+                            item.value = item.jjsl;
+                            delete item.fldm;
+                            delete item.jjsl;
+                            delete item.tjrq;
+                            delete item.fllx;
+                            return item;
+                        });
+                        // console.log(res.data);
+                        let arr = [];
+                        for (let i = 0; i < res.data.length; i++) {
+                            if (res.data[i].name === undefined) {
+                                res.data.slice(i, 1);
+                            } else {
+                                arr.push(res.data[i]);
+                            }
+                        }
+                        // console.log(arr);
+                        that.jqflsjfxChart(arr);
+                    })
+            },
         },
         mounted() {
             this.pdFilter_btn();
             this.getScale();
             this.setName();
             this.renderChart();
-            this.getProData();
+            this.getProDetail();
+            // this.getFlsj();
         },
     }
 </script>

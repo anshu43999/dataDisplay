@@ -507,7 +507,7 @@
                     case '全省报警方式数据分析':
                         this.show = true;
                         this.chartTitle = [
-                            '近七日报警类型数据分析',
+                            '近七日报警方式数据分析',
                             '报警方式数据占比分析',
                             '电话报警',
                             '来人（来电）报警',
@@ -547,6 +547,8 @@
                         break;
                     case '全省来话类型数据分析':
                         this.show = false;
+
+                        console.log(this.show);
                         this.chartTitle = [
                             '近七日来话类型数据分析',
                             '来话类型数据占比分析',
@@ -603,6 +605,7 @@
                         break;
                 }
                 // console.log(this.startDate);
+                
                 let Index = {
                     init() {
                         this.loadData();
@@ -614,25 +617,27 @@
                     loadData() {
                         that.sevensjfx(that.xAxisData,'trendChart', that.trendChartSource, that.trendChartColor);  //近七日接警类型数据分析  
                         that.percent();  // 警情数据占比分析
-                        that.subclassBar('subClassChart1', that.subClassSource1, that.subClassColorList1);   //110报警
-                        that.subclassBar('subClassChart2', that.subClassSource2, that.subClassColorList2);   //122报警
-                        that.subclassBar('subClassChart3', that.subClassSource3, that.subClassColorList3);    //119报警
-                        that.subclassBar('subClassChart4', that.subClassSource4, that.subClassColorList4);   //综合报警
 
-                        // console.log(this.subClassSource1)
-                        console.log(this.show);
-                        if (that.show) return;
-                        // console.log('进入settimeout')
-                        setTimeout(function () {
-                            that.subclassBar('subClassChart5', that.subClassSource1, that.subClassColorList1);
-                            that.subclassBar('subClassChart6', that.subClassSource2, that.subClassColorList2);
-                            that.subclassBar('subClassChart7', that.subClassSource3, that.subClassColorList3);
-                            that.subclassBar('subClassChart8', that.subClassSource4, that.subClassColorList4);
-                            that.subclassBar('subClassChart9', that.subClassSource5, that.subClassColorList5);
-                            that.subclassBar('subClassChart10', that.subClassSource6, that.subClassColorList6);
+                        // 这里  数据冲突  待调试
 
+                        if(that.show){
+                            that.subclassBar('subClassChart1', that.subClassSource1, that.subClassColorList1);   //110报警
+                            that.subclassBar('subClassChart2', that.subClassSource2, that.subClassColorList2);   //122报警
+                            that.subclassBar('subClassChart3', that.subClassSource3, that.subClassColorList3);    //119报警
+                            that.subclassBar('subClassChart4', that.subClassSource4, that.subClassColorList4);   //综合报警
+                        }else{
+                            setTimeout(function () {
+                                that.subclassBar('subClassChart5', that.subClassSource1, that.subClassColorList1);
+                                that.subclassBar('subClassChart6', that.subClassSource2, that.subClassColorList2);
+                                that.subclassBar('subClassChart7', that.subClassSource3, that.subClassColorList3);
+                                that.subclassBar('subClassChart8', that.subClassSource4, that.subClassColorList4);
+                                that.subclassBar('subClassChart9', that.subClassSource5, that.subClassColorList5);
+                                that.subclassBar('subClassChart10', that.subClassSource6, that.subClassColorList6);
+                            }, 100)
 
-                        }, 100)
+                        }
+                     
+                        
                     },
                 };
                 Index.init();
@@ -662,6 +667,9 @@
 
                 let str1 = JSON.parse(sessionStorage.getItem('bjfs'));
                 console.log(str1);
+
+                let str2 = JSON.parse(sessionStorage.getItem('lhlx'));
+                console.log(str2);
                 
 
                 switch (this.$route.query.title) {
@@ -907,10 +915,11 @@
                         break;
 
                     case '全省来话类型数据分析':
+                        this.show = false;
                         this.$http.get(this.apiRoot+this.findUrl[2],{
                             params : {
-                                startTime : str1['start'],
-                                endTime : str1['end'],
+                                startTime : str2['start'],
+                                endTime : str2['end'],
                             }
                         })
                         .then(function (res) { 
@@ -952,10 +961,7 @@
                                 this.citySource.forEach((item,index)=>{
 
                                         this.subClassSource6[index] = parseInt(obj9[item]) ;
-                                })
-                                console.log(this.subClassSource1)
-
-                                
+                                })      
 
 
 

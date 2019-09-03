@@ -44,7 +44,7 @@
                 //缩放值
                 scale: 1,
                 //筛选
-                periodArr: ['近7日', '上周', '上上周'],
+                periodArr: ['今天', '昨天', '前天'],
                 typeAnalyze: '111111',    //判断点击的类型
                 filter_show: true,
 
@@ -76,9 +76,9 @@
             //筛选选中项
             selectedItem() {
                 let item = document.querySelectorAll('.filter>.filterItem>li>div');
-                if (this.myPeriod.per==='week'){
+                if (this.myPeriod.per==='today'){
                     item[0].classList.add('active');
-                }else if (this.myPeriod.per==='lastWeek'){
+                }else if (this.myPeriod.per==='yesterday'){
                     item[1].classList.add('active');
                 }else {
                     item[2].classList.add('active');
@@ -92,52 +92,31 @@
                 });
                 e.target.classList.add('active');
                 switch (e.target.innerText) {
-                    case "近7日":
+                    case "今天":
                         let date1 = new Date();
-                        let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
-                        let timestamp = (new Date()).getTime();
-                        let day = timestamp - 6 * 24 * 60 * 60 * 1000;
-                        let date2 = new Date(day);
-                        let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
-                        this.myPeriod.per='week';
-                        this.myPeriod.start=start1;
-                        this.myPeriod.end=end1;
+                        let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
+                        this.myPeriod.per='today';
+                        this.myPeriod.date=start1;
                         this.startDate=start1;
-                        this.endDate=end1;
                         break;
-                    case "上周":
-                        let d = new Date();
-// set to Monday of this week
-                        d.setDate(d.getDate() - (d.getDay() + 6) % 7);
-// set to previous Monday
-                        let date3 = new Date(d.setDate(d.getDate() - 7));
-                        let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString().padStart(2, '0') + date3.getDate().toString().padStart(2, '0');
-// create new date of day before
-                        let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6);
-                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString().padStart(2, '0') + date4.getDate().toString().padStart(2, '0');
-                        this.myPeriod.per='lastWeek';
-                        this.myPeriod.start=Monday;
-                        this.myPeriod.end=Sunday;
-                        this.startDate=Monday;
-                        this.endDate=Sunday;
+                    case "昨天":
+                        let timestamp = (new Date()).getTime();
+                        let day = timestamp - 24 * 60 * 60 * 1000;
+                        let date2 = new Date(day);
+                        let start2 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
+                        this.myPeriod.per='yesterday';
+                        this.myPeriod.date=start2;
+                        this.startDate=start2;
                         break;
-                    case "上上周":
-                        let dt = new Date();
-                        // set to Monday of this week
-                        dt.setDate(dt.getDate() - (dt.getDay() + 6) % 7);
-                        // set to previous Monday
-                        let date5 = new Date(dt.setDate(dt.getDate() - 14));
+                    case "前天":
+                        let timestamp1 = (new Date()).getTime();
+                        let day1 = timestamp1 -2* 24 * 60 * 60 * 1000;
+                        let date3 = new Date(day1);
+                        let start3 = date3.getFullYear().toString() + (date3.getMonth() + 1).toString().padStart(2, '0') + date3.getDate().toString().padStart(2, '0');
 
-                        let beforeMonday = date5.getFullYear().toString() + ((date5.getMonth() + 1).toString()).padStart(2,0) + (date5.getDate().toString()).padStart(2,0);
-                        // create new date of day before
-                        let date6 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 6);
-                        let beforeSunday = date6.getFullYear().toString() + ((date6.getMonth() + 1).toString()).padStart(2,0) + (date6.getDate().toString()).padStart(2,0);
-
-                        this.myPeriod.per='halfYear';
-                        this.myPeriod.start=beforeMonday;
-                        this.myPeriod.end=beforeSunday;
-                        this.startDate=beforeMonday;
-                        this.endDate=beforeSunday;
+                        this.myPeriod.per='threeDaysAgo';
+                        this.myPeriod.date=start3;
+                        this.startDate=start3;
                         break;
                     default:
                         console.log('false');

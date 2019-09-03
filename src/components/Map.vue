@@ -51,7 +51,10 @@
                         '长治市': 140400,
                         '阳泉市': 140300,
                     }
-                    that.$http.get('/static/json/' +sxCityObj[city] + '_full.json').then(res => {
+                    // that.$http.get('/static/json/' +sxCityObj[city] + '_full.json').then(res => {
+
+                    that.$http.get(that.apiRoot + 'dictBJFSDMB/getAll' ,{params : {json :sxCityObj[city]+'_full' }} ).then(res => {
+                    
                         if (res.status === 200) {
                             let d = [];
                             that.$echarts.registerMap(city, res.data);
@@ -78,7 +81,9 @@
                 }else if(refresh == '全'){
                     // console.log('省刷新');
                     Session.setItem('city',1)   // 进入省   city 标识设置为1
-                    this.$http.get('static/json/140000_full.json').then(res => {
+                    // this.$http.get('static/json/140000_full.json').then(res => {
+                    this.$http.get(that.apiRoot +'dictBJFSDMB/getAll',{ params : {json : '140000_full'} }).then(res => {
+
                         if (res.status === 200) {
                             let d = [];
                             for (let i = 0; i < res.data.features.length; i++) {
@@ -126,7 +131,7 @@
                         }else{
                             // console.log('无数据');
 
-                            that.$http.get('static/json/140000_full.json').then(res => {
+                            that.$http.get(that.apiRoot +'dictBJFSDMB/getAll',{ params : {json : '140000_full'} }).then(res => {
                                 if (res.status === 200) {
                                     let d = [];
                                     for (let i = 0; i < res.data.features.length; i++) {
@@ -168,7 +173,13 @@
                         // console.log(cityObj[params])
                         // console.log(cityObj[params.name]);
 
-                        that.$http.get('/static/json/' + cityObj[params.name] + '_full.json').then(res => {
+                        // that.$http.get('/static/json/' + cityObj[params.name] + '_full.json').then(res => {
+                        that.$http.get(that.apiRoot + 'dictBJFSDMB/getAll' ,{params : {json :cityObj[params.name]+'_full' }} ).then(res => {
+
+                        
+                        
+
+
                             if (res.status === 200) {
                                 let d = [];
                                 that.$echarts.registerMap(params.name, res.data);

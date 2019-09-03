@@ -40,12 +40,12 @@
                                 <div>时间筛选</div>
                             </div>
                             <ul class="filterItem" @click="selectItem">
-                                <li v-for="item in periodArr" :key="item">
+                                <!--                                <li v-for="item in periodArr" :key="item">-->
+                                <!--                                    <div data-id="jqfl">{{item}}</div>-->
+                                <!--                                </li>-->
+                                <li v-for="item in periodArr1" :key="item">
                                     <div data-id="jqfl">{{item}}</div>
                                 </li>
-                                <!--<li v-for="item in periodArr1" :key="item">
-                                    <div data-id="jqfl">{{item}}</div>
-                                </li>-->
                             </ul>
                         </div>
                     </div>
@@ -184,6 +184,7 @@
             return {
                 //今天的日期
                 todayIndex: '',
+                threeDaysAgo:'',
                 sevenDaysAgo: '',
                 // select: true,
                 // 接口
@@ -209,9 +210,9 @@
                 scale: 1,
                 //筛选选项
                 periodArr: ['近7日', '上周', '上上周'],
-                // periodArr1: ['今天', '昨天', '前三天'],
+                periodArr1: ['今天', '昨天', '前天'],
                 //默认获取本周数据
-                jqfl: {start: '', end: '', per: ''},
+                jqfl: {date:'', per: ''},
                 jjlx: {start: '', end: '', per: ''},
                 lhlx: {start: '', end: '', per: ''},
                 bjfs: {start: '', end: '', per: ''},
@@ -230,21 +231,21 @@
                 //    近期警情统计  y
                 jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500],
                 //  近期警情统计  x
-                jqjqtjXdata: ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
+                // jqjqtjXdata: ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
 
                 //    警情分类数据分析
                 jqflsjfxSource: [
-                    {name: '刑事', value: 1300},
-                    {name: '行政(治安)', value: 1500},
-                    {name: '交通类', value: 900},
-                    {name: '消防救援', value: 900},
-                    {name: '群众救助', value: 1400},
-                    {name: '应急联动事件(非警情事件)', value: 1100},
-                    {name: '群体事件', value: 1500},
-                    {name: '纠纷', value: 1400},
-                    {name: '灾害事故', value: 800},
-                    {name: '举报', value: 850},
-                    {name: '投诉监督', value: 700}
+                    {name: '刑事'},
+                    {name: '行政(治安)'},
+                    {name: '交通类'},
+                    {name: '消防救援'},
+                    {name: '群众救助'},
+                    {name: '应急联动事件(非警情事件)'},
+                    {name: '群体事件'},
+                    {name: '纠纷'},
+                    {name: '灾害事故'},
+                    {name: '举报'},
+                    {name: '投诉监督'}
                 ],
                 grading: [0.2, 0.4, 0.6, 0.8, 1],
                 mapSource: [
@@ -427,6 +428,40 @@
                                     data: [{
                                         value: item.value
                                     }]
+                                },
+                                {
+                                    name: item.name,
+                                    type: 'gauge',
+                                    center: [index * 30 + 20 + '%', '50%'],
+                                    radius: item.radius,
+                                    axisLine: {
+                                        show: false,
+                                    },
+                                    pointer: {
+                                        show: true,
+                                        length: '200%',
+                                        width: '200%',
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            color:'transparent'
+                                        }
+                                    },
+                                    detail: {
+                                        show: false,
+                                    },
+                                    splitLine: {
+                                        show:false
+                                    },
+                                    axisTick: {
+                                        show:false
+                                    },
+                                    axisLabel: {
+                                        show: false
+                                    },
+                                    data: [{
+                                        value: item.value
+                                    }]
                                 }
                             );
                         });
@@ -436,9 +471,24 @@
                         formatter: function (params) {
                             return params.seriesName + '：' + params.data.value + '%';
                         }
-                    }
+                    },
                 };
                 myChart.setOption(option);
+                myChart.on('click',function (params) {
+                    console.log(params);
+                    if (params.componentType === 'axisLine') {
+                        if (params.seriesType === 'graph') {
+                            if (params.dataType === 'edge') {
+                                // 点击到了 graph 的 edge（边）上。
+                                console.log(1);
+                            }
+                            else {
+                                // 点击到了 graph 的 node（节点）上。
+                                console.log(2);
+                            }
+                        }
+                    }
+                })
             },
             //    近期警情统计
             jqjqtjChart(dateArr) {
@@ -606,8 +656,8 @@
                     data2.push({name: value.name, value: (value.value / value.value1).toFixed(2), value1: value.value});
                 });
                 that.data1 = data2;
-                //初显示
-                this.$http.get('static/json/140000_full.json').then(res => {
+                //初显示   http://192.168.1.252:8082/dataDisplay/dictBJFSDMB/140000_full.json
+                this.$http.get(this.apiRoot +'dictBJFSDMB/getAll',{ params : {json : '140000_full'} }).then(res => {
                     if (res.status === 200) {
                         for (let i = 0; i < res.data.features.length; i++) {
                             cityObj[res.data.features[i].properties.name] = res.data.features[i].properties.adcode;
@@ -1131,6 +1181,15 @@
                     case "halfYear":
                         item[0].childNodes[2].childNodes[0].classList.add('active');
                         break;
+                    case "today":
+                        item[0].firstChild.firstChild.classList.add('active');
+                        break;
+                    case "yesterday":
+                        item[0].childNodes[1].firstChild.classList.add('active');
+                        break;
+                    case "threeDaysAgo":
+                        item[0].childNodes[2].childNodes[0].classList.add('active');
+                        break;
                     default:
                         console.log('false');
                 }
@@ -1222,16 +1281,56 @@
                                 // set to previous Monday
                                 let date5 = new Date(dt.setDate(dt.getDate() - 14));
 
-                                let beforeMonday = date5.getFullYear().toString() + ((date5.getMonth() + 1).toString()).padStart(2,0) + (date5.getDate().toString()).padStart(2,0);
+                                let beforeMonday = date5.getFullYear().toString() + ((date5.getMonth() + 1).toString()).padStart(2, 0) + (date5.getDate().toString()).padStart(2, 0);
                                 // create new date of day before
                                 let date6 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 6);
-                                let beforeSunday = date6.getFullYear().toString() + ((date6.getMonth() + 1).toString()).padStart(2,0) + (date6.getDate().toString()).padStart(2,0);
+                                let beforeSunday = date6.getFullYear().toString() + ((date6.getMonth() + 1).toString()).padStart(2, 0) + (date6.getDate().toString()).padStart(2, 0);
 
                                 e.target.parentNode.parentNode.parentNode.style.display = 'none';
                                 let type3 = e.target.getAttribute('data-id');
                                 this[type3].end = beforeSunday;
                                 this[type3].start = beforeMonday;
                                 this[type3].per = 'halfYear';
+                                for (let i = 0; i < children.length; i++) {
+                                    children[i].childNodes[0].classList.remove('active');
+                                }
+                                e.target.classList.add('active');
+                                break;
+                            case'今天':
+                                let type4 = e.target.getAttribute('data-id');
+                                this[type4].date = this.todayIndex;
+                                this[type4].per = 'today';
+                                e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                                // this.start = this.todayIndex;
+                                // console.log(value.childNodes[1].childNodes);
+                                for (let i = 0; i < children.length; i++) {
+                                    children[i].childNodes[0].classList.remove('active');
+                                }
+                                e.target.classList.add('active');
+                                break;
+                            case'昨天':
+                                let timestamp = (new Date()).getTime();
+                                let day = timestamp - 24 * 60 * 60 * 1000;
+                                let date1 = new Date(day);
+                                let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
+                                e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                                let type5 = e.target.getAttribute('data-id');
+                                this[type5].date = start1;
+                                this[type5].per = 'yesterday';
+                                // this.start = this.todayIndex;
+                                // console.log(value.childNodes[1].childNodes);
+                                for (let i = 0; i < children.length; i++) {
+                                    children[i].childNodes[0].classList.remove('active');
+                                }
+                                e.target.classList.add('active');
+                                break;
+                            case'前天':
+                                e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                                let type6 = e.target.getAttribute('data-id');
+                                this[type6].date = this.threeDaysAgo;
+                                this[type6].per = 'threeDaysAgo';
+                                // this.start = this.todayIndex;
+                                // console.log(value.childNodes[1].childNodes);
                                 for (let i = 0; i < children.length; i++) {
                                     children[i].childNodes[0].classList.remove('active');
                                 }
@@ -1254,13 +1353,16 @@
                         this.getFlsj();
                         break;
                     case 'jjlx':
-                        this.getJjlx();
+                        // this.getJjlx();
+                        this.getJjlxSeven();
                         break;
                     case 'bjfs':
-                        this.getBjfs();
+                        // this.getBjfs();
+                        this.getBjfsSeven();
                         break;
                     case 'lhlx':
-                        this.getLhlx();
+                        // this.getLhlx();
+                        this.getLhlxSeven();
                         break;
                     default:
                         console.log('false');
@@ -1291,23 +1393,22 @@
                     this.bjfs = JSON.parse(sessionStorage.getItem('bjfs'));
                     this.lhlx = JSON.parse(sessionStorage.getItem('lhlx'));
                 } else {
-                    let date1 = new Date();
-                    let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
-                    let timestamp = (new Date()).getTime();
-                    let day = timestamp - 6 * 24 * 60 * 60 * 1000;
-                    let date2 = new Date(day);
-                    let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
-                    this.jjlx.end = end1;
-                    this.jjlx.start = start1;
+                    // let date1 = new Date();
+                    // let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
+                    // let timestamp = (new Date()).getTime();
+                    // let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                    // let date2 = new Date(day);
+                    // let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
+                    this.jjlx.end = this.todayIndex;
+                    this.jjlx.start = this.sevenDaysAgo;
                     this.jjlx.per = 'week';
-                    this.bjfs.end = end1;
-                    this.bjfs.start = start1;
+                    this.bjfs.end = this.todayIndex;
+                    this.bjfs.start = this.sevenDaysAgo;
                     this.bjfs.per = 'week';
-                    this.jqfl.end = end1;
-                    this.jqfl.start = start1;
-                    this.jqfl.per = 'week';
-                    this.lhlx.end = end1;
-                    this.lhlx.start = start1;
+                    this.jqfl.date = this.todayIndex;
+                    this.jqfl.per = 'today';
+                    this.lhlx.end = this.todayIndex;
+                    this.lhlx.start = this.sevenDaysAgo;
                     this.lhlx.per = 'week';
                     sessionStorage.setItem('jqfl', JSON.stringify(this.jqfl));
                     sessionStorage.setItem('jjlx', JSON.stringify(this.jjlx));
@@ -1331,8 +1432,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        tjTime: 20160909,
-                        // tjTime: this.todayIndex,
+                        // tjTime: 20160909,
+                        tjTime: this.todayIndex,
                     }
                 })
                     .then(function (res) {
@@ -1390,10 +1491,10 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime:  this.sevenDaysAgo,  //开始
-                        // endTime: this.todayIndex   //结束
-                        startTime: 20160909,  //开始
-                        endTime: 20160915     //结束
+                        startTime:  this.sevenDaysAgo,  //开始
+                        endTime: this.todayIndex   //结束
+                        // startTime: 20160909,  //开始
+                        // endTime: 20160915     //结束
                     }
                 })
                     .then(function (res) {
@@ -1426,7 +1527,8 @@
             },
             // 警情分类数据分析
             getFlsj() {
-                let that=this;
+                console.log(this.todayIndex);
+                let that = this;
                 this.$http({
                     method: 'post',
                     url: this.apiRoot + this.findUrl[2],
@@ -1441,10 +1543,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime: this.bjfs.start,
-                        // endTime: this.bjfs.end
-                        tjTime: '20160909',
-                        // endTime: '20160915',
+                        tjTime: that.jqfl.date,
+                        // tjTime: '20160909',
                     }
                 })
                     .then(function (res) {
@@ -1459,11 +1559,11 @@
                             return item;
                         });
                         // console.log(res.data);
-                        let arr=[];
-                        for (let i=0;i<res.data.length;i++){
-                            if (res.data[i].name===undefined){
-                                res.data.slice(i,1);
-                            }else {
+                        let arr = [];
+                        for (let i = 0; i < res.data.length; i++) {
+                            if (res.data[i].name === undefined) {
+                                res.data.slice(i, 1);
+                            } else {
                                 arr.push(res.data[i]);
                             }
                         }
@@ -1488,8 +1588,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // tjTime: this.todayIndex
-                        tjTime: 20160909,  //今天
+                        tjTime: this.todayIndex
+                        // tjTime: 20160909,  //今天
                     }
                 })
                     .then(function (res) {
@@ -1534,8 +1634,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        tjTime: 20160909,  //今天
-                        // tjTime: this.todayIndex,  //今天
+                        // tjTime: 20160909,  //今天
+                        tjTime: this.todayIndex,  //今天
                     }
                 })
                     .then(function (res) {
@@ -1569,10 +1669,10 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime: this.jjlx.start,
-                        // endTime: this.jjlx.end,
-                        startTime: '20160909',
-                        endTime: '20160915',
+                        startTime: this.jjlx.start,
+                        endTime: this.jjlx.end,
+                        // startTime: '20160909',
+                        // endTime: '20160915',
                     }
                 })
                     .then(function (res) {
@@ -1620,7 +1720,7 @@
                         }
                         // console.log(narr1);
                         // that.sevenjjlxsjfxSource.log=narr1;
-                        that.sevensjfx1('sevenjjlxsjfxChart', narr1, that.jrjjlxsjfxSourceColor,dateArr);
+                        that.sevensjfx1('sevenjjlxsjfxChart', narr1, that.jrjjlxsjfxSourceColor, dateArr);
                     })
             },
             // 今日报警方式数据分析
@@ -1640,8 +1740,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // tjTime: this.todayIndex
-                        tjTime: 20160909,  //今天
+                        tjTime: this.todayIndex
+                        // tjTime: 20160909,  //今天
                     }
                 })
                     .then(function (res) {
@@ -1677,10 +1777,10 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime: this.bjfs.start,
-                        // endTime: this.bjfs.end
-                        startTime: '20160909',
-                        endTime: '20160915',
+                        startTime: this.bjfs.start,
+                        endTime: this.bjfs.end
+                        // startTime: '20160909',
+                        // endTime: '20160915',
                     }
                 })
                     .then(function (res) {
@@ -1726,7 +1826,7 @@
                                 narr1[n].value.push(data[i].value)
                             }
                         }
-                        that.sevensjfx1('sevenbjfssjfxChart', narr1, that.jrbjfssjfxColor,dateArr);
+                        that.sevensjfx1('sevenbjfssjfxChart', narr1, that.jrbjfssjfxColor, dateArr);
                     })
 
             },
@@ -1748,8 +1848,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        tjTime: 20160909,  //今天
-                        // tjTime: this.todayIndex,  //今天
+                        // tjTime: 20160909,  //今天
+                        tjTime: this.todayIndex,  //今天
                     }
                 })
                     .then(function (res) {
@@ -1783,10 +1883,10 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime: this.bjfs.start,
-                        // endTime: this.bjfs.end
-                        startTime: '20160909',
-                        endTime: '20160915',
+                        startTime: this.bjfs.start,
+                        endTime: this.bjfs.end
+                        // startTime: '20160909',
+                        // endTime: '20160915',
                     }
                 })
                     .then(function (res) {
@@ -1833,7 +1933,7 @@
                             }
                         }
                         // console.log(narr1);
-                        that.sevensjfx1('sevenlhlxsjfxChart', narr1, that.jrrlhlxsjfxColor,dateArr);
+                        that.sevensjfx1('sevenlhlxsjfxChart', narr1, that.jrrlhlxsjfxColor, dateArr);
                     })
 
             },
@@ -1842,7 +1942,10 @@
                 let date = new Date();
                 this.todayIndex = date.getFullYear().toString() + (date.getMonth() + 1).toString().padStart(2, '0') + date.getDate().toString().padStart(2, '0');
                 let timestamp = date.getTime();
+                let day1=timestamp-2 * 24 * 60 * 60 * 1000;
                 let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                let date1=new Date(day1);
+                this.threeDaysAgo=date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
                 let date2 = new Date(day);
                 this.sevenDaysAgo = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
             },
@@ -1855,6 +1958,7 @@
             // this.change();
             this.renderChart();
             // this.getFlsj();
+            console.log(Public);
         }
     }
 </script>
@@ -2101,7 +2205,7 @@
                     left: 1.04rem;
 
                     p:first-child {
-                        font-size: 3rem;
+                        font-size: 4.2rem;
                         letter-spacing: 0.3rem;
                         font-family: heijian;
                     }
