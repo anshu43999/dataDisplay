@@ -112,6 +112,9 @@
                     // console.log('click')
                     // console.log(params.data);
                     // console.log(that.flag);
+                    // console.log(cityObj[params.name]);
+                    that.xzqhdm=cityObj[params.name];
+
                     if(that.flag){     //
                         // console.log('全省');
                         that.flag = false;

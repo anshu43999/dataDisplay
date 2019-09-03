@@ -38,7 +38,7 @@
 <script>
     export default {
         name: "small_proRight",
-        props: ['typeAnalyze'],
+        props: ['typeAnalyze','isClick'],
         data(){
             return {
                 scale: 1,
@@ -52,7 +52,7 @@
                 chartTitle: [],
 
                 jqflsjfxSource: [
-                    {name: '刑事', value: 1300},
+                   /* {name: '刑事', value: 1300},
                     {name: '行政(治安)', value: 1500},
                     {name: '交通类', value: 900},
                     {name: '消防救援', value: 900},
@@ -62,10 +62,10 @@
                     {name: '纠纷', value: 1400},
                     {name: '灾害事故', value: 800},
                     {name: '举报', value: 850},
-                    {name: '投诉监督', value: 700}
+                    {name: '投诉监督', value: 700}*/
                 ],
                 proportionSource: [
-                    {name: '刑事', value: 23.5},
+                    /*{name: '刑事', value: 23.5},
                     {name: '行政(治安)', value: 14},
                     {name: '交通类', value: 13.45},
                     {name: '消防救援', value: 23},
@@ -75,7 +75,7 @@
                     {name: '纠纷', value: 45},
                     {name: '灾害事故', value: 43},
                     {name: '举报', value: 15.5},
-                    {name: '投诉监督', value: 12}
+                    {name: '投诉监督', value: 12}*/
                 ],
                 detailSource: [
                     /*{name: '危害国家安全', value: 3},
@@ -103,8 +103,7 @@
                 totalSource:[],
 
                 selectOptions:[],
-                startDate:'',
-                endDate:'',
+                date:'',
                 myPeriod:{},
             }
         },
@@ -323,7 +322,7 @@
                     },
                     tooltip: {
                         formatter:function (params) {
-                            return params.marker+params.data.name+'：'+params.data.value+'%';
+                            // return params.marker+params.data.name+'：'+params.data.value+'%';
                         }
                     },
                     grid: {
@@ -434,16 +433,16 @@
             detailProportionChart(){
                 let myChart=this.$echarts.init(document.getElementById('detailProportionChart'));
                 let sourceArr=this.detailSource;
-                let colorList=['#815179','#66a99f','#fc6262','#8cacc7','#eacf79','#63d3c3','#e9ab50','#b7564f','#d8bcca','#89b8c7','#a4c585','#49bcf3','#8e88ff', '#ff8155','#3ecf6a','#fff497','#c64f47','#81799e','#2f9a94','#9e57b7','#d58a85'];
+                let colorList1=['#815179','#66a99f','#fc6262','#8cacc7','#eacf79','#63d3c3','#e9ab50','#b7564f','#d8bcca','#89b8c7','#a4c585','#49bcf3','#8e88ff', '#ff8155','#3ecf6a','#fff497','#c64f47','#81799e','#2f9a94','#9e57b7','#d58a85'];
                 sourceArr.forEach((value, index) => {
                     value.itemStyle={
                         normal: {
-                            color: colorList[index],
+                            color: colorList1[index],
                         },
                     };
                     value.label={
                         textStyle: {
-                            color: colorList[index],
+                            color: colorList1[index],
                             fontSize:20*this.scale,
                         },
                     };
@@ -469,10 +468,9 @@
                 myChart.setOption(option);
             },
             renderChart() {
-                console.log(2);
+                // console.log(2);
                 this.myPeriod=JSON.parse(sessionStorage.getItem('jqfl'));
-                this.startDate=this.myPeriod.start;
-                this.endDate=this.myPeriod.end;
+                this.date=this.myPeriod.date;
                 let myCharts = document.querySelectorAll('.chart');
                 myCharts.forEach(value => {
                     this.refreshCharts.push(value.getAttribute('id'))
@@ -485,16 +483,23 @@
                         Public.chartsReDraw(that.chartsObj, null, [], this.refreshCharts)
                     },
                     loadData() {
-                        that.barChart();
+                        that.getFlsj();
+                        that.getProDetail();
+                        /*that.barChart();
                         that.percent();
                         that.detailChart();
-                        that.detailProportionChart();
+                        that.detailProportionChart();*/
                     },
                 };
                 Index.init();
             },
             selectedItem(){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
+                if (this.isClick){
+                    item.forEach(value => {
+                        value.classList.remove('active')
+                    })
+                }
                 item[0].classList.add('active');
             },
             selectItem(e){
@@ -510,7 +515,7 @@
                         this.detailChart();
                         this.detailProportionChart();
                     }
-                })
+                });
             },
             pdFilter_btn(){
                 console.log('zheshi zhixing ');
@@ -526,6 +531,7 @@
                 }
             },
             getProDetail(){
+                this.jqfl=JSON.parse(sessionStorage.getItem('jqfl'));
                 let that=this;
                 this.$http({
                     method: 'post',
@@ -543,7 +549,7 @@
                     data: {
                         // startTime: this.jjlx.start,
                         // endTime: this.jjlx.end,
-                        tjTime: '20160909',
+                        tjTime: this.date,
                     }
                 })
                     .then(function (res) {
@@ -562,13 +568,15 @@
                         }
                         // console.log(narr);
                         that.totalSource=narr;
+                        let nameArr=[];
                         for (let i=0;i<narr.length;i++){
                             if (narr[i].name===undefined){
                                 narr.slice(i,1);
                             }else {
-                                that.selectOptions.push(narr[i].name);
+                                nameArr.push(narr[i].name);
                             }
                         }
+                        that.selectOptions=nameArr;
                         that.detailSource=that.totalSource[0].dataArr;
                         that.detailChart();
                         that.detailProportionChart();
@@ -577,10 +585,13 @@
                 })
             },
             getFlsj() {
+                // console.log(this.todayIndex);
+                this.jqfl=JSON.parse(sessionStorage.getItem('jqfl'));
+                // console.log(this.jqfl.date);
                 let that = this;
                 this.$http({
                     method: 'post',
-                    url: this.apiRoot + this.findUrl[2],
+                    url: this.apiRoot + 'recJQFLTJB/findJQFLNum',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
                     transformRequest: [function (data) {
                         let ret = '';
@@ -592,10 +603,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime: this.bjfs.start,
-                        // endTime: this.bjfs.end
-                        tjTime: '20160909',
-                        // endTime: '20160915',
+                        tjTime: that.date,
+                        // tjTime: '20160909',
                     }
                 })
                     .then(function (res) {
@@ -611,7 +620,9 @@
                         });
                         // console.log(res.data);
                         let arr = [];
+                        let total=0;
                         for (let i = 0; i < res.data.length; i++) {
+                            total+=res.data[i].value;
                             if (res.data[i].name === undefined) {
                                 res.data.slice(i, 1);
                             } else {
@@ -619,7 +630,17 @@
                             }
                         }
                         // console.log(arr);
-                        that.jqflsjfxChart(arr);
+                        that.jqflsjfxSource=arr;
+                        that.barChart();
+                        let rencentArr=[];
+                        arr.forEach(value => {
+                            // console.log(value.value);
+                            rencentArr.push({name:value.name,value:Math.round((value.value/total)*100)})
+                        });
+                        that.proportionSource=rencentArr;
+                        // console.log(total);
+                        // console.log(that.proportionSource);
+                        that.percent();
                     })
             },
         },
@@ -628,7 +649,7 @@
             this.getScale();
             this.setName();
             this.renderChart();
-            this.getProDetail();
+            // this.getProDetail();
             // this.getFlsj();
         },
     }
