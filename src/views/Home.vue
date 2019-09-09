@@ -235,17 +235,17 @@
 
                 //    警情分类数据分析
                 jqflsjfxSource: [
-                    {name: '刑事', value: 1300},
-                    {name: '行政(治安)', value: 1500},
-                    {name: '交通类', value: 900},
-                    {name: '消防救援', value: 900},
-                    {name: '群众救助', value: 1400},
-                    {name: '应急联动事件(非警情事件)', value: 1100},
-                    {name: '群体事件', value: 1500},
-                    {name: '纠纷', value: 1400},
-                    {name: '灾害事故', value: 800},
-                    {name: '举报', value: 850},
-                    {name: '投诉监督', value: 700}
+                    {name: '刑事'},
+                    {name: '行政(治安)'},
+                    {name: '交通类'},
+                    {name: '消防救援'},
+                    {name: '群众救助'},
+                    {name: '应急联动事件(非警情事件)'},
+                    {name: '群体事件'},
+                    {name: '纠纷'},
+                    {name: '灾害事故'},
+                    {name: '举报'},
+                    {name: '投诉监督'}
                 ],
                 grading: [0.2, 0.4, 0.6, 0.8, 1],
                 mapSource: [
@@ -428,6 +428,40 @@
                                     data: [{
                                         value: item.value
                                     }]
+                                },
+                                {
+                                    name: item.name,
+                                    type: 'gauge',
+                                    center: [index * 30 + 20 + '%', '50%'],
+                                    radius: item.radius,
+                                    axisLine: {
+                                        show: false,
+                                    },
+                                    pointer: {
+                                        show: true,
+                                        length: '200%',
+                                        width: '200%',
+                                    },
+                                    itemStyle:{
+                                        normal:{
+                                            color:'transparent'
+                                        }
+                                    },
+                                    detail: {
+                                        show: false,
+                                    },
+                                    splitLine: {
+                                        show:false
+                                    },
+                                    axisTick: {
+                                        show:false
+                                    },
+                                    axisLabel: {
+                                        show: false
+                                    },
+                                    data: [{
+                                        value: item.value
+                                    }]
                                 }
                             );
                         });
@@ -437,9 +471,24 @@
                         formatter: function (params) {
                             return params.seriesName + '：' + params.data.value + '%';
                         }
-                    }
+                    },
                 };
                 myChart.setOption(option);
+                myChart.on('click',function (params) {
+                    console.log(params);
+                    if (params.componentType === 'axisLine') {
+                        if (params.seriesType === 'graph') {
+                            if (params.dataType === 'edge') {
+                                // 点击到了 graph 的 edge（边）上。
+                                console.log(1);
+                            }
+                            else {
+                                // 点击到了 graph 的 node（节点）上。
+                                console.log(2);
+                            }
+                        }
+                    }
+                })
             },
             //    近期警情统计
             jqjqtjChart(dateArr) {
@@ -1304,13 +1353,16 @@
                         this.getFlsj();
                         break;
                     case 'jjlx':
-                        this.getJjlx();
+                        // this.getJjlx();
+                        this.getJjlxSeven();
                         break;
                     case 'bjfs':
-                        this.getBjfs();
+                        // this.getBjfs();
+                        this.getBjfsSeven();
                         break;
                     case 'lhlx':
-                        this.getLhlx();
+                        // this.getLhlx();
+                        this.getLhlxSeven();
                         break;
                     default:
                         console.log('false');
@@ -1380,8 +1432,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        tjTime: 20160909,
-                        // tjTime: this.todayIndex,
+                        // tjTime: 20160909,
+                        tjTime: this.todayIndex,
                     }
                 })
                     .then(function (res) {
@@ -1439,10 +1491,10 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime:  this.sevenDaysAgo,  //开始
-                        // endTime: this.todayIndex   //结束
-                        startTime: 20160909,  //开始
-                        endTime: 20160915     //结束
+                        startTime:  this.sevenDaysAgo,  //开始
+                        endTime: this.todayIndex   //结束
+                        // startTime: 20160909,  //开始
+                        // endTime: 20160915     //结束
                     }
                 })
                     .then(function (res) {
@@ -1475,6 +1527,7 @@
             },
             // 警情分类数据分析
             getFlsj() {
+                console.log(this.todayIndex);
                 let that = this;
                 this.$http({
                     method: 'post',
@@ -1490,10 +1543,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime: this.bjfs.start,
-                        // endTime: this.bjfs.end
-                        tjTime: '20160909',
-                        // endTime: '20160915',
+                        tjTime: that.jqfl.date,
+                        // tjTime: '20160909',
                     }
                 })
                     .then(function (res) {
@@ -1537,8 +1588,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // tjTime: this.todayIndex
-                        tjTime: 20160909,  //今天
+                        tjTime: this.todayIndex
+                        // tjTime: 20160909,  //今天
                     }
                 })
                     .then(function (res) {
@@ -1583,8 +1634,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        tjTime: 20160909,  //今天
-                        // tjTime: this.todayIndex,  //今天
+                        // tjTime: 20160909,  //今天
+                        tjTime: this.todayIndex,  //今天
                     }
                 })
                     .then(function (res) {
@@ -1618,10 +1669,10 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime: this.jjlx.start,
-                        // endTime: this.jjlx.end,
-                        startTime: '20160909',
-                        endTime: '20160915',
+                        startTime: this.jjlx.start,
+                        endTime: this.jjlx.end,
+                        // startTime: '20160909',
+                        // endTime: '20160915',
                     }
                 })
                     .then(function (res) {
@@ -1689,8 +1740,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // tjTime: this.todayIndex
-                        tjTime: 20160909,  //今天
+                        tjTime: this.todayIndex
+                        // tjTime: 20160909,  //今天
                     }
                 })
                     .then(function (res) {
@@ -1726,10 +1777,10 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime: this.bjfs.start,
-                        // endTime: this.bjfs.end
-                        startTime: '20160909',
-                        endTime: '20160915',
+                        startTime: this.bjfs.start,
+                        endTime: this.bjfs.end
+                        // startTime: '20160909',
+                        // endTime: '20160915',
                     }
                 })
                     .then(function (res) {
@@ -1797,8 +1848,8 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        tjTime: 20160909,  //今天
-                        // tjTime: this.todayIndex,  //今天
+                        // tjTime: 20160909,  //今天
+                        tjTime: this.todayIndex,  //今天
                     }
                 })
                     .then(function (res) {
@@ -1832,10 +1883,10 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        // startTime: this.bjfs.start,
-                        // endTime: this.bjfs.end
-                        startTime: '20160909',
-                        endTime: '20160915',
+                        startTime: this.bjfs.start,
+                        endTime: this.bjfs.end
+                        // startTime: '20160909',
+                        // endTime: '20160915',
                     }
                 })
                     .then(function (res) {
@@ -2153,7 +2204,7 @@
                     left: 1.04rem;
 
                     p:first-child {
-                        font-size: 3rem;
+                        font-size: 4.2rem;
                         letter-spacing: 0.3rem;
                         font-family: heijian;
                     }

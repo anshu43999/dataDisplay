@@ -577,7 +577,7 @@
                 })
             },
             getFlsj() {
-                let that=this;
+                let that = this;
                 this.$http({
                     method: 'post',
                     url: this.apiRoot + this.findUrl[2],
@@ -610,16 +610,16 @@
                             return item;
                         });
                         // console.log(res.data);
-                        let arr=[];
-                        for (let i=0;i<res.data.length;i++){
-                            if (res.data[i].name===undefined){
-                                res.data.slice(i,1);
-                            }else {
+                        let arr = [];
+                        for (let i = 0; i < res.data.length; i++) {
+                            if (res.data[i].name === undefined) {
+                                res.data.slice(i, 1);
+                            } else {
                                 arr.push(res.data[i]);
                             }
                         }
-                        that.jqflsjfxSource=arr;
-                        that.jqflsjfxChart();
+                        // console.log(arr);
+                        that.jqflsjfxChart(arr);
                     })
             },
         },
@@ -629,7 +629,7 @@
             this.setName();
             this.renderChart();
             this.getProDetail();
-            // this.getBjfsSeven();
+            // this.getFlsj();
         },
     }
 </script>
