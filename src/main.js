@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import '../public/static/style/common.scss'
 // import ElementUI from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
 import App from './App.vue'
@@ -37,14 +38,14 @@ Vue.prototype.apiRoot = 'http://192.168.1.252:8086/alarmSystem/'//su
 
 // http request 拦截器
 axios.interceptors.request.use(function (config) {
-    if (store.getters.Token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
-        config.headers.Authorization= store.getters.Token
-    }
+  if (store.getters.Token) { // 判断是否存在token，如果存在的话，则每个http header都加上token
+    config.headers.Authorization= store.getters.Token
+  }
 //	console.log(response)
-    return config;
+  return config;
 }, function (error) {
 //	console.log(error)
-    return Promise.reject(error);
+  return Promise.reject(error);
 });
 
 
@@ -53,41 +54,40 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
 //  console.log('全局的拦截测试，好简单')
 //	console.log(response.data.code==1000000)
-    if(response.data.code==1000000){
+  if(response.data.code==1000000){
 
 //		console.log(store.state.userName)
-        store.state.userName='';
-        store.state.userId='';
-        store.state.userAuth='';
-        sessionStorage.removeItem('userName');
-        sessionStorage.removeItem('userId');
-        sessionStorage.removeItem('userAuth');
-        sessionStorage.removeItem('Token');
-        sessionStorage.removeItem('permissions');
-        sessionStorage.removeItem('breadcrumbHistory');
+    store.state.userName='';
+    store.state.userId='';
+    store.state.userAuth='';
+    sessionStorage.removeItem('userName');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('userAuth');
+    sessionStorage.removeItem('Token');
+    sessionStorage.removeItem('permissions');
+    sessionStorage.removeItem('breadcrumbHistory');
 //		console.log(store.state.userName)
     app.$router.push({ path: '/login'});
 
-    }
-    // if(response.data.access=='unauthorized'){
-    //     console.log(response.data.access)
-    //     app.$notify.error({
-    //         title: '错误',
-    //         message: '你没有权限进行此项操作！！！'
-    //     });
-    //     throw "你没有权限进行此项操作！！！";
+  }
+  // if(response.data.access=='unauthorized'){
+  //     console.log(response.data.access)
+  //     app.$notify.error({
+  //         title: '错误',
+  //         message: '你没有权限进行此项操作！！！'
+  //     });
+  //     throw "你没有权限进行此项操作！！！";
 
-    // }
-    return response;
+  // }
+  return response;
 }, function (error) {
 //		console.log(error)
 
 //		console.log(error.response.status)
 //			if(error)
 //			this.$router.replace({path: '/403'})
-    return Promise.reject(error);
+  return Promise.reject(error);
 });
-Vue.prototype.$http=axios;
 
 
 
@@ -97,12 +97,12 @@ Vue.prototype.$http=axios;
 
 
 var app=new Vue({
-    el: '#app',
-    router,//使用路由
-    store,//使用store
-    render: h => h(App),
-    data:{
-        eventHub:new Vue(),//添加事件中心
-    },
+  el: '#app',
+  router,//使用路由
+  store,//使用store
+  render: h => h(App),
+  data:{
+    eventHub:new Vue(),//添加事件中心
+  },
 
 })
