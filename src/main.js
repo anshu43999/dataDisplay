@@ -1,7 +1,4 @@
-
-// import './assets/style/common/common.css'
-// import './assets/style/font/iconfont.css'
-// import 'element-ui/lib/theme-chalk/display.css'
+import Vue from 'vue'
 import store from './store/index'
 import axios from 'axios'
 import router from './router/index'
@@ -97,3 +94,4 @@ var app=new Vue({
     },
 
 })
+>>>>>>> 417e6a64b622840e28cfb9ab20bf3dadf0817805
