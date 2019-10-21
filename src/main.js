@@ -1,10 +1,22 @@
 import Vue from 'vue'
+// import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
+import App from './App.vue'
+import 'element-ui/lib/theme-chalk/index.css'
+import ElementUI from 'element-ui'
+import echarts from 'echarts'
+import '../public/static/style/common.scss'
+// import './assets/style/common/common.css'
+// import './assets/style/font/iconfont.css'
+// import 'element-ui/lib/theme-chalk/display.css'
 import store from './store/index'
 import axios from 'axios'
 import router from './router/index'
 //import 'vue2-animate/dist/vue2-animate.min.css';
 // import 'babel-polyfill'
 Vue.prototype.$http = axios;
+Vue.prototype.$echarts = echarts;
+
 // Vue.use(ElementUI);
 //温馨提示注意同步修改ueditor.config.js
 
