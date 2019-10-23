@@ -18,7 +18,7 @@
                                 </li>
                             </ul>
                             <!--                        图表-->
-                            <div class="chart" id="jqtjjc"></div>
+                            <div class="chart" id="jqtjjcChart"></div>
                         </div>
                     </div>
                 </div>
@@ -27,16 +27,16 @@
                         <h3>近期警情统计</h3>
                         <div class="chartBox">
                             <!--                        图表-->
-                            <div class="chart" id="jqjqtj"></div>
+                            <div class="chart" id="jqjqtjChart"></div>
                         </div>
                     </div>
                 </div>
                 <div class="l-b">
                     <div class="chart-wrap">
-                        <h3>警情分类数据分析</h3>
+                        <h3 @click="jump">警情分类数据分析</h3>
                         <div class="chartBox">
                             <!--                        图表-->
-                            <div class="chart" id="jqflsjfx"></div>
+                            <div class="chart" id="jqflsjfxChart"></div>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                             <p>{{mapData.name}}</p>
                         </div>
                         <!--                        图表-->
-                        <div class="chart" id="map"></div>
+                        <div id="mapChart" class="chart"></div>
                     </div>
                 </div>
             </div>
@@ -59,9 +59,9 @@
                 <div class="r-l">
                     <div class="r-l-t">
                         <div class="chart-wrap">
-                            <h3>今日警情数据分析</h3>
+                            <h3>今日接警类型数据分析</h3>
                             <div class="chartBox">
-                                <div class="chart" id="jrjqsjfx"></div>
+                                <div class="chart" id="jrjjlxsjfxSourceChart"></div>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@
                         <div class="chart-wrap">
                             <h3>今日报警方式数据分析</h3>
                             <div class="chartBox">
-                                <div class="chart" id="jrbjfssjfx"></div>
+                                <div class="chart" id="jrbjfssjfxChart"></div>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                         <div class="chart-wrap">
                             <h3>今日来话类型数据分析</h3>
                             <div class="chartBox">
-                                <div class="chart" id="jrrlhlxsjfx"></div>
+                                <div class="chart" id="jrrlhlxsjfxChart"></div>
                             </div>
                         </div>
                     </div>
@@ -86,25 +86,25 @@
                 <div class="r-r">
                     <div class="r-r-t">
                         <div class="chart-wrap">
-                            <h3>近七日警情数据分析</h3>
+                            <h3 @click="jump">近七日接警类型数据分析</h3>
                             <div class="chartBox">
-                                <div class="chart" id="sevensjfx"></div>
+                                <div class="chart" id="sevenjjlxsjfxChart"></div>
                             </div>
                         </div>
                     </div>
                     <div class="r-r-m">
                         <div class="chart-wrap">
-                            <h3>近七日报警方式数据分析</h3>
+                            <h3 @click="jump">近七日报警方式数据分析</h3>
                             <div class="chartBox">
-                                <div class="chart" id="sevenbjfssjfx"></div>
+                                <div class="chart" id="sevenbjfssjfxChart"></div>
                             </div>
                         </div>
                     </div>
                     <div class="r-r-b">
                         <div class="chart-wrap">
-                            <h3>近七日来话类型数据分析</h3>
+                            <h3 @click="jump">近七日来话类型数据分析</h3>
                             <div class="chartBox">
-                                <div class="chart" id="sevenlhlxsjfx"></div>
+                                <div class="chart" id="sevenlhlxsjfxChart"></div>
                             </div>
                         </div>
                     </div>
@@ -116,15 +116,23 @@
 
 <script>
     import MyHeader from "../components/Header";
+    // import sevensjfx from '../assets/js/sevenChart'
 
     export default {
         name: "Test",
         components: {MyHeader},
         data() {
             return {
+                //需要刷新的图表
+                refreshCharts: [],
+                //    所有的图标对象
+                chartsObj: {},
+                //坐标轴颜色
                 axisesColor: '#0057ab',
+                //缩放值
                 scale: 1,
-                date: 7,
+                //默认获取本周数据
+                period: 'week',
                 //警情统计监测
                 jqtjjcData: [
                     {name: '报警事件总数', value: 18364},
@@ -138,13 +146,20 @@
                     {name: '反馈事件占比', value: 95, radius: '60%'}
                 ],
                 //    近期警情统计
-                jqjqtjScoure: [
-                    [900, 1100, 700, 900, 1000, 600, 500]
-                ],
+                jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500],
                 //    警情分类数据分析
                 jqflsjfxSource: [
-                    ['刑事', '行政(治安)', '交通类', '消防救援', '群众救助', '应急联动事件(非警情事件)', '群体事件', '纠纷', '灾害事故', '举报', '投诉监督'],
-                    [1300, 1500, 900, 900, 1400, 1100, 1500, 1400, 800, 850, 700]
+                    {name: '刑事', value: 1300},
+                    {name: '行政(治安)', value: 1500},
+                    {name: '交通类', value: 900},
+                    {name: '消防救援', value: 900},
+                    {name: '群众救助', value: 1400},
+                    {name: '应急联动事件(非警情事件)', value: 1100},
+                    {name: '群体事件', value: 1500},
+                    {name: '纠纷', value: 1400},
+                    {name: '灾害事故', value: 800},
+                    {name: '举报', value: 850},
+                    {name: '投诉监督', value: 700}
                 ],
                 //    地图
                 mapSource: [
@@ -160,17 +175,16 @@
                     {name: "阳泉市", value: 10, value1: 30, value2: 15},
                     {name: "吕梁市", value: 32, value1: 40, value2: 20},
                 ],
-                data1: [],
                 mapData: {name: '报警事件总数', value: 96666},
-                //    今日警情数据分析、今日来话类型数据分析
-                jrjqsjfxSource: [
+                //    今日接警类型数据分析、今日来话类型数据分析
+                jrjjlxsjfxSourceSource: [
                     {name: '110报警', value: 442},
                     {name: '122报警', value: 155},
                     {name: '119报警', value: 263},
                     {name: '综合报警', value: 145},
                     {name: '其他接警类型', value: 155}
                 ],
-                jrjqsjfxColor: ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'],
+                jrjjlxsjfxSourceColor: ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'],
                 //    今日报警方式数据分析
                 jrbjfssjfxSource: [
                     {name: '电话报警', value: 442},
@@ -180,7 +194,7 @@
                     {name: '其他报警方式', value: 155}
                 ],
                 jrbjfssjfxColor: ['#ffd75d', '#00a3c0', '#0d28a6', '#e344ff', '#6400cb'],
-            //    今日来话类型数据分析
+                //    今日来话类型数据分析
                 jrrlhlxsjfxSource: [
                     {name: '报警求助、举报投诉', value: 442},
                     {name: '处警反馈', value: 155},
@@ -191,32 +205,32 @@
                     {name: '系统测试', value: 251},
                     {name: '其他来话类型', value: 134},
                 ],
-                jrrlhlxsjfxColor: ['#6c96ff', '#4160fb', '#2626e7', '#e344ff', '#00b3e9','#803ff7','#6905c6','#17fff3'],
-            //    近七日警情数据分析
-                sevensjfxSource: [
-                    ['110报警', 580, 630, 700, 400, 250, 156, 894],
-                    ['122报警', 468, 498, 481, 168, 79, 455, 155],
-                    ['119报警', 483, 558, 465, 48, 188, 465, 455],
-                    ['综合报警', 671, 465, 184, 561, 455, 268, 145],
-                    ['其他接警类型', 456, 567, 569, 594, 189, 498, 155]
+                jrrlhlxsjfxColor: ['#6c96ff', '#4160fb', '#2626e7', '#e344ff', '#00b3e9', '#803ff7', '#6905c6', '#17fff3'],
+                //    近七日接警类型数据分析
+                sevenjjlxsjfxSource: [
+                    {name: '110报警', value: [580, 630, 700, 400, 250, 156, 894]},
+                    {name: '122报警', value: [468, 498, 481, 168, 79, 455, 155]},
+                    {name: '119报警', value: [483, 558, 465, 48, 188, 465, 455]},
+                    {name: '综合报警', value: [671, 465, 184, 561, 455, 268, 145]},
+                    {name: '其他接警类型', value: [456, 567, 569, 594, 189, 498, 155]},
                 ],
-            //    近七日报警方式数据分析
-                sevenbjfssjfxSource:[
-                    ['电话报警', 580, 630, 700, 400, 250, 156, 894],
-                    ['来人来电报警', 468, 498, 481, 168, 79, 455, 155],
-                    ['技防报警', 483, 558, 465, 48, 188, 465, 455],
-                    ['短信报警', 671, 465, 184, 561, 455, 268, 145],
-                    ['其他报警方式', 456, 567, 569, 594, 189, 498, 155]
+                //    近七日报警方式数据分析
+                sevenbjfssjfxSource: [
+                    {name: '电话报警', value: [580, 630, 700, 400, 250, 156, 894]},
+                    {name: '来人来电报警', value: [468, 498, 481, 168, 79, 455, 155]},
+                    {name: '技防报警', value: [483, 558, 465, 48, 188, 465, 455]},
+                    {name: '短信报警', value: [671, 465, 184, 561, 455, 268, 145]},
+                    {name: '其他报警方式', value: [456, 567, 569, 594, 189, 498, 155]}
                 ],
-            //    近七日来话类型数据分析
-                sevenlhlxsjfxSource:[
-                    ['报警求助、举报投诉', 580, 630, 700, 400, 250, 156, 894],
-                    ['处警反馈', 468, 498, 481, 168, 79, 455, 155],
-                    ['信息咨询', 483, 558, 465, 48, 188, 465, 455],
-                    ['重复报警', 671, 465, 184, 561, 455, 268, 145],
-                    ['骚扰电话', 456, 567, 569, 594, 189, 498, 155],
-                    ['系统测试', 652, 556, 155, 166, 562, 515, 565],
-                    ['其他来话类型', 256, 626, 515, 126, 512, 556, 488],
+                //    近七日来话类型数据分析
+                sevenlhlxsjfxSource: [
+                    {name: '报警求助、举报投诉', value: [580, 630, 700, 400, 250, 156, 894]},
+                    {name: '处警反馈', value: [468, 498, 481, 168, 79, 455, 155]},
+                    {name: '信息咨询', value: [483, 558, 465, 48, 188, 465, 455]},
+                    {name: '重复报警', value: [671, 465, 184, 561, 455, 268, 145]},
+                    {name: '骚扰电话', value: [456, 567, 569, 594, 189, 498, 155]},
+                    {name: '系统测试', value: [652, 556, 155, 166, 562, 515, 565]},
+                    {name: '其他来话类型', value: [256, 626, 515, 126, 512, 556, 488]}
                 ]
             }
         },
@@ -227,7 +241,8 @@
             },
             //    警情统计监测
             panChart() {
-                let myChart = this.$echarts.init(document.getElementById('jqtjjc'));
+                let myChart = this.$echarts.init(document.getElementById('jqtjjcChart'));
+                this.chartsObj.panChart = myChart; //放入charts对象方便后面的刷新缩放以及其他操作
                 let that = this;
                 let sourceArr = this.jqtjjcSource;
                 let colorSet = [
@@ -305,20 +320,30 @@
             },
             //    近期警情统计
             jqjqtjChart() {
-                let myChart = this.$echarts.init(document.getElementById('jqjqtj'));
+                let myChart = this.$echarts.init(document.getElementById('jqjqtjChart'));
+                this.chartsObj.jqjqtjChart = myChart;
                 let sourceArr = this.jqjqtjScoure;
                 let dateArr = [];
-                for (let i = 0; i < this.date; i++) {
-                    let timestamp = (new Date()).getTime();
-                    let day = timestamp - (i - 1) * 24 * 60 * 60 * 1000;
-                    let date = new Date(day);
-                    dateArr.push(date.getMonth() + 1 + '-' + date.getDate());
+                switch (this.period) {
+                    case "week":
+                        for (let i = 0; i < 7; i++) {
+                            let timestamp = (new Date()).getTime();
+                            let day = timestamp - (i - 1) * 24 * 60 * 60 * 1000;
+                            let date1 = new Date(day);
+                            dateArr.push(date1.getMonth() + 1 + '-' + date1.getDate());
+                        }
+                        break;
+                    case 'lastWeek':
+                        let date2 = new Date();
+                        date2.setDate(date2.getDate() - (date2.getDay() + 6) % 7);
+                        date2.setDate(date2.getDate() - 8);
+                        for (let i = 0; i < 7; i++) {
+                            date2.setDate(date2.getDate() + 1);
+                        }
+                        break;
                 }
-                sourceArr.unshift(dateArr);
+                dateArr.reverse();
                 let option = {
-                    dataset: {
-                        source: sourceArr
-                    },
                     xAxis: {
                         type: 'category',
                         splitLine: {
@@ -332,7 +357,8 @@
                         },
                         axisTick: {
                             show: false
-                        }
+                        },
+                        data: dateArr
                     },
                     yAxis: {
                         type: 'value',
@@ -351,8 +377,7 @@
                     },
                     series: {
                         type: 'bar',
-                        stack: 'chart',
-                        seriesLayoutBy: 'row',
+                        data: sourceArr,
                         itemStyle: {
                             color: new this.$echarts.graphic.LinearGradient(
                                 //右，下，左，上
@@ -377,12 +402,14 @@
             },
             //    警情分类数据分析
             jqflsjfxChart() {
-                let myChart = this.$echarts.init(document.getElementById('jqflsjfx'));
+                let myChart = this.$echarts.init(document.getElementById('jqflsjfxChart'));
+                this.chartsObj.jqflsjfxChart = myChart;
+                let xData = [];
                 let sourceArr = this.jqflsjfxSource;
+                sourceArr.forEach(value => {
+                    xData.push(value.name);
+                });
                 let option = {
-                    dataset: {
-                        source: sourceArr
-                    },
                     xAxis: {
                         type: 'category',
                         splitLine: {
@@ -422,7 +449,8 @@
                                 }
                                 return newParamsName
                             }
-                        }
+                        },
+                        data: xData
                     },
                     yAxis: {
                         type: 'value',
@@ -442,7 +470,7 @@
                     series: {
                         type: 'bar',
                         stack: 'chart',
-                        seriesLayoutBy: 'row',
+                        data: sourceArr,
                         itemStyle: {
                             color: new this.$echarts.graphic.LinearGradient(
                                 //右，下，左，上
@@ -465,12 +493,13 @@
                 };
                 myChart.setOption(option);
             },
-            //    地图
-            renderMap() {
+            //地图
+            mapChart() {
                 let cityObj = {};
                 let cityData = this.mapSource;
                 let that = this;
-                let myChart = that.$echarts.init(document.getElementById('map'));//初始化
+                let myChart = that.$echarts.init(document.getElementById('mapChart'));//初始化
+                this.chartsObj.mapChart = myChart;
                 let data2 = [];
                 cityData.forEach(value => {
                     if (value.value < value.value2) {
@@ -496,49 +525,10 @@
                         renderMap('山西省', data2);
                     }
                 });
-                //点击地图
-                myChart.on('click', function (params) {
-                    if (params.name in cityObj) {
-// 如果点击的是11个市，绘制选中地区的二级地图
-                        let areaValue = [];
-                        that.$http.get('/static/json/' + cityObj[params.name] + '_full.json').then(res => {
-                            if (res.status === 200) {
-                                let d = [];
-                                that.$echarts.registerMap(params.name, res.data);
-                                //插入获取数据
-                                for (let i = 0; i < res.data.features.length; i++) {
-                                    d.push({
-                                        name: res.data.features[i].properties.name,
-                                    })
-                                }
-                                renderMap(params.name, d);
-                            }
-                        });
-                    } else {
-// 点击县级时是否返回
-                        renderMap('山西省', that.data1);
-                    }
-                });
                 //配置项
                 let option = {
                     title: {
                         show: false
-                    },
-                    toolbox: {
-                        show: true,
-                        orient: 'vertical',
-                        left: 'right',
-                        top: 'center',
-                        feature: {
-                            dataView: {readOnly: false},
-                            restore: {},
-                            saveAsImage: {}
-                        },
-                        iconStyle: {
-                            normal: {
-                                color: '#fff'
-                            }
-                        }
                     },
                     animationDuration: 1000,
                     animationEasing: 'cubicOut',
@@ -632,9 +622,6 @@
                             color: '#c23c33'
                         }
                         ],
-                        // show: false,
-                        // min: 0,
-                        // max: max,
                         left: 'left',
                         top: 'bottom',
                         calculable: true,
@@ -645,17 +632,17 @@
                     };
 // 渲染地图
                     myChart.setOption(option);
-                    // console.log(option);
                 }
             },
-            //    今日警情数据分析、今日报警方式数据分析、今日来话类型数据分析
+            //    今日接警类型数据分析、今日报警方式数据分析、今日来话类型数据分析
             /**
              * @param chartContainer String 图表容器
              * @param sourceArr Arrary 数据数组
              * @param colorList Arrary 颜色数组
              * */
-            jrjqsjfxChart(chartContainer, sourceArr, colorList) {
+            jrjjlxsjfxSourceChart(chartContainer, sourceArr, colorList) {
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
+                this.chartsObj[chartContainer] = myChart;
                 let total = 0;
                 sourceArr.forEach(value => {
                     total += value.value
@@ -664,7 +651,7 @@
                     legend: {
                         textStyle: {
                             fontSize: 12 * this.scale,
-                            color:function (params) {
+                            color: function (params) {
                                 return colorList[params.dataIndex]
                             }
                         },
@@ -710,7 +697,9 @@
                                 show: true
                             }
                         },
-                        data: sourceArr.sort(function (a, b) { return a.value - b.value; })
+                        data: sourceArr.sort(function (a, b) {
+                            return a.value - b.value;
+                        })
                     }, {
                         type: 'pie',
                         radius: ['10%', '12%'],
@@ -748,52 +737,58 @@
                 };
                 myChart.setOption(option);
             },
-        //近七日警情数据分析、近七日报警方式数据分析、近七日来话类型数据分析
-            sevensjfx(chartContainer, sourceArr, colorList){
-                let dataArr=[];
-                let seriesArr=[];
+            // 近七日接警类型数据分析、近七日报警方式数据分析、近七日来话类型数据分析
+            sevensjfx(chartContainer, sourceArr, colorList) {
+                let seriesArr = [];
+                let dateArr = [];
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
-                sourceArr.unshift([]);
-                for (let i = 1; i < sourceArr.length; i++) {
-                    dataArr.push(sourceArr[i]);
+                this.chartsObj[chartContainer] = myChart;
+                switch (this.period) {
+                    case "week":
+                        for (let i = 0; i < 7; i++) {
+                            let timestamp = (new Date()).getTime();
+                            let day = timestamp - (i - 1) * 24 * 60 * 60 * 1000;
+                            let date1 = new Date(day);
+                            dateArr.push(date1.getMonth() + 1 + '-' + date1.getDate());
+                        }
+                        break;
+                    case 'lastWeek':
+                        let date2 = new Date();
+                        date2.setDate(date2.getDate() - (date2.getDay() + 6) % 7);
+                        date2.setDate(date2.getDate() - 8);
+                        for (let i = 0; i < 7; i++) {
+                            date2.setDate(date2.getDate() + 1);
+                        }
+                        break;
                 }
-                for (let i = 0; i < this.date; i++) {
-                    let timestamp = (new Date()).getTime();
-                    let day = timestamp - (i - 1) * 24 * 60 * 60 * 1000;
-                    let date = new Date(day);
-                    sourceArr[0].push(date.getMonth() + 1 + '-' + date.getDate());
-                }
-                for (let i = 1; i < sourceArr.length; i++) {
+                dateArr.reverse();
+                for (let i = 0; i < sourceArr.length; i++) {
                     seriesArr.push({
+                        name: sourceArr[i].name,
                         type: "line",
                         showSymbol: false,
                         smooth: true,
-                        seriesLayoutBy: 'row',
                         itemStyle: {
                             normal: {
-                                color: colorList[i - 1],
+                                color: colorList[i]
                             }
                         },
                         lineStyle: {
                             width: 3
-                        }
+                        },
+                        data: sourceArr[i].value
                     });
                 }
-                sourceArr[0].reverse();
-                sourceArr[0].unshift('type');
-                let option={
-                    dataset: {
-                        source: sourceArr
-                    },
+                let option = {
                     legend: {
                         textStyle: {
                             fontSize: 12 * this.scale,
-                            color:function (params) {
+                            color: function (params) {
                                 return colorList[params.dataIndex]
                             }
                         },
                         itemWidth: 12 * this.scale,
-                        itemHeight: 12 * this.scale
+                        itemHeight: 12 * this.scale,
                     },
                     xAxis: {
                         type: 'category',
@@ -810,6 +805,7 @@
                         axisTick: {
                             show: false
                         },
+                        data: dateArr
                     },
                     yAxis: {
                         type: 'value',
@@ -839,26 +835,53 @@
                             }
                         },
                     },
-                    grid:{
-                        top:35*this.scale,
-                        bottom:60*this.scale
+                    grid: {
+                        top: 90 * this.scale,
+                        bottom: 60 * this.scale
                     }
                 };
                 myChart.setOption(option);
+            },
+           // 跳转
+            jump(e){
+                let h3=e.currentTarget;
+                switch (h3.innerText) {
+                    case '近七日接警类型数据分析':this.$router.push({name:'全省接警类型数据分析',query:{title:'全省接警类型数据分析'}});break;
+                    case '近七日报警方式数据分析':this.$router.push({name:'全省报警方式数据分析',query:{title:'全省报警方式数据分析'}});break;
+                    case '近七日来话类型数据分析':this.$router.push({name:'全省来话类型数据分析',query:{title:'全省来话类型数据分析'}});break;
+                    case '警情分类数据分析':this.$router.push({name:'全省警情分类数据分析',query:{title:'全省警情分类数据分析'}});break;
+                }
             }
         },
         mounted() {
             this.getScale();
-            this.panChart();
-            this.jqjqtjChart();
-            this.jqflsjfxChart();
-            this.renderMap();
-            this.jrjqsjfxChart('jrjqsjfx', this.jrjqsjfxSource, this.jrjqsjfxColor);
-            this.jrjqsjfxChart('jrbjfssjfx', this.jrbjfssjfxSource, this.jrbjfssjfxColor);
-            this.jrjqsjfxChart('jrrlhlxsjfx', this.jrrlhlxsjfxSource, this.jrrlhlxsjfxColor);
-            this.sevensjfx('sevensjfx',this.sevensjfxSource,this.jrjqsjfxColor);
-            this.sevensjfx('sevenbjfssjfx',this.sevenbjfssjfxSource,this.jrbjfssjfxColor);
-            this.sevensjfx('sevenlhlxsjfx',this.sevenlhlxsjfxSource,this.jrrlhlxsjfxColor);
+            let myCharts = document.querySelectorAll('.chart');
+            myCharts.forEach(value => {
+                this.refreshCharts.push(value.getAttribute('id'))
+            });
+            let that = this;
+            let Index = {
+                init() {
+                    this.loadData();
+                    Public.chartsResize(that.chartsObj);
+                    Public.chartsReDraw(that.chartsObj, null, [
+                        ''
+                    ], that.refreshCharts)
+                },
+                loadData() {
+                    that.panChart();
+                    that.jqjqtjChart();
+                    that.jqflsjfxChart();
+                    that.mapChart();
+                    that.jrjjlxsjfxSourceChart('jrjjlxsjfxSourceChart', that.jrjjlxsjfxSourceSource, that.jrjjlxsjfxSourceColor);
+                    that.jrjjlxsjfxSourceChart('jrbjfssjfxChart', that.jrbjfssjfxSource, that.jrbjfssjfxColor);
+                    that.jrjjlxsjfxSourceChart('jrrlhlxsjfxChart', that.jrrlhlxsjfxSource, that.jrrlhlxsjfxColor);
+                    that.sevensjfx('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor);
+                    that.sevensjfx('sevenbjfssjfxChart', that.sevenbjfssjfxSource, that.jrbjfssjfxColor);
+                    that.sevensjfx('sevenlhlxsjfxChart', that.sevenlhlxsjfxSource, that.jrrlhlxsjfxColor);
+                },
+            };
+            Index.init();
         }
     }
 </script>
@@ -870,14 +893,16 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-
+        h3{
+            cursor:pointer;
+        }
         .l > div, .m > div, .r > div {
             width: 100%;
             align-content: space-between;
         }
 
         .l {
-            width: 25rem;
+            width: 25.68%;
 
             .l-t {
                 height: 16.1rem;
@@ -940,7 +965,7 @@
         }
 
         .m {
-            width: 25.04rem;
+            width: 25.73%;
 
             .chartBox {
                 position: relative;
@@ -965,13 +990,14 @@
         }
 
         .r {
-            width: 44rem;
+            width: 45.21%;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
 
-            .r-l,.r-r {
-                width: 17rem;
+            .r-l, .r-r {
+                //586.716
+                width: 38.63%;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
@@ -987,7 +1013,7 @@
             }
 
             .r-r {
-                width: 25.4rem;
+                width: 57.72%;
             }
         }
     }
