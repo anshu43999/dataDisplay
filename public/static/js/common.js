@@ -3,7 +3,7 @@ let settings = {
     chartRefreshPeriod: 10,
     designW: 3840,
     designH: 2160,
-    zoomMode:'contain',
+    zoomMode:'stretch',
     notebookOptim:true
 };
 /*******************保存配置************************/
@@ -105,15 +105,15 @@ const Public = {
      * @param someRefresh 指定要刷新的图表，有重复指定的图表时优先权高于noRefresh
      */
     chartsReDraw(charts, t = settings.chartRefreshPeriod, noRefresh, someRefresh) {
-        let counter = setInterval(() => {
-            Object.keys(charts).forEach(item => {
-                if (noRefresh && noRefresh.includes(item) && !(someRefresh && someRefresh.includes(item))) return;
-                let chart = charts[item];
-                let opt = chart.getOption();
-                chart.clear();
-                chart.setOption(opt);
-            })
-        }, (t || settings.chartRefreshPeriod) * 1000)
+        // let counter = setInterval(() => {
+        //     Object.keys(charts).forEach(item => {
+        //         if (noRefresh && noRefresh.includes(item) && !(someRefresh && someRefresh.includes(item))) return;
+        //         let chart = charts[item];
+        //         let opt = chart.getOption();
+        //         chart.clear();
+        //         chart.setOption(opt);
+        //     })
+        // }, (t || settings.chartRefreshPeriod) * 1000)
 
     },
     // 自定义方法

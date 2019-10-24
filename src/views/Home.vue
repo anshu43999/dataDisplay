@@ -1,5 +1,5 @@
 <template>
-    <div id="home">
+    <div id="container">
         <my-header></my-header>
         <main>
             <!--样式里的l,m,r,t,b分别代表左，中，右，上，下-->
@@ -163,8 +163,8 @@
                 ],
                 //    地图
                 mapSource: [
-                    {name: "太原市", value: 80, value1: 70, value2: 35},
-                    {name: "长治市", value: 42, value1: 50, value2: 25},
+                    {name: "太原市", value: 80, value1: 70, value2: 35},    // value      //value1   红色      //  value2   黄色
+                    {name: "长治市", value: 42, value1: 50, value2: 25},   
                     {name: "朔州市", value: 4, value1: 20, value2: 10},
                     {name: "运城市", value: 53, value1: 60, value2: 30},
                     {name: "大同市", value: 30, value1: 80, value2: 40},
@@ -346,6 +346,7 @@
                 let option = {
                     xAxis: {
                         type: 'category',
+                        
                         splitLine: {
                             show: false
                         },
@@ -357,6 +358,9 @@
                         },
                         axisTick: {
                             show: false
+                        },
+                        axisLabel :{
+                            fontSize : 20 * this.scale,
                         },
                         data: dateArr
                     },
@@ -373,7 +377,20 @@
                         },
                         axisTick: {
                             show: false
-                        }
+                        },
+                        axisLabel :{
+                            fontSize : 20 * this.scale,
+                        },
+                    },
+                    grid:{
+                        // width : 80 + '%',
+                        height :75 + '%',
+                        left : 100 * this.scale,
+                        right : 50 * this.scale,
+                        top : 5 + '%',
+                        // bottom : 5 + '%',
+                        // height : 50,
+
                     },
                     series: {
                         type: 'bar',
@@ -425,6 +442,7 @@
                             show: false
                         },
                         axisLabel: {
+                            fontSize : 16 * this.scale,
                             rotate: 30,
                             formatter: function (params) {
                                 let newParamsName = "";
@@ -489,6 +507,13 @@
                         },
                         barWidth: 17 * this.scale
                     },
+                    grid: { 
+                        width : 85 + '%',
+                        height : 70 + "%",
+                        top : 5 + '%',
+                        // bottom : 5+ '%',
+
+                    },
                     tooltip: {}
                 };
                 myChart.setOption(option);
@@ -501,6 +526,7 @@
                 let myChart = that.$echarts.init(document.getElementById('mapChart'));//初始化
                 this.chartsObj.mapChart = myChart;
                 let data2 = [];
+                console.log(cityObj)
                 cityData.forEach(value => {
                     if (value.value < value.value2) {
                         data2.push({name: value.name, value: 20, value1: value.value})
@@ -512,6 +538,7 @@
                         data2.push({name: value.name, value: 70, value1: value.value})
                     }
                 });
+                console.log(data2);
                 that.data1 = data2;
                 //初显示
                 this.$http.get('static/json/140000_full.json').then(res => {
@@ -634,6 +661,10 @@
                     myChart.setOption(option);
                 }
             },
+
+
+
+
             //    今日接警类型数据分析、今日报警方式数据分析、今日来话类型数据分析
             /**
              * @param chartContainer String 图表容器
@@ -903,14 +934,35 @@
 
         .l {
             width: 25.68%;
+            display: flex;
+            flex-direction: column ;
+            justify-content: space-between;
 
             .l-t {
-                height: 16.1rem;
+                height:30%;
+                background-image: url('../assets/images/index/l-t-bg.png') ;
+                background-repeat: no-repeat;
+                background-size:100% 100%;
+                // margin-bottom:3.3%; 
+            }
+            .l-m{
+                height:30%;
+                background-image: url('../assets/images/index/l-m-bg.png') ;
+                background-repeat: no-repeat;
+                background-size:100% 100%;
+                // margin-bottom:3.3%; 
+            }
+            .l-b{
+                height:30%;
+                background-image: url('../assets/images/index/l-b-bg.png') ;
+                background-repeat: no-repeat;
+                background-size:100% 100%;
+                // margin-bottom:3.3%; 
             }
 
             //内容
             .chartBox {
-                height: 14.83rem;
+                height: 80%;
                 margin: 0 auto;
                 //数据
                 .statistics {
@@ -950,11 +1002,12 @@
         }
 
         .chart-wrap {
-            border: .0625rem solid rgba(76, 180, 231, 0.33);
+            // border: .0625rem solid rgba(76, 180, 231, 0.33);
             width: 100%;
             height: 100%;
             //标题
-            h3 {
+            >h3 {
+                height: 20%;
                 text-align: center;
             }
         }
@@ -966,7 +1019,9 @@
 
         .m {
             width: 25.73%;
-
+            background-image: url('../assets/images/index/m.png') ;
+            background-repeat: no-repeat;
+            background-size:100% 100%;;
             .chartBox {
                 position: relative;
 
@@ -1007,9 +1062,49 @@
                     height: 14.25rem;
 
                     .chartBox {
-                        height: 12.8rem;
+                        height: 80%;
                     }
                 }
+                .r-l-t{
+                    height: 30%;
+                    background-image: url('../assets/images/index/r-l-all.png') ;
+                    background-repeat: no-repeat;
+                    background-size:100% 100%;
+                }
+                .r-l-b{
+                    height: 30%;
+                    background-image: url('../assets/images/index/r-l-all.png') ;
+                    background-repeat: no-repeat;
+                    background-size:100% 100%;
+                }
+                .r-l-m{
+                    height: 30%;
+                    background-image: url('../assets/images/index/r-l-all.png') ;
+                    background-repeat: no-repeat;
+                    background-size:100% 100%;
+                }
+
+
+
+                .r-r-t{
+                    height: 30%;
+                    background-image: url('../assets/images/index/r-r-all.png') ;
+                    background-repeat: no-repeat;
+                    background-size:100% 100%;
+                }
+                .r-r-m{
+                    height: 30%;
+                    background-image: url('../assets/images/index/r-r-all.png') ;
+                    background-repeat: no-repeat;
+                    background-size:100% 100%;;
+                }
+                .r-r-b{
+                    height: 30%;
+                    background-image: url('../assets/images/index/r-r-all.png') ;
+                    background-repeat: no-repeat;
+                    background-size:100% 100%;;
+                }
+
             }
 
             .r-r {
