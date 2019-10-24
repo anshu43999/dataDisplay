@@ -7,7 +7,6 @@
             <div class="l">
                 <div class="chart-wrap">
                     <div class="chartBox">
-<!--                        <div id="mapChart" class="chart"></div>-->
                         <my-map></my-map>
                     </div>
                 </div>
@@ -337,7 +336,8 @@
                             }
                         },
                         axisLabel: {
-                            show: true
+                            show: true,
+                            formatter: '{value} %'
                         }
                     },
                     series: {
@@ -359,6 +359,9 @@
                             normal: {
                                 show: true,
                                 position: 'top',
+                                formatter: function (params) {
+                                    return params.value+'%'
+                                }
                             }
                         },
                         data: sourceArr,
