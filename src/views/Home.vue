@@ -141,9 +141,9 @@
                     {name: '反馈事件总数', value: 18364},
                 ],
                 jqtjjcSource: [
-                    {name: '处警时间占比', value: 85, radius: '70%'},
-                    {name: '有效警情占比', value: 90, radius: '80%'},
-                    {name: '反馈事件占比', value: 95, radius: '70%'}
+                    {name: '处警时间占比', value: 85, radius: '65%'},
+                    {name: '有效警情占比', value: 90, radius: '75%'},
+                    {name: '反馈事件占比', value: 95, radius: '65%'}
                 ],
                 //    近期警情统计
                 jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500],
@@ -725,7 +725,6 @@
                 let myChart = that.$echarts.init(document.getElementById('mapChart'));//初始化
                 this.chartsObj.mapChart = myChart;
                 let data2 = [];
-                console.log(cityObj)
                 cityData.forEach(value => {
                     // data2.push({name:value.name,value:Math.round((value.value/value.value1)*100),value1:value.value});
                     data2.push({name:value.name,value:(value.value/value.value1).toFixed(2),value1:value.value});
@@ -739,7 +738,6 @@
                         data2.push({name: value.name, value: 70, value1: value.value})
                     }*/
                 });
-                console.log(data2);
                 that.data1 = data2;
                 //初显示
                 this.$http.get('static/json/140000_full.json').then(res => {
@@ -1285,6 +1283,8 @@
             .chartBox {
                 height: 80%;
                 margin: 0 auto;
+                display: flex;
+                flex-direction: column;
                 //数据
                 .statistics {
                     width: 100%;
@@ -1314,6 +1314,7 @@
                 #jqtjjcChart {
                     width: 100%;
                     height: 8.19rem;
+                    flex: 1;
                 }
             }
         }
@@ -1349,11 +1350,11 @@
 
                 #mapData {
                     position: absolute;
-                    top: 0;
-                    left: 0;
+                    top: 1rem;
+                    left: 1.04rem;
 
                     p:first-child {
-                        font-size: 1.52rem;
+                        font-size: 3rem;
                         letter-spacing: 0.3rem;
                     }
 
