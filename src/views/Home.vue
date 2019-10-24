@@ -162,7 +162,7 @@
                     {name: '投诉监督', value: 700}
                 ],
                 //    地图
-                mapSource: [
+                /*mapSource: [
                     {name: "太原市", value: 80, value1: 70, value2: 35},
                     {name: "长治市", value: 42, value1: 50, value2: 25},
                     {name: "朔州市", value: 4, value1: 20, value2: 10},
@@ -174,6 +174,20 @@
                     {name: "忻州市", value: 5, value1: 50, value2: 25},
                     {name: "阳泉市", value: 10, value1: 30, value2: 15},
                     {name: "吕梁市", value: 32, value1: 40, value2: 20},
+                ],*/
+                grading:[0.2,0.4,0.6,0.8,1],
+                mapSource:[
+                    {name: "太原市", value: 80, value1: 70},
+                    {name: "长治市", value: 42, value1: 50},
+                    {name: "朔州市", value: 4, value1: 20},
+                    {name: "运城市", value: 53, value1: 60},
+                    {name: "大同市", value: 30, value1: 80},
+                    {name: "晋城市", value: 52, value1: 60},
+                    {name: "晋中市", value: 21, value1: 30},
+                    {name: "临汾市", value: 5, value1: 20},
+                    {name: "忻州市", value: 5, value1: 50},
+                    {name: "阳泉市", value: 10, value1: 30},
+                    {name: "吕梁市", value: 32, value1: 40},
                 ],
                 mapData: {name: '报警事件总数', value: 96666},
                 //    今日接警类型数据分析、今日来话类型数据分析
@@ -214,6 +228,53 @@
                     {name: '综合报警', value: [671, 465, 184, 561, 455, 268, 145]},
                     {name: '其他接警类型', value: [456, 567, 569, 594, 189, 498, 155]},
                 ],
+                /*sevenjjlxsjfxSource:{
+                        '110报警':{
+                            '10-1':580,
+                            '10-2':630,
+                            '10-3':700,
+                            '10-4':400,
+                            '10-5':250,
+                            '10-6':156,
+                            '10-7':894,
+                        },
+                        '122报警':{
+                            '10-1':468,
+                            '10-2':498,
+                            '10-3':481,
+                            '10-4':168,
+                            '10-5':79,
+                            '10-6':455,
+                            '10-7':155,
+                        },
+                        '119报警':{
+                            '10-1':483,
+                            '10-2':558,
+                            '10-3':481,
+                            '10-4':48,
+                            '10-5':188,
+                            '10-6':465,
+                            '10-7':455,
+                        },
+                        '综合报警':{
+                            '10-1':671,
+                            '10-2':465,
+                            '10-3':184,
+                            '10-4':561,
+                            '10-5':455,
+                            '10-6':268,
+                            '10-7':145,
+                        },
+                        '其他接警类型':{
+                            '10-1':456,
+                            '10-2':567,
+                            '10-3':569,
+                            '10-4':594,
+                            '10-5':189,
+                            '10-6':498,
+                            '10-7':155,
+                        },
+                    },*/
                 //    近七日报警方式数据分析
                 sevenbjfssjfxSource: [
                     {name: '电话报警', value: [580, 630, 700, 400, 250, 156, 894]},
@@ -222,6 +283,53 @@
                     {name: '短信报警', value: [671, 465, 184, 561, 455, 268, 145]},
                     {name: '其他报警方式', value: [456, 567, 569, 594, 189, 498, 155]}
                 ],
+                /*sevenbjfssjfxSource: {
+                        '电话报警':{
+                            '10-1':580,
+                            '10-2':630,
+                            '10-3':700,
+                            '10-4':400,
+                            '10-5':250,
+                            '10-6':156,
+                            '10-7':894,
+                        },
+                        '来人来电报警':{
+                            '10-1':468,
+                            '10-2':498,
+                            '10-3':481,
+                            '10-4':168,
+                            '10-5':79,
+                            '10-6':455,
+                            '10-7':155,
+                        },
+                        '技防报警':{
+                            '10-1':483,
+                            '10-2':558,
+                            '10-3':481,
+                            '10-4':48,
+                            '10-5':188,
+                            '10-6':465,
+                            '10-7':455,
+                        },
+                        '短信报警':{
+                            '10-1':671,
+                            '10-2':465,
+                            '10-3':184,
+                            '10-4':561,
+                            '10-5':455,
+                            '10-6':268,
+                            '10-7':145,
+                        },
+                        '其他报警方式':{
+                            '10-1':456,
+                            '10-2':567,
+                            '10-3':569,
+                            '10-4':594,
+                            '10-5':189,
+                            '10-6':498,
+                            '10-7':155,
+                        },
+                    },*/
                 //    近七日来话类型数据分析
                 sevenlhlxsjfxSource: [
                     {name: '报警求助、举报投诉', value: [580, 630, 700, 400, 250, 156, 894]},
@@ -232,6 +340,71 @@
                     {name: '系统测试', value: [652, 556, 155, 166, 562, 515, 565]},
                     {name: '其他来话类型', value: [256, 626, 515, 126, 512, 556, 488]}
                 ]
+                /*sevenlhlxsjfxSource:{
+                        '报警求助、举报投诉':{
+                            '10-1':580,
+                            '10-2':630,
+                            '10-3':700,
+                            '10-4':400,
+                            '10-5':250,
+                            '10-6':156,
+                            '10-7':894,
+                        },
+                        '处警反馈':{
+                            '10-1':468,
+                            '10-2':498,
+                            '10-3':481,
+                            '10-4':168,
+                            '10-5':79,
+                            '10-6':455,
+                            '10-7':155,
+                        },
+                        '信息咨询':{
+                            '10-1':483,
+                            '10-2':558,
+                            '10-3':481,
+                            '10-4':48,
+                            '10-5':188,
+                            '10-6':465,
+                            '10-7':455,
+                        },
+                        '重复报警':{
+                            '10-1':671,
+                            '10-2':465,
+                            '10-3':184,
+                            '10-4':561,
+                            '10-5':455,
+                            '10-6':268,
+                            '10-7':145,
+                        },
+                        '骚扰电话':{
+                            '10-1':152,
+                            '10-2':522,
+                            '10-3':104,
+                            '10-4':575,
+                            '10-5':524,
+                            '10-6':212,
+                            '10-7':157,
+                        },
+                        '系统测试':{
+                            '10-1':152,
+                            '10-2':265,
+                            '10-3':132,
+                            '10-4':152,
+                            '10-5':256,
+                            '10-6':452,
+                            '10-7':152,
+                        },
+                        '其他来话类型':{
+                            '10-1':456,
+                            '10-2':567,
+                            '10-3':569,
+                            '10-4':594,
+                            '10-5':189,
+                            '10-6':498,
+                            '10-7':155,
+                        },
+                    }*/
             }
         },
         methods: {
@@ -502,7 +675,9 @@
                 this.chartsObj.mapChart = myChart;
                 let data2 = [];
                 cityData.forEach(value => {
-                    if (value.value < value.value2) {
+                    // data2.push({name:value.name,value:Math.round((value.value/value.value1)*100),value1:value.value});
+                    data2.push({name:value.name,value:(value.value/value.value1).toFixed(2),value1:value.value});
+                    /*if (value.value < value.value2) {
                         data2.push({name: value.name, value: 20, value1: value.value})
                     }
                     if (value.value < value.value1 && value.value > value.value2) {
@@ -510,7 +685,7 @@
                     }
                     if (value.value > value.value1) {
                         data2.push({name: value.name, value: 70, value1: value.value})
-                    }
+                    }*/
                 });
                 that.data1 = data2;
                 //初显示
@@ -536,7 +711,6 @@
                 };
 
                 function renderMap(map, data) {
-                    // console.log(data);
 // 初始化绘制全国地图配置
                     option.title.subtext = map;
                     option.series = [
@@ -608,27 +782,43 @@
                     option.visualMap = {
                         type: 'piecewise',
                         pieces: [{
-                            max: 30,
-                            label: '安全',
-                            color: '#2c9a42'
+                            max: that.grading[0],
+                            label: '一级',
+                            color: '#00e57c'
                         }, {
-                            min: 30,
-                            max: 60,
-                            label: '警告',
-                            color: '#d08a00'
+                            min: that.grading[0],
+                            max: that.grading[1],
+                            label: '二级',
+                            color: '#ffe71a'
                         }, {
-                            min: 60,
-                            label: '危险',
-                            color: '#c23c33'
-                        }
+                            min: that.grading[1],
+                            max: that.grading[2],
+                            label: '三级',
+                            color: '#ffad1a'
+                        },
+                            {
+                                min: that.grading[2],
+                                max: that.grading[3],
+                                label: '四级',
+                                color: '#ff6600'
+                            },
+                            {
+                                min: that.grading[3],
+                                // max: that.grading[4],
+                                label: '五级',
+                                color: '#ed0000'
+                            }
                         ],
-                        left: 'left',
+                        left: 'right',
                         top: 'bottom',
                         calculable: true,
                         seriesIndex: [1],
-                        inRange: {
-                            color: ['#f7fbff', '#4e7cef', '#0549f3']
+                        textStyle:{
+                            color:'#fff'
                         }
+                        /*inRange: {
+                            color: ['#f7fbff', '#4e7cef', '#0549f3']
+                        }*/
                     };
 // 渲染地图
                     myChart.setOption(option);
@@ -640,6 +830,7 @@
              * @param sourceArr Arrary 数据数组
              * @param colorList Arrary 颜色数组
              * */
+            //110:{'10-1':110}
             jrjjlxsjfxSourceChart(chartContainer, sourceArr, colorList) {
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
                 this.chartsObj[chartContainer] = myChart;
@@ -743,25 +934,6 @@
                 let dateArr = [];
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
                 this.chartsObj[chartContainer] = myChart;
-                switch (this.period) {
-                    case "week":
-                        for (let i = 0; i < 7; i++) {
-                            let timestamp = (new Date()).getTime();
-                            let day = timestamp - (i - 1) * 24 * 60 * 60 * 1000;
-                            let date1 = new Date(day);
-                            dateArr.push(date1.getMonth() + 1 + '-' + date1.getDate());
-                        }
-                        break;
-                    case 'lastWeek':
-                        let date2 = new Date();
-                        date2.setDate(date2.getDate() - (date2.getDay() + 6) % 7);
-                        date2.setDate(date2.getDate() - 8);
-                        for (let i = 0; i < 7; i++) {
-                            date2.setDate(date2.getDate() + 1);
-                        }
-                        break;
-                }
-                dateArr.reverse();
                 for (let i = 0; i < sourceArr.length; i++) {
                     seriesArr.push({
                         name: sourceArr[i].name,
@@ -851,6 +1023,128 @@
                     case '近七日来话类型数据分析':this.$router.push({name:'全省来话类型数据分析',query:{title:'全省来话类型数据分析'}});break;
                     case '警情分类数据分析':this.$router.push({name:'全省警情分类数据分析',query:{title:'全省警情分类数据分析'}});break;
                 }
+            },
+        //    数据转换
+            change() {
+                let dataArr=[];
+                let data = {
+                    "sevenDays": {
+                        "122报警": [
+                            {
+                                "tjrq": "20130308",
+                                "jjlxdm": "122报警",
+                                "jjsl": 54
+                            },
+                            {
+                                "tjrq": "20130307",
+                                "jjlxdm": "122报警",
+                                "jjsl": 74
+                            },
+                            {
+                                "tjrq": "20130306",
+                                "jjlxdm": "122报警",
+                                "jjsl": 92
+                            },
+                            {
+                                "tjrq": "20130305",
+                                "jjlxdm": "122报警",
+                                "jjsl": 69
+                            },
+                            {
+                                "tjrq": "20130304",
+                                "jjlxdm": "122报警",
+                                "jjsl": 58
+                            },
+                            {
+                                "tjrq": "20130303",
+                                "jjlxdm": "122报警",
+                                "jjsl": 92
+                            }
+                        ],
+                        "110报警": [
+                            {
+                                "tjrq": "20130308",
+                                "jjlxdm": "110报警",
+                                "jjsl": 558
+                            },
+                            {
+                                "tjrq": "20130307",
+                                "jjlxdm": "110报警",
+                                "jjsl": 371
+                            },
+                            {
+                                "tjrq": "20130306",
+                                "jjlxdm": "110报警",
+                                "jjsl": 506
+                            },
+                            {
+                                "tjrq": "20130305",
+                                "jjlxdm": "110报警",
+                                "jjsl": 439
+                            },
+                            {
+                                "tjrq": "20130304",
+                                "jjlxdm": "110报警",
+                                "jjsl": 413
+                            },
+                            {
+                                "tjrq": "20130303",
+                                "jjlxdm": "110报警",
+                                "jjsl": 436
+                            }
+                        ],
+                        "119报警": [
+                            {
+                                "tjrq": "20130308",
+                                "jjlxdm": "119报警",
+                                "jjsl": 5
+                            },
+                            {
+                                "tjrq": "20130307",
+                                "jjlxdm": "119报警",
+                                "jjsl": 8
+                            },
+                            {
+                                "tjrq": "20130306",
+                                "jjlxdm": "119报警",
+                                "jjsl": 10
+                            },
+                            {
+                                "tjrq": "20130305",
+                                "jjlxdm": "119报警",
+                                "jjsl": 9
+                            },
+                            {
+                                "tjrq": "20130304",
+                                "jjlxdm": "119报警",
+                                "jjsl": 3
+                            },
+                            {
+                                "tjrq": "20130303",
+                                "jjlxdm": "119报警",
+                                "jjsl": 14
+                            }
+                        ]
+                    }
+                };
+                // console.log(data.sevenDays["110报警"]);
+                let date=[]
+                let data1=[];
+                for (let i=0;i<data.sevenDays["122报警"].length;i++){
+                    date.push(data.sevenDays["122报警"][i].tjrq);
+                    data1.push(data.sevenDays["122报警"][i].jjsl)
+                }
+                let data2=[];
+                for (let i=0;i<data.sevenDays["110报警"].length;i++){
+                    data2.push(data.sevenDays["110报警"][i].jjsl)
+                }
+                let data3=[];
+                for (let i=0;i<data.sevenDays["119报警"].length;i++){
+                    data3.push(data.sevenDays["119报警"][i].jjsl)
+                }
+                dataArr.push({name:'122报警',value:data1});
+                dataArr.push({name:'110报警',value:data2});
+                dataArr.push({name:'110报警',value:data3});
             }
         },
         mounted() {
@@ -882,6 +1176,7 @@
                 },
             };
             Index.init();
+            this.change();
         }
     }
 </script>
