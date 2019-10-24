@@ -1317,7 +1317,7 @@
             width: 25.73%;
             background-image: url('../assets/images/index/m.png') ;
             background-repeat: no-repeat;
-            background-size:100% 100%;;
+            background-size:100% 100%;
             .chartBox {
                 position: relative;
 

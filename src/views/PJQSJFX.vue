@@ -12,6 +12,9 @@
                 </div>
             </div>
 
+
+
+
             <div class="r">
                 <div class="r-t">
                     <div class="r-t-l">
@@ -120,7 +123,8 @@
                     </div>
                 </div>
             </div>
-        </main></div>
+        </main>
+    </div>
 </template>
 
 <script>
@@ -382,6 +386,7 @@
                 this.chartsObj[chartContainer] = myChart;
                 let option = {
                     xAxis: {
+
                         type: 'category',
                         splitLine: {
                             show: false
@@ -397,7 +402,8 @@
                         },
                         axisLabel: {
                             rotate: 30,
-                            fontSize: 12 * this.scale
+                            // fontSize : 16 * this.scale,
+                            fontSize: 18 * this.scale
                         },
                         data: this.citySource
                     },
@@ -416,8 +422,8 @@
                             show: false
                         },
                         axisLabel: {
-                            rotate: 30,
-                            fontSize: 12 * this.scale
+                            // rotate: 30,
+                            fontSize: 18 * this.scale
                         },
                     },
                     series: {
@@ -442,6 +448,11 @@
                         },
                         barWidth: 17 * this.scale
                     },
+                    // grid:{
+                    //     left : 5 + '%',
+                    //     right : 5  + '%',
+
+                    // },
                     tooltip: {},
                     grid: {
                         top: 90 * this.scale,
@@ -600,8 +611,22 @@
 <style scoped lang="scss">
     //样式里的l, m, r, t, b分别代表左，中，右，上，下
     //布局
+    #pjqsjfx{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+        main{
+            padding:0 2rem 4rem; 
+        }
+    }
+
+
     #back {
         color: #17fff3;
+        cursor: pointer;
     }
 
     main {
@@ -617,7 +642,10 @@
 
         .l {
             width: 25.73%;
-            height: 42.38rem;
+            height:100%;
+            background-image: url('../assets/images/index/m.png') ;
+            background-repeat: no-repeat;
+            background-size:100% 100%;
 
             .chartBox {
                 width: 100%;
@@ -632,13 +660,18 @@
         }
 
         .chart-wrap {
-            border: .0625rem solid rgba(76, 180, 231, 0.33);
+            // border: .0625rem solid rgba(76, 180, 231, 0.33);
             width: 100%;
             height: 100%;
             //标题
             h3 {
                 text-align: center;
+                height: 10%;
             }
+            // .chartBox{
+            //     height: 80%;
+            // }
+
         }
 
         .chart{
@@ -661,17 +694,24 @@
 
                 .chartBox {
                     width: 100%;
-                    height: 14.87rem;
+                    // height: 14.87rem;
+                    height: 90%;
                 }
 
                 .r-t-l {
                     width: 37.25%;
                     height: 100%;
+                    background-image: url('../assets/images/index/l-t-bg.png') ;
+                    background-repeat: no-repeat;
+                    background-size:100% 100%;
                 }
 
                 .r-t-r {
                     width: 60.5%;
                     height: 100%;
+                    background-image: url('../assets/images/index/l-t-bg.png') ;
+                    background-repeat: no-repeat;
+                    background-size:100% 100%;
                 }
             }
 
@@ -689,14 +729,19 @@
                     flex-direction: row;
                     justify-content: space-between;
 
+                    
+
                     .chartBox {
                         width: 100%;
-                        height: 10.07rem;
+                        height: 90%;
                     }
 
                     .r-b-t-l-1, .r-b-t-r-1,.r-b-b-l-1,.r-b-b-r-1 {
                         width: 48.91%;
                         height: 100%;
+                        background-image: url('../assets/images/index/l-t-bg.png') ;
+                        background-repeat: no-repeat;
+                        background-size:100% 100%;
                     }
                     .r-b-t-l-2,.r-b-t-m-2, .r-b-t-r-2,.r-b-b-l-2,.r-b-b-r-2,.r-b-b-m-2 {
                         width: 32%;
