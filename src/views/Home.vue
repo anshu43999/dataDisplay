@@ -737,7 +737,7 @@
                                         if (params.data.value1) {
                                             let valueType = params.data.value[1] ? 'valueUp' : 'valueDown';
                                             return params.name +
-                                                '：{' + valueType + '|' + params.value + '}';
+                                                '：{' + valueType + '|' + params.data.value1 + '}';
                                         } else {
                                             return params.name
                                         }
@@ -1145,6 +1145,7 @@
                 dataArr.push({name:'122报警',value:data1});
                 dataArr.push({name:'110报警',value:data2});
                 dataArr.push({name:'110报警',value:data3});
+                console.log(dataArr);
             }
         },
         mounted() {
@@ -1153,6 +1154,7 @@
             myCharts.forEach(value => {
                 this.refreshCharts.push(value.getAttribute('id'))
             });
+            this.change();
             let that = this;
             let Index = {
                 init() {
@@ -1176,7 +1178,6 @@
                 },
             };
             Index.init();
-            this.change();
         }
     }
 </script>
