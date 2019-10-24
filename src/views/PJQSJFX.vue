@@ -678,7 +678,7 @@
             width: 100%;
             height: 100%;
         }
-        
+
         .r {
             width: 72.6%;
             display: flex;

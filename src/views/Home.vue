@@ -141,9 +141,9 @@
                     {name: '反馈事件总数', value: 18364},
                 ],
                 jqtjjcSource: [
-                    {name: '处警时间占比', value: 85, radius: '60%'},
-                    {name: '有效警情占比', value: 90, radius: '70%'},
-                    {name: '反馈事件占比', value: 95, radius: '60%'}
+                    {name: '处警时间占比', value: 85, radius: '70%'},
+                    {name: '有效警情占比', value: 90, radius: '80%'},
+                    {name: '反馈事件占比', value: 95, radius: '70%'}
                 ],
                 //    近期警情统计
                 jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500],
@@ -419,9 +419,9 @@
                 let that = this;
                 let sourceArr = this.jqtjjcSource;
                 let colorSet = [
-                    [0.2, '#c23531'],
-                    [0.8, '#63869e'],
-                    [1, '#91c7ae']
+                    [0.2, '#ff1f34'],
+                    [0.8, '#0079cc'],
+                    [1, '#1af7f1']
                 ];
                 let option = {
                     series: (function () {
@@ -432,26 +432,32 @@
                                 {
                                     type: 'gauge',
                                     radius: item.radius,
-                                    center: [index * 30 + 20 + '%', '40%'],
+                                    center: [index * 30 + 20 + '%', '50%'],
                                     axisLine: {
-                                        show: true,
-                                        lineStyle: {
-                                            color: colorSet,
-                                            width: 25 * that.scale,
-                                            shadowOffsetX: 0,
-                                            shadowOffsetY: 0,
-                                            opacity: 1
-                                        }
+                                        show: false,
                                     },
                                     detail: {
                                         show: 0
-                                    }
+                                    },
+                                    axisTick:{
+                                        show: false,
+                                    },
+                                    splitLine:{
+                                        length:15*that.scale,
+                                        lineStyle:{
+                                            width:2*that.scale
+                                        }
+                                    },
+                                    axisLabel:{
+                                        fontSize:16*that.scale,
+                                        color:'#91c7ae'
+                                    },
                                 },
                                 // 内侧指针、数值显示
                                 {
                                     name: item.name,
                                     type: 'gauge',
-                                    center: [index * 30 + 20 + '%', '40%'],
+                                    center: [index * 30 + 20 + '%', '50%'],
                                     radius: item.radius,
                                     axisLine: {
                                         show: true,
@@ -463,11 +469,16 @@
                                             opacity: 1
                                         }
                                     },
+                                    pointer: {
+                                        show: true,
+                                        length: '102%',
+                                        width: 6*that.scale
+                                    },
                                     detail: {
                                         show: true,
-                                        offsetCenter: [0, '100%'],
+                                        offsetCenter: [0, '90%'],
                                         textStyle: {
-                                            fontSize: 20,
+                                            fontSize: 20*that.scale,
                                         },
                                         formatter: [
                                             '{value}% ' + (item.unit || ''),
@@ -475,10 +486,25 @@
                                         ].join('\n'),
                                         rich: {
                                             name: {
-                                                fontSize: 14 * that.scale,
-                                                lineHeight: 100 * that.scale,
+                                                fontSize: 22 * that.scale,
+                                                lineHeight: 70 * that.scale,
                                             }
                                         }
+                                    },
+                                    splitLine:{
+                                        length:15*that.scale,
+                                        lineStyle:{
+                                            width:2*that.scale
+                                        }
+                                    },
+                                    axisTick:{
+                                        length: 8*that.scale,
+                                        lineStyle:{
+                                            width:2*that.scale
+                                        }
+                                    },
+                                    axisLabel:{
+                                        show:false
                                     },
                                     data: [{
                                         value: item.value
@@ -1159,7 +1185,7 @@
                     }
                 };
                 // console.log(data.sevenDays["110报警"]);
-                let date=[]
+                let date=[];
                 let data1=[];
                 for (let i=0;i<data.sevenDays["122报警"].length;i++){
                     date.push(data.sevenDays["122报警"][i].tjrq);
@@ -1176,7 +1202,6 @@
                 dataArr.push({name:'122报警',value:data1});
                 dataArr.push({name:'110报警',value:data2});
                 dataArr.push({name:'110报警',value:data3});
-                console.log(dataArr);
             }
         },
         mounted() {
@@ -1273,11 +1298,12 @@
                         height: 3.69rem;
 
                         p {
-                            color: #00a8ff;
                             text-align: center;
+                            color: #00fffc;
 
                             &:first-child {
                                 margin-bottom: 0.91rem;
+                                color: #00a8ff;
                             }
                         }
                     }
@@ -1285,9 +1311,9 @@
                 }
 
                 // 图表
-                #jqtjjc {
+                #jqtjjcChart {
                     width: 100%;
-                    height: 11.31rem;
+                    height: 8.19rem;
                 }
             }
         }
