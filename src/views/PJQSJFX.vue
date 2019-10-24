@@ -416,7 +416,6 @@
                             show: false
                         },
                         axisLabel: {
-                            rotate: 30,
                             fontSize: 12 * this.scale
                         },
                     },
@@ -645,7 +644,7 @@
             width: 100%;
             height: 100%;
         }
-        
+
         .r {
             width: 72.6%;
             display: flex;
