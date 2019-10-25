@@ -88,12 +88,12 @@ const routes = [
                     {
                         path : 'province_dataAnalyze',
                         name : '省接警类型数据分析',
-                        component: () => import("../views/PJQSJFX"),
+                        component: () => import("../views/PJQFLSJFX"),
                     },
                     {
                         path : 'city_dataAnalyze',
                         name : '市接警类型数据分析',
-                        component: () => import("../views/PJQSJFX"),
+                        component: () => import("../views/PJQFLSJFX"),
                     }
                 ]
             }

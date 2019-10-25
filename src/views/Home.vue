@@ -1012,7 +1012,7 @@
                         this.$router.push({name: '省接警类型数据分析', query: {title: '全省来话类型数据分析'}});
                         break;
                     case '警情分类数据分析':
-                        this.$router.push({name: '省接警类型数据分析', query: {title: '全省警情分类数据分析'}});
+                        this.$router.push({name: '全省警情分类数据分析', query: {title: '全省警情分类数据分析'}});
                         break;
                 }
             },
