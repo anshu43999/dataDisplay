@@ -807,7 +807,7 @@
                             }
                         },
                         lineStyle: {
-                            width: 3
+                            width: 2
                         },
                         data: sourceArr['data'][i].value
                     });
@@ -898,7 +898,7 @@
                             }
                         },
                         lineStyle: {
-                            width: 3
+                            width: 2
                         },
                         data: sourceArr[i].value
                     });
