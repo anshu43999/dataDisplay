@@ -529,6 +529,14 @@
         flex-direction: row;
         justify-content: space-between;
 
+        h3{
+            height: 10%;
+            text-align: center;
+        }
+        .chartBox{
+            height: 90%;
+        }
+
         .l > div, .m > div, .r > div {
             width: 100%;
             align-content: space-between;
@@ -561,10 +569,6 @@
             // border: .0625rem solid rgba(76, 180, 231, 0.33);
             width: 100%;
             height: 100%;
-            //标题
-            h3 {
-                text-align: center;
-            }
         }
 
         .r {
@@ -593,12 +597,7 @@
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
 
-                    h3{
-                        height: 10%;
-                    }
-                    .chartBox{
-                        height: 90%;
-                    }
+
                 }
 
                 .r-t-r {
@@ -607,12 +606,6 @@
                     background-image: url('../assets/images/index/l-t-bg.png') ;
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
-                    h3{
-                        height: 10%;
-                    }
-                    .chartBox{
-                        height: 90%;
-                    }
                 }
             }
 
