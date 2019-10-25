@@ -122,7 +122,6 @@
             width: 100%;
             align-content: space-between;
         }
-
         .l {
             width: 25.73%;
             height:100%;
@@ -146,28 +145,12 @@
             // border: .0625rem solid rgba(76, 180, 231, 0.33);
             width: 100%;
             height: 100%;
-            //标题
-            h3 {
-                text-align: center;
-                height: 10%;
-            }
-            // .chartBox{
-            //     height: 80%;
-            // }
 
         }
 
         .chart{
             width: 100%;
             height: 100%;
-            &>div{
-                width: 100%!important;
-                height: 100%!important;
-                &>canvas{
-                    width: 100%!important;
-                    height: 100%!important;
-                }
-            }
         }
 
         .r {
@@ -219,13 +202,6 @@
                     display: flex;
                     flex-direction: row;
                     justify-content: space-between;
-
-                    
-
-                    .chartBox {
-                        width: 100%;
-                        height: 90%;
-                    }
 
                     .r-b-t-l-1, .r-b-t-r-1,.r-b-b-l-1,.r-b-b-r-1 {
                         width: 48.91%;

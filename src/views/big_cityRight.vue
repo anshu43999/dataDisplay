@@ -3,7 +3,10 @@
     <div class='r'>
         <div class="r-t">
             <div class="chart-wrap">
-
+                <h3>近七日警情数据占比分析</h3>
+                <div class="chartBox">
+                    <div class="chart" id="proportionChart"></div>
+                </div>
             </div>
         </div>
 
@@ -49,7 +52,16 @@
         data() {
 //这里存放数据
             return {
-
+                scale:1,
+                refreshCharts:[],
+                proportionSource:[
+                    {name:'110报警',value:25},
+                    {name:'122报警',value:25},
+                    {name:'119报警',value:25},
+                    {name:'综合报警',value:25},
+                    {name:'其他接警类型',value:25},
+                ],
+                proportionColor:[['#05dbb0','#ccfff5'],['#00a3c0','#9ff1ff'],['#4160fd','#a5b4ff'],['#bd0fdc','#f2aaff'],['#803ff7','#c3a2ff'],]
             };
         },
 //监听属性 类似于data概念
@@ -58,7 +70,104 @@
         watch: {},
 //方法集合
         methods: {
-
+            getScale() {
+                this.scale = localStorage.getItem('scale');
+            },
+            percent(sourceArr,colorList){
+                let myChart=this.$echarts.init(document.getElementById('proportionChart'));
+                let titleArr=[];
+                let seriesArr=[];
+                sourceArr.forEach(function(item, index){
+                    titleArr.push(
+                        {
+                            text:item.name,
+                            left: index * 20 + 10 +'%',
+                            top: '80%',
+                            textAlign: 'center',
+                            textStyle: {
+                                fontWeight: 'normal',
+                                fontSize: 12,
+                                color: '#1af7f1',
+                                textAlign: 'center',
+                            },
+                        }
+                    );
+                    seriesArr.push(
+                        {
+                            name: item.name,
+                            type: 'pie',
+                            clockWise: false,
+                            radius: [48, 54],
+                            itemStyle:  {
+                                normal: {
+                                    color: colorList[index][0],
+                                    shadowColor: colorList[index][0],
+                                    shadowBlur: 0,
+                                    label: {
+                                        show: false
+                                    },
+                                    labelLine: {
+                                        show: false
+                                    },
+                                    fontSize:20
+                                }
+                            },
+                            hoverAnimation: false,
+                            center: [index * 20 + 10 +'%', '40%'],
+                            data: [{
+                                value: item.value,
+                                label: {
+                                    normal: {
+                                        formatter: function(params){
+                                            return params.value+'%';
+                                        },
+                                        position: 'center',
+                                        show: true,
+                                        textStyle: {
+                                            fontSize: 20,
+                                            color: '#1af7f1'
+                                        }
+                                    }
+                                },
+                            }, {
+                                value: 100-item.value,
+                                name: 'invisible',
+                                itemStyle: {
+                                    normal: {
+                                        color: colorList[index][1]
+                                    },
+                                    emphasis: {
+                                        color: colorList[index][1]
+                                    }
+                                }
+                            }]
+                        }
+                    )
+                });
+                let option={
+                    title:titleArr,
+                    series: seriesArr
+                };
+                myChart.setOption(option);
+            },
+            renderChart(){
+                let myCharts = document.querySelectorAll('.chart');
+                myCharts.forEach(value => {
+                    this.refreshCharts.push(value.getAttribute('id'))
+                });
+                let that = this;
+                let Index = {
+                    init() {
+                        this.loadData();
+                        Public.chartsResize(that.chartsObj);
+                        Public.chartsReDraw(that.chartsObj, null, [], this.refreshCharts)
+                    },
+                    loadData() {
+                        that.percent(that.proportionSource,that.proportionColor);
+                    },
+                };
+                Index.init();
+            },
         },
 //生命周期 - 创建完成（可以访问当前this实例）
         created() {
@@ -66,7 +175,8 @@
         },
 //生命周期 - 挂载完成（可以访问DOM元素）
         mounted() {
-
+            this.getScale();
+            this.renderChart();
         },
         beforeCreate() {
         }, //生命周期 - 创建之前
@@ -86,6 +196,23 @@
 </script>
 <style lang='scss' scoped>
     //@import url(); 引入公共css类
+    .chart-wrap{
+        width: 100%;
+        height: 100%;
+        h3{
+            height: 10%;
+            text-align: center;
+        }
+        .chartBox{
+            width: 100%;
+            height: 90%;
+            .chart{
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+
     .r {
         width: 100%;
         height: 100%;

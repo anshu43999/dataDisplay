@@ -319,7 +319,7 @@ methods: {
             },
             series: {
                 type: 'pictorialBar',
-                barCategoryGap: '-50%',
+                barCategoryGap: '-16%',
                 symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
                 itemStyle: {
                     normal: {
@@ -587,8 +587,8 @@ methods: {
                 this.loadData();
                 Public.chartsResize(that.chartsObj);
                 Public.chartsReDraw(that.chartsObj, null, [
-                    'mapChart'
-                ], ['trendChart','proportionChart','subClassChart1','subClassChart2','subClassChart3','subClassChart4'])
+                    ''
+                ], that.refreshCharts)
             },
             loadData() {
                 that.sevensjfx('trendChart', that.trendChartSource, that.trendChartColor);
@@ -637,7 +637,13 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 </script>
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
-
+h3{
+    height: 10%;
+    text-align: center;
+}
+.chartBox{
+    height: 90%;
+}
     .r {
         // width: 72.6%;
         width: 100%;
@@ -722,5 +728,5 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
                 }
             }
         }
-    } 
+    }
 </style>

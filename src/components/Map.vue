@@ -38,7 +38,6 @@
                 });
                 //点击地图
                 myChart.on('click', function (params) {
-                    console.log(params);
                     if (params.name in cityObj) {
 // 如果点击的是11个市，绘制选中地区的二级地图
                         that.$http.get('/static/json/' + cityObj[params.name] + '_full.json').then(res => {
