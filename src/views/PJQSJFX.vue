@@ -11,10 +11,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-            
             <div class="r">
 
                 <router-view></router-view>

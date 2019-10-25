@@ -5,6 +5,10 @@ import App from "../App";
 
 Vue.use(VueRouter);
 
+
+
+
+
 const routes = [
     {
         path: '/',
