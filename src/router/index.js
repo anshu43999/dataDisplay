@@ -84,6 +84,7 @@ const routes = [
                 path: "pjqfsjfx",
                 name: '全省警情分类数据分析',
                 component: () => import("../views/PJQFLSJFX"),
+
                 children : [
                     {
                         path : 'province_dataAnalyze',

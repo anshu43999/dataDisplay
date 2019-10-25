@@ -139,6 +139,7 @@
                 this.jqflsjfxSource.forEach(value => {
                     xData.push(value.name);
                 });
+                console.log(1);
                 let sourceArr = this.jqflsjfxSource;
                 let myChart = this.$echarts.init(document.getElementById('bar'));
                 this.chartsObj['bar'] = myChart;
