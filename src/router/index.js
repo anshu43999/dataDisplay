@@ -47,6 +47,11 @@ const routes = [
                 name: '全省警情分类数据分析',
                 component: () => import("../views/PJQFLSJFX"),
             },
+            {
+                path: "city",
+                name: '全省接警类型数据分析',
+                component: () => import("../views/City"),
+            },
         ]
     },
     /*{
