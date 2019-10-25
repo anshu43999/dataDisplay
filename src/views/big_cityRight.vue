@@ -14,7 +14,12 @@
         <div class="r-b">
             <div class="r-b-t">
                 <div class="r-b-t-l">
-
+                    <div class="chart-wrap">
+                        <h3>近七日警情数据占比分析</h3>
+                        <div class="chartBox">
+                            <div class="chart" id="proportionChart"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="r-b-t-l">
