@@ -1,6 +1,6 @@
 <template>
     <div id="login">
-        login
+        <input type="text">
     </div>
 </template>
 
@@ -11,5 +11,9 @@
 </script>
 
 <style scoped>
-
+input{
+    background: transparent;
+    border: none;
+    color: white;
+}
 </style>
