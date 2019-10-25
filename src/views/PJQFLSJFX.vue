@@ -555,12 +555,27 @@
 <style scoped lang="scss">
     //样式里的l, m, r, t, b分别代表左，中，右，上，下
     //布局
+    #pjqflsjfx{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        // justify-content: space-around;
+
+        // main{
+        //     padding:0 2rem 4rem; 
+        // }
+    }
+
     #back {
         color: #17fff3;
+        cursor: pointer;
     }
 
     main {
         display: flex;
+        flex:  1;
+        padding: 0 2rem 4rem;
         flex-direction: row;
         justify-content: space-between;
 
@@ -576,7 +591,10 @@
 
         .l {
             width: 25.73%;
-            height: 42.38rem;
+            height: 100%;
+            background-image: url('../assets/images/index/m.png') ;
+            background-repeat: no-repeat;
+            background-size:100% 100%;
 
             .chart {
                 width: 100%;
@@ -590,7 +608,7 @@
         }
 
         .chart-wrap {
-            border: .0625rem solid rgba(76, 180, 231, 0.33);
+            // border: .0625rem solid rgba(76, 180, 231, 0.33);
             width: 100%;
             height: 100%;
             //标题
@@ -602,7 +620,7 @@
 
         .r {
             width: 72.6%;
-            height: 44.36rem;
+            height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -616,17 +634,36 @@
 
                 .chartBox {
                     width: 100%;
-                    height: 14.87rem;
+                    height: 100%;
                 }
 
                 .r-t-l {
                     width: 37.26%;
                     height: 100%;
+                    background-image: url('../assets/images/index/l-t-bg.png') ;
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+
+                    h3{
+                        height: 10%;
+                    }
+                    .chartBox{
+                        height: 90%;
+                    }
                 }
 
                 .r-t-r {
                     width: 60.52%;
                     height: 100%;
+                    background-image: url('../assets/images/index/l-t-bg.png') ;
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                    h3{
+                        height: 10%;
+                    }
+                    .chartBox{
+                        height: 90%;
+                    }
                 }
             }
 
@@ -636,6 +673,10 @@
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+
+                background-image: url('../assets/images/index/l-t-bg.png') ;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
 
                 .selectListBox {
                     width: 8.04rem;
