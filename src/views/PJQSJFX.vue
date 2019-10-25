@@ -36,7 +36,7 @@
                 </div>
                 <div class="r-b">
                     <div class="r-b-t">
-                        <div class="r-b-t-l-1" v-if="show">
+                        <div class="r-b-t-l-1" v-show="show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[2]}}</h3>
                                 <div class="chartBox">
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-t-r-1" v-if="show">
+                        <div class="r-b-t-r-1" v-show="show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[3]}}</h3>
                                 <div class="chartBox">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
 
-                        <div class="r-b-t-l-2" v-if="!show">
+                        <div class="r-b-t-l-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[3]}}</h3>
                                 <div class="chartBox">
@@ -61,7 +61,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-t-m-2" v-if="!show">
+                        <div class="r-b-t-m-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[3]}}</h3>
                                 <div class="chartBox">
@@ -69,7 +69,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-t-r-2" v-if="!show">
+                        <div class="r-b-t-r-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[3]}}</h3>
                                 <div class="chartBox">
@@ -79,7 +79,7 @@
                         </div>
                     </div>
                     <div class="r-b-b">
-                        <div class="r-b-b-l-1" v-if="show">
+                        <div class="r-b-b-l-1" v-show="show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[4]}}</h3>
                                 <div class="chartBox">
@@ -87,7 +87,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-b-r-1" v-if="show">
+                        <div class="r-b-b-r-1" v-show="show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[5]}}</h3>
                                 <div class="chartBox">
@@ -96,7 +96,7 @@
                             </div>
                         </div>
 
-                        <div class="r-b-b-l-2" v-if="!show">
+                        <div class="r-b-b-l-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[3]}}</h3>
                                 <div class="chartBox">
@@ -104,7 +104,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-b-m-2" v-if="!show">
+                        <div class="r-b-b-m-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[3]}}</h3>
                                 <div class="chartBox">
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-b-r-2" v-if="!show">
+                        <div class="r-b-b-r-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[3]}}</h3>
                                 <div class="chartBox">
@@ -556,9 +556,13 @@
                         this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                         this.subClassColorList2 = ['#8298ff', '#324fcc'];
                         this.subClassSource3 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
-                        this.subClassColorList3 = ['#6f87ff', '#0024dd'];
+                        this.subClassColorList3 = ['#6163ff', '#3032d7'];
                         this.subClassSource4 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
-                        this.subClassColorList4 = ['#a650ff', '#5200a7'];
+                        this.subClassColorList4 = ['#ad81ff', '#733be3'];
+                        this.subClassSource5 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        this.subClassColorList5 = ['#8919ee', '#620ab4'];
+                        this.subClassSource6 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        this.subClassColorList6 = ['#b0fffb', '#119b9d'];
                         break;
                 }
                 let Index = {
@@ -576,7 +580,7 @@
                         that.subclassBar('subClassChart2', that.subClassSource2, that.subClassColorList2);
                         that.subclassBar('subClassChart3', that.subClassSource3, that.subClassColorList3);
                         that.subclassBar('subClassChart4', that.subClassSource4, that.subClassColorList4);
-                        that.subclassBar('subClassSource5', that.subClassSource1, that.subClassColorList1);
+                        that.subclassBar('subClassChart5', that.subClassSource1, that.subClassColorList1);
                     },
                 };
                 Index.init();
@@ -659,6 +663,14 @@
         .chart{
             width: 100%;
             height: 100%;
+            &>div{
+                width: 100%!important;
+                height: 100%!important;
+                &>canvas{
+                    width: 100%!important;
+                    height: 100%!important;
+                }
+            }
         }
 
         .r {
