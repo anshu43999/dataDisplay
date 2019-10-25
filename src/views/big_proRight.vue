@@ -122,6 +122,7 @@
 
 export default {
 //import引入的组件需要注入到对象中才能使用
+props : ['typeAnalyze'],
 components: {},
 data() {
 //这里存放数据
@@ -624,6 +625,7 @@ created() {
 mounted() {
     this.getScale();
     this.renderChart();
+    console.log(this.typeAnalyze)
 
 },
 beforeCreate() {}, //生命周期 - 创建之前

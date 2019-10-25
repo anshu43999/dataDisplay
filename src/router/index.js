@@ -57,13 +57,13 @@ const routes = [
                 children : [
                     {
                         path : 'province_dataAnalyze',
-                        name : '省接警类型数据分析',
-                        component: () => import("../views/PJQSJFX"),
+                        name : '省报警方式数据分析',
+                        component: () => import("../views/big_proRight"),
                     },
                     {
                         path : 'city_dataAnalyze',
-                        name : '市接警类型数据分析',
-                        component: () => import("../views/PJQSJFX"),
+                        name : '市报警方式数据分析',
+                        component: () => import("../views/big_cityRight"),
                     }
                 ]
             },
@@ -74,13 +74,13 @@ const routes = [
                 children : [
                     {
                         path : 'province_dataAnalyze',
-                        name : '省接警类型数据分析',
-                        component: () => import("../views/PJQSJFX"),
+                        name : '省来话类型数据分析',
+                        component: () => import("../views/big_proRight"),
                     },
                     {
                         path : 'city_dataAnalyze',
-                        name : '市接警类型数据分析',
-                        component: () => import("../views/PJQSJFX"),
+                        name : '市来话类型数据分析',
+                        component: () => import("../views/big_cityRight"),
                     }
                 ]
             },

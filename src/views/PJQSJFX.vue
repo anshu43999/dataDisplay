@@ -7,13 +7,13 @@
             <div class="l">
                 <div class="chart-wrap">
                     <div class="chartBox">
-                        <my-map></my-map>
+                        <my-map  :typeAnalyze='typeAnalyze' ></my-map>
                     </div>
                 </div>
             </div>
             <div class="r">
 
-                <router-view></router-view>
+                <router-view  :typeAnalyze='typeAnalyze'></router-view>
 
 
 
@@ -68,6 +68,7 @@
                 //    //细类6
                 subClassSource6: [],
                 subClassColorList6: [],
+                typeAnalyze: '111111',    //判断点击的类型
             }
         },
         methods: {
@@ -83,6 +84,12 @@
         },
         mounted() {
 
+            console.log(this.$route.query.title);
+            // this.typeAnalyze = this.$route.query.title
+
+        },
+        created(){
+            this.typeAnalyze = this.$route.query.title
         }
     }
 </script>

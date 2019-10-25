@@ -4,11 +4,13 @@
 
 <script>
     export default {
+        props : ['typeAnalyze'],
         name: "Map",
         data(){
            return {
                chartsObj:{},
-               type:''
+               type:'',
+               newStr : '',
            }
         },
         methods:{
@@ -52,14 +54,27 @@
                                     })
                                 }
                                 renderMap(params.name, d);
-                                that.type=that.$route.query.title;
-                                that.$router.push({name:'市接警类型数据分析',query:{title:'市接警类型数据分析',city:params.name}});
+                                // that.type=that.$route.query.title;
+
+                                console.log(that.typeAnalyze);
+
+                                let str =  '市'+that.newStr
+                                console.log(str);
+
+                                that.$router.push({name:str,query:{title:str,city:params.name}});
                             }
                         });
                     } else {
+                        console.log(that.typeAnalyze);
 // 点击县级时是否返回
                         renderMap('山西省', mapdata);
-                        that.$router.push({name:'省接警类型数据分析',query:{title:that.type}});
+
+                        let str =  '省'+that.newStr
+                                console.log(str);
+
+                        let str1 = '全省'+that.newStr
+
+                        that.$router.push({name:str,query:{title:str1}});
                     }
                 });
                 //配置项
@@ -145,6 +160,16 @@
                 },
             };
             Index.init();
+            console.log(this.typeAnalyze);
+            // this.typeAnalyze.slice(0,1);
+            // this.newStr  = this.typeAnalyze.substring(2);
+            // console.log(newStr);
+            // this.newStr 
+        },
+        created(){
+            this.newStr  = this.typeAnalyze.substring(2);
+            console.log(this.newStr);
+            // this.newStr 
         }
     }
 </script>
