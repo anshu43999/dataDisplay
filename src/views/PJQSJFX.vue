@@ -14,7 +14,7 @@
 
 
 
-
+            
             <div class="r">
                 <div class="r-t">
                     <div class="r-t-l">
@@ -595,10 +595,11 @@
                         that.subclassBar('subClassChart2', that.subClassSource2, that.subClassColorList2);
                         that.subclassBar('subClassChart3', that.subClassSource3, that.subClassColorList3);
                         that.subclassBar('subClassChart4', that.subClassSource4, that.subClassColorList4);
-                        // that.subclassBar('subClassSource5', that.subClassSource1, that.subClassColorList1);
+                        that.subclassBar('subClassSource5', that.subClassSource1, that.subClassColorList1);
                     },
                 };
                 Index.init();
+                // Index.loadData()
             },
         },
         mounted() {
@@ -746,7 +747,10 @@
                     .r-b-t-l-2,.r-b-t-m-2, .r-b-t-r-2,.r-b-b-l-2,.r-b-b-r-2,.r-b-b-m-2 {
                         width: 32%;
                         height: 100%;
-                        background: white;
+                        // background: white;
+                        background-image: url('../assets/images/index/l-t-bg.png') ;
+                        background-repeat: no-repeat;
+                        background-size:100% 100%;
                     }
                 }
             }

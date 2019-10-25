@@ -634,7 +634,7 @@
 
                 .chartBox {
                     width: 100%;
-                    height: 14.87rem;
+                    height: 100%;
                 }
 
                 .r-t-l {
@@ -643,6 +643,13 @@
                     background-image: url('../assets/images/index/l-t-bg.png') ;
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
+
+                    h3{
+                        height: 10%;
+                    }
+                    .chartBox{
+                        height: 90%;
+                    }
                 }
 
                 .r-t-r {
@@ -651,6 +658,12 @@
                     background-image: url('../assets/images/index/l-t-bg.png') ;
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
+                    h3{
+                        height: 10%;
+                    }
+                    .chartBox{
+                        height: 90%;
+                    }
                 }
             }
 
