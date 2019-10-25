@@ -183,28 +183,9 @@
             //趋势图
             sevensjfx(chartContainer, sourceArr, colorList) {
                 let seriesArr = [];
-                let dateArr = [];
+                let dateArr = ['10-1','10-2','10-3','10-4','10-5','10-6','10-7'];
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
                 this.chartsObj[chartContainer] = myChart;
-                switch (this.period) {
-                    case "week":
-                        for (let i = 0; i < 7; i++) {
-                            let timestamp = (new Date()).getTime();
-                            let day = timestamp - (i - 1) * 24 * 60 * 60 * 1000;
-                            let date1 = new Date(day);
-                            dateArr.push(date1.getMonth() + 1 + '-' + date1.getDate());
-                        }
-                        break;
-                    case 'lastWeek':
-                        let date2 = new Date();
-                        date2.setDate(date2.getDate() - (date2.getDay() + 6) % 7);
-                        date2.setDate(date2.getDate() - 8);
-                        for (let i = 0; i < 7; i++) {
-                            date2.setDate(date2.getDate() + 1);
-                        }
-                        break;
-                }
-                dateArr.reverse();
                 for (let i = 0; i < sourceArr.length; i++) {
                     seriesArr.push({
                         name: sourceArr[i].name,
