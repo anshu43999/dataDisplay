@@ -61,7 +61,7 @@
                         <div class="chart-wrap">
                             <h3>今日接警类型数据分析</h3>
                             <div class="chartBox">
-                                <div class="chart" id="jrjjlxsjfxSourceChart"></div>
+                                <div class="chart" id="jrPieChart"></div>
                             </div>
                         </div>
                     </div>
@@ -132,7 +132,7 @@
                 //缩放值
                 scale: 1,
                 //默认获取本周数据
-                period: 'week',
+                period: 'lastWeek',
                 //警情统计监测
                 jqtjjcData: [
                     {name: '报警事件总数', value: 18364},
@@ -162,9 +162,21 @@
                     {name: '投诉监督', value: 700}
                 ],
                 //    地图
-            
-                grading:[0.2,0.4,0.6,0.8,1],
-                mapSource:[
+                /*mapSource: [
+                    {name: "太原市", value: 80, value1: 70, value2: 35},
+                    {name: "长治市", value: 42, value1: 50, value2: 25},
+                    {name: "朔州市", value: 4, value1: 20, value2: 10},
+                    {name: "运城市", value: 53, value1: 60, value2: 30},
+                    {name: "大同市", value: 30, value1: 80, value2: 40},
+                    {name: "晋城市", value: 52, value1: 60, value2: 30},
+                    {name: "晋中市", value: 21, value1: 30, value2: 15},
+                    {name: "临汾市", value: 5, value1: 20, value2: 10},
+                    {name: "忻州市", value: 5, value1: 50, value2: 25},
+                    {name: "阳泉市", value: 10, value1: 30, value2: 15},
+                    {name: "吕梁市", value: 32, value1: 40, value2: 20},
+                ],*/
+                grading: [0.2, 0.4, 0.6, 0.8, 1],
+                mapSource: [
                     {name: "太原市", value: 80, value1: 70},
                     {name: "长治市", value: 42, value1: 50},
                     {name: "朔州市", value: 4, value1: 20},
@@ -180,7 +192,7 @@
                 mapData: {name: '报警事件总数', value: 96666},
                 //    今日接警类型数据分析、今日来话类型数据分析
                 jrjjlxsjfxSourceSource: [
-                    {name: '110报警', value: 442},
+                    {name: '110报警', value: 200},
                     {name: '122报警', value: 155},
                     {name: '119报警', value: 263},
                     {name: '综合报警', value: 145},
@@ -189,7 +201,7 @@
                 jrjjlxsjfxSourceColor: ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'],
                 //    今日报警方式数据分析
                 jrbjfssjfxSource: [
-                    {name: '电话报警', value: 442},
+                    {name: '电话报警', value: 200},
                     {name: '来人（来电）报警', value: 155},
                     {name: '技防报警', value: 263},
                     {name: '短信报警', value: 145},
@@ -198,7 +210,7 @@
                 jrbjfssjfxColor: ['#ffd75d', '#00a3c0', '#0d28a6', '#e344ff', '#6400cb'],
                 //    今日来话类型数据分析
                 jrrlhlxsjfxSource: [
-                    {name: '报警求助、举报投诉', value: 442},
+                    {name: '报警求助、举报投诉', value: 200},
                     {name: '处警反馈', value: 155},
                     {name: '信息咨询', value: 263},
                     {name: '短信报警', value: 145},
@@ -209,13 +221,14 @@
                 ],
                 jrrlhlxsjfxColor: ['#6c96ff', '#4160fb', '#2626e7', '#e344ff', '#00b3e9', '#803ff7', '#6905c6', '#17fff3'],
                 //    近七日接警类型数据分析
-                sevenjjlxsjfxSource: [
+                /*sevenjjlxsjfxSource: [
                     {name: '110报警', value: [580, 630, 700, 400, 250, 156, 894]},
                     {name: '122报警', value: [468, 498, 481, 168, 79, 455, 155]},
                     {name: '119报警', value: [483, 558, 465, 48, 188, 465, 455]},
                     {name: '综合报警', value: [671, 465, 184, 561, 455, 268, 145]},
                     {name: '其他接警类型', value: [456, 567, 569, 594, 189, 498, 155]},
-                ],
+                ],*/
+                sevenjjlxsjfxSource: {},
                 //    近七日报警方式数据分析
                 sevenbjfssjfxSource: [
                     {name: '电话报警', value: [580, 630, 700, 400, 250, 156, 894]},
@@ -224,6 +237,7 @@
                     {name: '短信报警', value: [671, 465, 184, 561, 455, 268, 145]},
                     {name: '其他报警方式', value: [456, 567, 569, 594, 189, 498, 155]}
                 ],
+                // sevenbjfssjfxSource:{},
                 //    近七日来话类型数据分析
                 sevenlhlxsjfxSource: [
                     {name: '报警求助、举报投诉', value: [580, 630, 700, 400, 250, 156, 894]},
@@ -234,7 +248,7 @@
                     {name: '系统测试', value: [652, 556, 155, 166, 562, 515, 565]},
                     {name: '其他来话类型', value: [256, 626, 515, 126, 512, 556, 488]}
                 ]
-
+                // sevenlhlxsjfxSource:{}
             }
         },
         methods: {
@@ -269,18 +283,18 @@
                                     detail: {
                                         show: 0
                                     },
-                                    axisTick:{
+                                    axisTick: {
                                         show: false,
                                     },
-                                    splitLine:{
-                                        length:15*that.scale,
-                                        lineStyle:{
-                                            width:2*that.scale
+                                    splitLine: {
+                                        length: 15 * that.scale,
+                                        lineStyle: {
+                                            width: 2 * that.scale
                                         }
                                     },
-                                    axisLabel:{
-                                        fontSize:16*that.scale,
-                                        color:'#91c7ae'
+                                    axisLabel: {
+                                        fontSize: 16 * that.scale,
+                                        color: '#91c7ae'
                                     },
                                 },
                                 // 内侧指针、数值显示
@@ -302,13 +316,13 @@
                                     pointer: {
                                         show: true,
                                         length: '102%',
-                                        width: 6*that.scale
+                                        width: 6 * that.scale
                                     },
                                     detail: {
                                         show: true,
                                         offsetCenter: [0, '90%'],
                                         textStyle: {
-                                            fontSize: 20*that.scale,
+                                            fontSize: 20 * that.scale,
                                         },
                                         formatter: [
                                             '{value}% ' + (item.unit || ''),
@@ -321,20 +335,20 @@
                                             }
                                         }
                                     },
-                                    splitLine:{
-                                        length:15*that.scale,
-                                        lineStyle:{
-                                            width:2*that.scale
+                                    splitLine: {
+                                        length: 15 * that.scale,
+                                        lineStyle: {
+                                            width: 2 * that.scale
                                         }
                                     },
-                                    axisTick:{
-                                        length: 8*that.scale,
-                                        lineStyle:{
-                                            width:2*that.scale
+                                    axisTick: {
+                                        length: 8 * that.scale,
+                                        lineStyle: {
+                                            width: 2 * that.scale
                                         }
                                     },
-                                    axisLabel:{
-                                        show:false
+                                    axisLabel: {
+                                        show: false
                                     },
                                     data: [{
                                         value: item.value
@@ -352,30 +366,11 @@
                 let myChart = this.$echarts.init(document.getElementById('jqjqtjChart'));
                 this.chartsObj.jqjqtjChart = myChart;
                 let sourceArr = this.jqjqtjScoure;
-                let dateArr = [];
-                switch (this.period) {
-                    case "week":
-                        for (let i = 0; i < 7; i++) {
-                            let timestamp = (new Date()).getTime();
-                            let day = timestamp - (i - 1) * 24 * 60 * 60 * 1000;
-                            let date1 = new Date(day);
-                            dateArr.push(date1.getMonth() + 1 + '-' + date1.getDate());
-                        }
-                        break;
-                    case 'lastWeek':
-                        let date2 = new Date();
-                        date2.setDate(date2.getDate() - (date2.getDay() + 6) % 7);
-                        date2.setDate(date2.getDate() - 8);
-                        for (let i = 0; i < 7; i++) {
-                            date2.setDate(date2.getDate() + 1);
-                        }
-                        break;
-                }
-                dateArr.reverse();
+                let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
                 let option = {
                     xAxis: {
                         type: 'category',
-                        
+
                         splitLine: {
                             show: false
                         },
@@ -388,8 +383,8 @@
                         axisTick: {
                             show: false
                         },
-                        axisLabel :{
-                            fontSize : 20 * this.scale,
+                        axisLabel: {
+                            fontSize: 20 * this.scale,
                         },
                         data: dateArr
                     },
@@ -407,16 +402,16 @@
                         axisTick: {
                             show: false
                         },
-                        axisLabel :{
-                            fontSize : 20 * this.scale,
+                        axisLabel: {
+                            fontSize: 20 * this.scale,
                         },
                     },
-                    grid:{
+                    grid: {
                         // width : 80 + '%',
-                        height :75 + '%',
-                        left : 100 * this.scale,
-                        right : 50 * this.scale,
-                        top : 5 + '%',
+                        height: 75 + '%',
+                        left: 100 * this.scale,
+                        right: 50 * this.scale,
+                        top: 5 + '%',
                         // bottom : 5 + '%',
                         // height : 50,
 
@@ -471,7 +466,7 @@
                             show: false
                         },
                         axisLabel: {
-                            fontSize : 16 * this.scale,
+                            fontSize: 16 * this.scale,
                             rotate: 30,
                             formatter: function (params) {
                                 let newParamsName = "";
@@ -503,6 +498,9 @@
                         type: 'value',
                         splitLine: {
                             show: false
+                        },
+                        axisLabel: {
+                            fontSize: 16 * this.scale,
                         },
                         axisLine: {
                             show: true,
@@ -536,10 +534,10 @@
                         },
                         barWidth: 17 * this.scale
                     },
-                    grid: { 
-                        width : 85 + '%',
-                        height : 70 + "%",
-                        top : 5 + '%',
+                    grid: {
+                        width: 85 + '%',
+                        height: 70 + "%",
+                        top: 5 + '%',
                         // bottom : 5+ '%',
 
                     },
@@ -556,17 +554,7 @@
                 this.chartsObj.mapChart = myChart;
                 let data2 = [];
                 cityData.forEach(value => {
-                    // data2.push({name:value.name,value:Math.round((value.value/value.value1)*100),value1:value.value});
-                    data2.push({name:value.name,value:(value.value/value.value1).toFixed(2),value1:value.value});
-                    /*if (value.value < value.value2) {
-                        data2.push({name: value.name, value: 20, value1: value.value})
-                    }
-                    if (value.value < value.value1 && value.value > value.value2) {
-                        data2.push({name: value.name, value: 50, value1: value.value})
-                    }
-                    if (value.value > value.value1) {
-                        data2.push({name: value.name, value: 70, value1: value.value})
-                    }*/
+                    data2.push({name: value.name, value: (value.value / value.value1).toFixed(2), value1: value.value});
                 });
                 that.data1 = data2;
                 //初显示
@@ -575,9 +563,9 @@
                         for (let i = 0; i < res.data.features.length; i++) {
                             cityObj[res.data.features[i].properties.name] = res.data.features[i].properties.adcode;
                         }
-                    // 注册地图
+                        // 注册地图
                         that.$echarts.registerMap('山西省', res.data);
-                    // 绘制地图
+                        // 绘制地图
                         renderMap('山西省', data2);
                     }
                 });
@@ -694,8 +682,8 @@
                         top: 'bottom',
                         calculable: true,
                         seriesIndex: [1],
-                        textStyle:{
-                            color:'#fff'
+                        textStyle: {
+                            color: '#fff'
                         }
                         /*inRange: {
                             color: ['#f7fbff', '#4e7cef', '#0549f3']
@@ -707,16 +695,13 @@
             },
 
 
-
-
             //    今日接警类型数据分析、今日报警方式数据分析、今日来话类型数据分析
             /**
              * @param chartContainer String 图表容器
              * @param sourceArr Arrary 数据数组
              * @param colorList Arrary 颜色数组
              * */
-            //110:{'10-1':110}
-            jrjjlxsjfxSourceChart(chartContainer, sourceArr, colorList) {
+            jrPieChart(chartContainer, sourceArr, colorList) {
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
                 this.chartsObj[chartContainer] = myChart;
                 let total = 0;
@@ -724,16 +709,6 @@
                     total += value.value
                 });
                 let option = {
-                    legend: {
-                        textStyle: {
-                            fontSize: 12 * this.scale,
-                            color: function (params) {
-                                return colorList[params.dataIndex]
-                            }
-                        },
-                        itemWidth: 12 * this.scale,
-                        itemHeight: 12 * this.scale
-                    },
                     tooltip: {},
                     series: [{
                         type: 'pie',
@@ -743,9 +718,9 @@
                         label: {
                             normal: {
                                 formatter: function (params) {
-                                    return params.name + '\n' + Math.round((params.value / total) * 100) + '%'
+                                    return params.name + '\n\n' + Math.round((params.value / total) * 100) + '%'
                                 },
-                                fontSize: 12 * this.scale
+                                fontSize: 20 * this.scale
                             },
                             emphasis: {
                                 show: true
@@ -756,17 +731,19 @@
                                 color: function (params) {
                                     return colorList[params.dataIndex]
                                 },
+                                lineStyle: {
+                                    color: function (params) {
+                                        return colorList[params.dataIndex]
+                                    }
+                                },
                             }
                         },
                         labelLine: {
                             normal: {
                                 show: true,
                                 length: 5 * this.scale,
-                                length2: 5 * this.scale,
-                                lineStyle: {
-                                    color: '#d3d3d3'
-                                },
-                                align: 'right'
+                                length2: 10,
+                                align: 'bottom'
                             },
                             color: "#000",
                             emphasis: {
@@ -791,7 +768,7 @@
                         },
                         lableLine: {
                             normal: {
-                                show: false
+                                show: false,
                             },
                             emphasis: {
                                 show: false
@@ -816,9 +793,99 @@
             // 近七日接警类型数据分析、近七日报警方式数据分析、近七日来话类型数据分析
             sevensjfx(chartContainer, sourceArr, colorList) {
                 let seriesArr = [];
-                let dateArr = [];
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
                 this.chartsObj[chartContainer] = myChart;
+                for (let i = 0; i < sourceArr['data'].length; i++) {
+                    seriesArr.push({
+                        name: sourceArr['data'][i].name,
+                        type: "line",
+                        showSymbol: false,
+                        smooth: true,
+                        itemStyle: {
+                            normal: {
+                                color: colorList[i]
+                            }
+                        },
+                        lineStyle: {
+                            width: 3
+                        },
+                        data: sourceArr['data'][i].value
+                    });
+                }
+                let option = {
+                    legend: {
+                        textStyle: {
+                            fontSize: 20 * this.scale,
+                            color: '#63cbff'
+                        },
+                        itemWidth: 18 * this.scale,
+                        itemHeight: 18 * this.scale,
+                        width:'85%'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        splitLine: {
+                            show: false
+                        },
+                        boundaryGap: false,
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: this.axisesColor
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            fontSize: 20 * this.scale,
+                        },
+                        data: sourceArr['date']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                type: 'dashed',
+                                color: '#03eeff'
+                            }
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: this.axisesColor
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            fontSize: 20 * this.scale,
+                        },
+                    },
+                    series: seriesArr,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            lineStyle: {
+                                color: '#57617B'
+                            }
+                        },
+                    },
+                    grid: {
+                        top: 100 * this.scale,
+                        bottom: 60 * this.scale
+                    },
+                };
+                myChart.setOption(option);
+            },
+            sevensjfx1(chartContainer, sourceArr, colorList) {
+                let seriesArr = [];
+                let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
+                let myChart = this.$echarts.init(document.getElementById(chartContainer));
+                this.chartsObj[chartContainer] = myChart;
+                dateArr.reverse();
                 for (let i = 0; i < sourceArr.length; i++) {
                     seriesArr.push({
                         name: sourceArr[i].name,
@@ -839,13 +906,12 @@
                 let option = {
                     legend: {
                         textStyle: {
-                            fontSize: 12 * this.scale,
-                            color: function (params) {
-                                return colorList[params.dataIndex]
-                            }
+                            fontSize: 20 * this.scale,
+                            color: '#63cbff'
                         },
-                        itemWidth: 12 * this.scale,
-                        itemHeight: 12 * this.scale,
+                        itemWidth: 18 * this.scale,
+                        itemHeight: 18 * this.scale,
+                        width:'85%'
                     },
                     xAxis: {
                         type: 'category',
@@ -861,6 +927,9 @@
                         },
                         axisTick: {
                             show: false
+                        },
+                        axisLabel: {
+                            fontSize: 20 * this.scale,
                         },
                         data: dateArr
                     },
@@ -881,7 +950,10 @@
                         },
                         axisTick: {
                             show: false
-                        }
+                        },
+                        axisLabel: {
+                            fontSize: 20 * this.scale,
+                        },
                     },
                     series: seriesArr,
                     tooltip: {
@@ -893,152 +965,198 @@
                         },
                     },
                     grid: {
-                        top: 90 * this.scale,
+                        top: 100 * this.scale,
                         bottom: 60 * this.scale
-                    }
+                    },
                 };
                 myChart.setOption(option);
             },
-           // 跳转
-            jump(e){
-                let h3=e.currentTarget;
+            // 日期
+            getDate() {
+                switch (this.period) {
+                    case "week":
+                        let date1 = new Date();
+                        let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                        let timestamp = (new Date()).getTime();
+                        let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                        let date2 = new Date(day);
+                        let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                        // console.log(end1);
+                        break;
+                    case 'lastWeek':
+                        let d = new Date();
+// set to Monday of this week
+                        d.setDate(d.getDate() - (d.getDay() + 6) % 7);
+// set to previous Monday
+                        let date3 = new Date(d.setDate(d.getDate() - 7));
+                        let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
+// create new date of day before
+                        let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7);
+                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
+                        break;
+                }
+                let day = '20191024';
+                let date = new Date();
+            },
+            // 跳转
+            jump(e) {
+                let h3 = e.currentTarget;
                 switch (h3.innerText) {
-                    case '近七日接警类型数据分析':this.$router.push({name:'全省接警类型数据分析',query:{title:'全省接警类型数据分析'}});break;
-                    case '近七日报警方式数据分析':this.$router.push({name:'全省报警方式数据分析',query:{title:'全省报警方式数据分析'}});break;
-                    case '近七日来话类型数据分析':this.$router.push({name:'全省来话类型数据分析',query:{title:'全省来话类型数据分析'}});break;
-                    case '警情分类数据分析':this.$router.push({name:'全省警情分类数据分析',query:{title:'全省警情分类数据分析'}});break;
+                    case '近七日接警类型数据分析':
+                        this.$router.push({name: '全省接警类型数据分析', query: {title: '全省接警类型数据分析'}});
+                        break;
+                    case '近七日报警方式数据分析':
+                        this.$router.push({name: '全省报警方式数据分析', query: {title: '全省报警方式数据分析'}});
+                        break;
+                    case '近七日来话类型数据分析':
+                        this.$router.push({name: '全省来话类型数据分析', query: {title: '全省来话类型数据分析'}});
+                        break;
+                    case '警情分类数据分析':
+                        this.$router.push({name: '全省警情分类数据分析', query: {title: '全省警情分类数据分析'}});
+                        break;
                 }
             },
-        //    数据转换
+            //    数据转换
             change() {
-                let dataArr=[];
+                let dataArr = [];
                 let data = {
                     "sevenDays": {
                         "122报警": [
                             {
-                                "tjrq": "20130308",
+                                "tjrq": "20191008",
                                 "jjlxdm": "122报警",
                                 "jjsl": 54
                             },
                             {
-                                "tjrq": "20130307",
+                                "tjrq": "20191007",
                                 "jjlxdm": "122报警",
                                 "jjsl": 74
                             },
                             {
-                                "tjrq": "20130306",
+                                "tjrq": "20191006",
                                 "jjlxdm": "122报警",
                                 "jjsl": 92
                             },
                             {
-                                "tjrq": "20130305",
+                                "tjrq": "20191005",
                                 "jjlxdm": "122报警",
                                 "jjsl": 69
                             },
                             {
-                                "tjrq": "20130304",
+                                "tjrq": "20191004",
                                 "jjlxdm": "122报警",
                                 "jjsl": 58
                             },
                             {
-                                "tjrq": "20130303",
+                                "tjrq": "20191003",
                                 "jjlxdm": "122报警",
                                 "jjsl": 92
                             }
                         ],
                         "110报警": [
                             {
-                                "tjrq": "20130308",
+                                "tjrq": "20191008",
                                 "jjlxdm": "110报警",
                                 "jjsl": 558
                             },
                             {
-                                "tjrq": "20130307",
+                                "tjrq": "20191007",
                                 "jjlxdm": "110报警",
                                 "jjsl": 371
                             },
                             {
-                                "tjrq": "20130306",
+                                "tjrq": "20191006",
                                 "jjlxdm": "110报警",
                                 "jjsl": 506
                             },
                             {
-                                "tjrq": "20130305",
+                                "tjrq": "20191005",
                                 "jjlxdm": "110报警",
                                 "jjsl": 439
                             },
                             {
-                                "tjrq": "20130304",
+                                "tjrq": "20191004",
                                 "jjlxdm": "110报警",
                                 "jjsl": 413
                             },
                             {
-                                "tjrq": "20130303",
+                                "tjrq": "20191003",
                                 "jjlxdm": "110报警",
                                 "jjsl": 436
                             }
                         ],
                         "119报警": [
                             {
-                                "tjrq": "20130308",
+                                "tjrq": "20191008",
                                 "jjlxdm": "119报警",
                                 "jjsl": 5
                             },
                             {
-                                "tjrq": "20130307",
+                                "tjrq": "20191007",
                                 "jjlxdm": "119报警",
                                 "jjsl": 8
                             },
                             {
-                                "tjrq": "20130306",
+                                "tjrq": "20191006",
                                 "jjlxdm": "119报警",
                                 "jjsl": 10
                             },
                             {
-                                "tjrq": "20130305",
+                                "tjrq": "20191005",
                                 "jjlxdm": "119报警",
                                 "jjsl": 9
                             },
                             {
-                                "tjrq": "20130304",
+                                "tjrq": "20191004",
                                 "jjlxdm": "119报警",
                                 "jjsl": 3
                             },
                             {
-                                "tjrq": "20130303",
+                                "tjrq": "20191003",
                                 "jjlxdm": "119报警",
                                 "jjsl": 14
                             }
-                        ]
+                        ],
                     }
                 };
                 // console.log(data.sevenDays["110报警"]);
-                let date=[];
-                let data1=[];
-                for (let i=0;i<data.sevenDays["122报警"].length;i++){
+                let date = [];
+                let dateArr = [];
+                let data1 = [];
+                for (let i = 0; i < data.sevenDays["122报警"].length; i++) {
                     date.push(data.sevenDays["122报警"][i].tjrq);
                     data1.push(data.sevenDays["122报警"][i].jjsl)
                 }
-                let data2=[];
-                for (let i=0;i<data.sevenDays["110报警"].length;i++){
+                for (let i = 0; i < date.length; i++) {
+                    let Y = date[i].slice(0, 4);
+                    let M = date[i].slice(4, 6);
+                    let D = date[i].slice(6, 8);
+                    dateArr[i] = M + '-' + D;
+                }
+                let data2 = [];
+                for (let i = 0; i < data.sevenDays["110报警"].length; i++) {
                     data2.push(data.sevenDays["110报警"][i].jjsl)
                 }
-                let data3=[];
-                for (let i=0;i<data.sevenDays["119报警"].length;i++){
+                let data3 = [];
+                for (let i = 0; i < data.sevenDays["119报警"].length; i++) {
                     data3.push(data.sevenDays["119报警"][i].jjsl)
                 }
-                dataArr.push({name:'122报警',value:data1});
-                dataArr.push({name:'110报警',value:data2});
-                dataArr.push({name:'110报警',value:data3});
+                dataArr.push({name: '122报警', value: data1});
+                dataArr.push({name: '110报警', value: data2});
+                dataArr.push({name: '119报警', value: data3});
+                this.sevenjjlxsjfxSource.data = dataArr;
+                this.sevenjjlxsjfxSource.date = dateArr;
+                this.sevenjjlxsjfxSource.color = ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'];
             }
         },
         mounted() {
             this.getScale();
+            this.change();
+            this.getDate();
             let myCharts = document.querySelectorAll('.chart');
             myCharts.forEach(value => {
                 this.refreshCharts.push(value.getAttribute('id'))
             });
-            this.change();
             let that = this;
             let Index = {
                 init() {
@@ -1053,12 +1171,13 @@
                     that.jqjqtjChart();
                     that.jqflsjfxChart();
                     that.mapChart();
-                    that.jrjjlxsjfxSourceChart('jrjjlxsjfxSourceChart', that.jrjjlxsjfxSourceSource, that.jrjjlxsjfxSourceColor);
-                    that.jrjjlxsjfxSourceChart('jrbjfssjfxChart', that.jrbjfssjfxSource, that.jrbjfssjfxColor);
-                    that.jrjjlxsjfxSourceChart('jrrlhlxsjfxChart', that.jrrlhlxsjfxSource, that.jrrlhlxsjfxColor);
+                    //console.log(that.sevenjjlxsjfxSource);
+                    that.jrPieChart('jrPieChart', that.jrjjlxsjfxSourceSource, that.jrjjlxsjfxSourceColor);
+                    that.jrPieChart('jrbjfssjfxChart', that.jrbjfssjfxSource, that.jrbjfssjfxColor);
+                    that.jrPieChart('jrrlhlxsjfxChart', that.jrrlhlxsjfxSource, that.jrrlhlxsjfxColor);
                     that.sevensjfx('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor);
-                    that.sevensjfx('sevenbjfssjfxChart', that.sevenbjfssjfxSource, that.jrbjfssjfxColor);
-                    that.sevensjfx('sevenlhlxsjfxChart', that.sevenlhlxsjfxSource, that.jrrlhlxsjfxColor);
+                    that.sevensjfx1('sevenbjfssjfxChart', that.sevenbjfssjfxSource, that.jrbjfssjfxColor);
+                    that.sevensjfx1('sevenlhlxsjfxChart', that.sevenlhlxsjfxSource, that.jrrlhlxsjfxColor);
                 },
             };
             Index.init();
@@ -1073,9 +1192,11 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        h3{
-            cursor:pointer;
+
+        h3 {
+            cursor: pointer;
         }
+
         .l > div, .m > div, .r > div {
             width: 100%;
             align-content: space-between;
@@ -1084,28 +1205,30 @@
         .l {
             width: 25.68%;
             display: flex;
-            flex-direction: column ;
+            flex-direction: column;
             justify-content: space-between;
 
             .l-t {
-                height:30%;
-                background-image: url('../assets/images/index/l-t-bg.png') ;
+                height: 30%;
+                background-image: url('../assets/images/index/l-t-bg.png');
                 background-repeat: no-repeat;
-                background-size:100% 100%;
+                background-size: 100% 100%;
                 // margin-bottom:3.3%; 
             }
-            .l-m{
-                height:30%;
-                background-image: url('../assets/images/index/l-m-bg.png') ;
+
+            .l-m {
+                height: 30%;
+                background-image: url('../assets/images/index/l-m-bg.png');
                 background-repeat: no-repeat;
-                background-size:100% 100%;
+                background-size: 100% 100%;
                 // margin-bottom:3.3%; 
             }
-            .l-b{
-                height:30%;
-                background-image: url('../assets/images/index/l-b-bg.png') ;
+
+            .l-b {
+                height: 30%;
+                background-image: url('../assets/images/index/l-b-bg.png');
                 background-repeat: no-repeat;
-                background-size:100% 100%;
+                background-size: 100% 100%;
                 // margin-bottom:3.3%; 
             }
 
@@ -1159,8 +1282,8 @@
             width: 100%;
             height: 100%;
             //标题
-            >h3 {
-                height: 20%;
+            > h3 {
+                height: 15%;
                 text-align: center;
             }
         }
@@ -1172,9 +1295,10 @@
 
         .m {
             width: 25.73%;
-            background-image: url('../assets/images/index/m.png') ;
+            background-image: url('../assets/images/index/m.png');
             background-repeat: no-repeat;
-            background-size:100% 100%;
+            background-size: 100% 100%;;
+
             .chartBox {
                 position: relative;
 
@@ -1215,47 +1339,51 @@
                     height: 14.25rem;
 
                     .chartBox {
-                        height: 80%;
+                        height: 85%;
                     }
                 }
-                .r-l-t{
+
+                .r-l-t {
                     height: 30%;
-                    background-image: url('../assets/images/index/r-l-all.png') ;
+                    background-image: url('../assets/images/index/r-l-all.png');
                     background-repeat: no-repeat;
-                    background-size:100% 100%;
+                    background-size: 100% 100%;
                 }
-                .r-l-b{
+
+                .r-l-b {
                     height: 30%;
-                    background-image: url('../assets/images/index/r-l-all.png') ;
+                    background-image: url('../assets/images/index/r-l-all.png');
                     background-repeat: no-repeat;
-                    background-size:100% 100%;
+                    background-size: 100% 100%;
                 }
-                .r-l-m{
+
+                .r-l-m {
                     height: 30%;
-                    background-image: url('../assets/images/index/r-l-all.png') ;
+                    background-image: url('../assets/images/index/r-l-all.png');
                     background-repeat: no-repeat;
-                    background-size:100% 100%;
+                    background-size: 100% 100%;
                 }
 
 
+                .r-r-t {
+                    height: 30%;
+                    background-image: url('../assets/images/index/r-r-all.png');
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                }
 
-                .r-r-t{
+                .r-r-m {
                     height: 30%;
-                    background-image: url('../assets/images/index/r-r-all.png') ;
+                    background-image: url('../assets/images/index/r-r-all.png');
                     background-repeat: no-repeat;
-                    background-size:100% 100%;
+                    background-size: 100% 100%;;
                 }
-                .r-r-m{
+
+                .r-r-b {
                     height: 30%;
-                    background-image: url('../assets/images/index/r-r-all.png') ;
+                    background-image: url('../assets/images/index/r-r-all.png');
                     background-repeat: no-repeat;
-                    background-size:100% 100%;;
-                }
-                .r-r-b{
-                    height: 30%;
-                    background-image: url('../assets/images/index/r-r-all.png') ;
-                    background-repeat: no-repeat;
-                    background-size:100% 100%;;
+                    background-size: 100% 100%;;
                 }
 
             }
