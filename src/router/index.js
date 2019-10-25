@@ -22,36 +22,82 @@ const routes = [
         name: '',
         component: App,
         children: [
+
             {
                 path: "home",
                 name: '首页',
                 component: () => import("../views/Home"),
             },
-          {
-            path: "pjqsjfx",
-            name: '全省接警类型数据分析',
-            component: () => import("../views/PJQSJFX"),
-          },
+            {
+                path: "pjqsjfx",
+                name: '全省接警类型数据分析',
+                component: () => import("../views/PJQSJFX"),
+                redirect: '/pjqsjfx/province_dataAnalyze',
+                children : [
+                    {
+                        path : 'province_dataAnalyze',
+                        name : '省接警类型数据分析',
+                        component: () => import("../views/big_proRight"),
+                    },
+                    {
+                        path : 'city_dataAnalyze',
+                        name : '市接警类型数据分析',
+                        component: () => import("../views/big_cityRight"),
+                    }
+                ]
+            },
             {
                 path: "pjqsjfx",
                 name: '全省报警方式数据分析',
                 component: () => import("../views/PJQSJFX"),
+                children : [
+                    {
+                        path : 'province_dataAnalyze',
+                        name : '省接警类型数据分析',
+                        component: () => import("../views/PJQSJFX"),
+                    },
+                    {
+                        path : 'city_dataAnalyze',
+                        name : '市接警类型数据分析',
+                        component: () => import("../views/PJQSJFX"),
+                    }
+                ]
             },
             {
                 path: "pjqsjfx",
                 name: '全省来话类型数据分析',
                 component: () => import("../views/PJQSJFX"),
+                children : [
+                    {
+                        path : 'province_dataAnalyze',
+                        name : '省接警类型数据分析',
+                        component: () => import("../views/PJQSJFX"),
+                    },
+                    {
+                        path : 'city_dataAnalyze',
+                        name : '市接警类型数据分析',
+                        component: () => import("../views/PJQSJFX"),
+                    }
+                ]
             },
             {
                 path: "pjqfsjfx",
                 name: '全省警情分类数据分析',
                 component: () => import("../views/PJQFLSJFX"),
-            },
-            {
-                path: "city",
-                name: '全省接警类型数据分析',
-                component: () => import("../views/City"),
-            },
+
+                children : [
+                    {
+                        path : 'province_dataAnalyze',
+                        name : '省接警类型数据分析',
+                        component: () => import("../views/PJQFLSJFX"),
+                    },
+                    {
+                        path : 'city_dataAnalyze',
+                        name : '市接警类型数据分析',
+                        component: () => import("../views/PJQFLSJFX"),
+                    }
+                ]
+            }
         ]
     },
     /*{

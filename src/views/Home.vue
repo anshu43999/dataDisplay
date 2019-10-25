@@ -1003,13 +1003,13 @@
                 let h3 = e.currentTarget;
                 switch (h3.innerText) {
                     case '近七日接警类型数据分析':
-                        this.$router.push({name: '全省接警类型数据分析', query: {title: '全省接警类型数据分析'}});
+                        this.$router.push({name: '省接警类型数据分析', query: {title: '全省接警类型数据分析'}});
                         break;
                     case '近七日报警方式数据分析':
-                        this.$router.push({name: '全省报警方式数据分析', query: {title: '全省报警方式数据分析'}});
+                        this.$router.push({name: '省接警类型数据分析', query: {title: '全省报警方式数据分析'}});
                         break;
                     case '近七日来话类型数据分析':
-                        this.$router.push({name: '全省来话类型数据分析', query: {title: '全省来话类型数据分析'}});
+                        this.$router.push({name: '省接警类型数据分析', query: {title: '全省来话类型数据分析'}});
                         break;
                     case '警情分类数据分析':
                         this.$router.push({name: '全省警情分类数据分析', query: {title: '全省警情分类数据分析'}});

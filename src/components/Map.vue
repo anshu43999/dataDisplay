@@ -7,7 +7,8 @@
         name: "Map",
         data(){
            return {
-               chartsObj:{}
+               chartsObj:{},
+               type:''
            }
         },
         methods:{
@@ -50,11 +51,14 @@
                                     })
                                 }
                                 renderMap(params.name, d);
+                                that.type=that.$route.query.title;
+                                that.$router.push({name:'市接警类型数据分析',query:{title:'市接警类型数据分析',city:params.name}});
                             }
                         });
                     } else {
 // 点击县级时是否返回
                         renderMap('山西省', mapdata);
+                        that.$router.push({name:'省接警类型数据分析',query:{title:that.type}});
                     }
                 });
                 //配置项
