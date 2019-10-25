@@ -40,7 +40,7 @@
                 </div>
                 <div class="r-b">
                     <div class="r-b-t">
-                        <div class="r-b-t-l-1" v-if="show">
+                        <div class="r-b-t-l-1" v-show="show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[2]}}</h3>
                                 <div class="chartBox">
@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-t-r-1" v-if="show">
+                        <div class="r-b-t-r-1" v-show="show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[3]}}</h3>
                                 <div class="chartBox">
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-t-m-2" v-if="!show">
+                        <div class="r-b-t-m-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[3]}}</h3>
                                 <div class="chartBox">
@@ -73,7 +73,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-t-r-2" v-if="!show">
+                        <div class="r-b-t-r-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[4]}}</h3>
                                 <div class="chartBox">
@@ -86,7 +86,7 @@
 
 
                     <div class="r-b-b">
-                        <div class="r-b-b-l-1" v-if="show">
+                        <div class="r-b-b-l-1" v-show="show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[4]}}</h3>
                                 <div class="chartBox">
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-b-r-1" v-if="show">
+                        <div class="r-b-b-r-1" v-show="show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[5]}}</h3>
                                 <div class="chartBox">
@@ -103,7 +103,7 @@
                             </div>
                         </div>
 
-                        <div class="r-b-b-l-2" v-if="!show">
+                        <div class="r-b-b-l-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[5]}}</h3>
                                 <div class="chartBox">
@@ -111,7 +111,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-b-m-2" v-if="!show">
+                        <div class="r-b-b-m-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[6]}}</h3>
                                 <div class="chartBox">
@@ -119,7 +119,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="r-b-b-r-2" v-if="!show">
+                        <div class="r-b-b-r-2" v-show="!show">
                             <div class="chart-wrap">
                                 <h3>{{this.chartTitle[7]}}</h3>
                                 <div class="chartBox">
@@ -706,6 +706,14 @@
         .chart{
             width: 100%;
             height: 100%;
+            &>div{
+                width: 100%!important;
+                height: 100%!important;
+                &>canvas{
+                    width: 100%!important;
+                    height: 100%!important;
+                }
+            }
         }
 
         .r {

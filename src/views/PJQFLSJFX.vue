@@ -33,8 +33,13 @@
                 </div>
                 <div class="r-b">
                     <div class="chart-wrap">
+                        <h3>{{this.chartTitle[2]}}</h3>
                         <div class="selectListBox">
-                            <ul></ul>
+                            <ul @click="selectItem">
+                                <li v-for="item in jqflsjfxSource" :key="item.name">
+                                    <div>{{item.name}}</div>
+                                </li>
+                            </ul>
                         </div>
                         <div class="chart" id="detailChart"></div>
                         <div class="chart" id="detailProportionChart"></div>
@@ -126,96 +131,9 @@
                 this.$router.go(-1);
             },
             setName() {
-                this.chartTitle = ['警情分类数据分析', '警情分类数据占比分析']
+                this.chartTitle = ['警情分类数据分析', '警情分类数据占比分析','警情分类数据占比分析']
             },
             //柱状图
-            /*barChart(chartContainer, sourceArr, colorList, xData) {
-                let myChart = this.$echarts.init(document.getElementById(chartContainer));
-                this.chartsObj[chartContainer] = myChart;
-                let option = {
-                    xAxis: {
-                        type: 'category',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            rotate: 30,
-                            formatter: function (params) {
-                                let newParamsName = "";
-                                let paramsNameNumber = params.length;
-                                let provideNumber = 7;  //一行显示几个字
-                                let rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-                                if (paramsNameNumber > provideNumber) {
-                                    for (let p = 0; p < rowNumber; p++) {
-                                        let tempStr = "";
-                                        let start = p * provideNumber;
-                                        let end = start + provideNumber;
-                                        if (p == rowNumber - 1) {
-                                            tempStr = params.substring(start, paramsNameNumber);
-                                        } else {
-                                            tempStr = params.substring(start, end) + "\n";
-                                        }
-                                        newParamsName += tempStr;
-                                    }
-
-                                } else {
-                                    newParamsName = params;
-                                }
-                                return newParamsName
-                            }
-                        },
-                        data: xData
-                    },
-                    yAxis: {
-                        type: 'value',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        }
-                    },
-                    series: {
-                        type: 'bar',
-                        stack: 'chart',
-                        data: sourceArr,
-                        itemStyle: {
-                            color: new this.$echarts.graphic.LinearGradient(
-                                //右，下，左，上
-                                0, 0, 0, 1, [{
-                                    //0%位置的颜色
-                                    offset: 0,
-                                    color: colorList[0]
-                                },
-                                    {
-                                        //100%位置的颜色
-                                        offset: 1,
-                                        color: colorList[1]
-                                    }
-                                ]
-                            )
-                        },
-                        barWidth: 17 * this.scale
-                    },
-                    tooltip: {}
-                };
-                myChart.setOption(option);
-            },*/
             barChart() {
                 let xData = [];
                 this.jqflsjfxSource.forEach(value => {
@@ -264,7 +182,9 @@
                                     newParamsName = params;
                                 }
                                 return newParamsName
-                            }
+                            },
+                            fontSize:20*this.scale,
+                            interval:0
                         },
                         data: xData
                     },
@@ -281,6 +201,9 @@
                         },
                         axisTick: {
                             show: false
+                        },
+                        axisLabel:{
+                            fontSize:20*this.scale
                         }
                     },
                     series: {
@@ -305,7 +228,11 @@
                         },
                         barWidth: 17 * this.scale
                     },
-                    tooltip: {}
+                    grid:{
+                        top:80*this.scale,
+                        bottom:120*this.scale
+                    },
+                    tooltip: {},
                 };
                 myChart.setOption(option);
             },
@@ -482,14 +409,15 @@
                                 formatter: function (params) {
                                     return params.value
                                 },
-                                color: '#0c9ca3'
+                                color: '#0c9ca3',
+                                fontSize:20*this.scale
                             }
                         },
                         barWidth: 17 * this.scale
                     },
                     grid: {
-                        top: 70 * this.scale,
-                        bottom: 90 * this.scale
+                        top: 0,
+                        bottom: 0
                     }
                 };
                 myChart.setOption(option);
@@ -501,24 +429,33 @@
                 sourceArr.forEach((value, index) => {
                     value.itemStyle={
                         normal: {
-                            color: colorList[index]
-                        }
-                    }
+                            color: colorList[index],
+                        },
+                    };
+                    value.label={
+                        textStyle: {
+                            color: colorList[index],
+                            fontSize:20*this.scale,
+                        },
+                    };
                 });
                 let option={
-                    tooltip: {
-                        trigger: 'item',
-                        formatter: "{b} : {d}%"
-                    },
-                    series: [{
+                    tooltip: {},
+                    series: {
                         type: 'sunburst',
-                        radius: ['45%', '60%'],
+                        radius: ['47%', '60%'],
                         center: ['50%', '50%'],
                         data: sourceArr,
                         label: {
                             rotate: 'radial',
+                            align:'left',
+                            position:'top',
+                            distance:26,
                         },
-                    }]
+                        itemStyle: {
+                            borderColor: '#021f3b',
+                        },
+                    }
                 };
                 myChart.setOption(option);
             },
@@ -542,12 +479,24 @@
                     },
                 };
                 Index.init();
+            },
+            selectedItem(){
+                let item = document.querySelectorAll('.selectListBox>ul>li>div');
+                item[0].classList.add('active');
+            },
+            selectItem(e){
+                let item = document.querySelectorAll('.selectListBox>ul>li>div');
+                item.forEach((value) => {
+                    value.classList.remove('active');
+                });
+                e.target.classList.add('active')
             }
         },
         mounted() {
             this.getScale();
             this.setName();
             this.renderChart();
+            this.selectedItem();
         }
     }
 </script>
@@ -563,7 +512,7 @@
         // justify-content: space-around;
 
         // main{
-        //     padding:0 2rem 4rem; 
+        //     padding:0 2rem 4rem;
         // }
     }
 
@@ -616,7 +565,6 @@
                 text-align: center;
             }
         }
-
 
         .r {
             width: 72.6%;
@@ -679,29 +627,52 @@
                 background-size: 100% 100%;
 
                 .selectListBox {
-                    width: 8.04rem;
+                    width: 12.14%;
                     height: 100%;
                     float: left;
 
                     ul {
                         width: 100%;
                         height: 21.67rem;
-                        background: #17fff3;
                         margin-top: 1.44rem;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        background-image: url('../assets/images/type/bg.png') ;
+                        background-repeat: no-repeat;
+                        background-size: 100% 100%;
+                        box-shadow:0 0 5px #011425;
+                        li{
+                            width: 100%;
+                            height: 5.85%;
+                            background-image: url('../assets/images/type/itemBg.png') ;
+                            div{
+                                width: 166%;
+                                height: 167%;
+                                transform: scale(0.6);
+                                transform-origin: left top;
+                                text-align: center;
+                                line-height: 2;
+                                cursor: pointer;
+                                &.active{
+                                    background: #4c7fff;
+                                }
+                            }
+                        }
                     }
                 }
 
                 .chart {
-                    width: 21.16rem;
-                    height: 100%;
+                    width: 36.97%;
+                    height: 80%;
                     float: left;
-                    background: aliceblue;
                     margin-left: 1.01rem;
+                    margin-top: 2rem;
                 }
                 .chart:nth-child(3){
-                    background: antiquewhite;
+                    float: left;
                     width: 32.77rem;
-                    margin-left: 4.11rem;
+                    margin-right: 3rem;
                 }
             }
         }
