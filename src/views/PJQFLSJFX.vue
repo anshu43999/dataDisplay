@@ -357,7 +357,6 @@
                         },
                         axisLabel: {
                             show: false,
-                            fontSize: 12 * this.scale
                         },
                         position: 'top',
                     },
@@ -378,7 +377,7 @@
                         },
                         axisLabel: {
                             show: true,
-                            fontSize: 12 * this.scale
+                            fontSize: 20 * this.scale
                         },
                         data: yData
                     },
@@ -417,6 +416,7 @@
                         barWidth: 17 * this.scale
                     },
                     grid: {
+                        left:80,
                         top: 0,
                         bottom: 0
                     }
@@ -587,7 +587,7 @@
 
                 .chartBox {
                     width: 100%;
-                    height: 100%;
+                    height: 90%;
                 }
 
                 .r-t-l {

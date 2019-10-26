@@ -177,17 +177,17 @@
                 ],*/
                 grading: [0.2, 0.4, 0.6, 0.8, 1],
                 mapSource: [
-                    {name: "太原市", value: 80, value1: 70},
+                    {name: "太原市", value: 800, value1: 70},
                     {name: "长治市", value: 42, value1: 50},
                     {name: "朔州市", value: 4, value1: 20},
-                    {name: "运城市", value: 53, value1: 60},
+                    {name: "运城市", value: 32, value1: 60},
                     {name: "大同市", value: 30, value1: 80},
-                    {name: "晋城市", value: 52, value1: 60},
+                    {name: "晋城市", value: 10, value1: 60},
                     {name: "晋中市", value: 21, value1: 30},
                     {name: "临汾市", value: 5, value1: 20},
                     {name: "忻州市", value: 5, value1: 50},
                     {name: "阳泉市", value: 10, value1: 30},
-                    {name: "吕梁市", value: 32, value1: 40},
+                    {name: "吕梁市", value: 20, value1: 40},
                 ],
                 mapData: {name: '报警事件总数', value: 96666},
                 //    今日接警类型数据分析、今日来话类型数据分析
@@ -648,34 +648,104 @@
                         },
                         roam: false,
                     };
+                    // let color=['rgba(255,0,0,0.2)','rgba(255,0,0,0.4)','rgba(255,0,0,0.6)','rgba(255,0,0,0.8)','rgba(255,0,0,1)'];
                     option.visualMap = {
                         type: 'piecewise',
                         pieces: [{
                             max: that.grading[0],
                             label: '一级',
-                            color: '#00e57c'
+                            color: '#47bef5'
+                            /*color: new that.$echarts.graphic.LinearGradient(
+                                //右，下，左，上
+                                0, 0, 0, 1, [{
+                                    //0%位置的颜色
+                                    offset: 0,
+                                    color: 'rgb(15,135,91)'
+                                },
+                                    {
+                                        //100%位置的颜色
+                                        offset: 1,
+                                        color: 'rgb(83,205,156)'                                    }
+                                ]
+                            )*/
                         }, {
                             min: that.grading[0],
                             max: that.grading[1],
                             label: '二级',
-                            color: '#ffe71a'
+                            color: '#3d8bea',
+                            /*color: new that.$echarts.graphic.LinearGradient(
+                                //右，下，左，上
+                                0, 0, 0, 1, [{
+                                    //0%位置的颜色
+                                    offset: 0,
+                                    color: 'rgb(21,179,171)'
+                                },
+                                    {
+                                        //100%位置的颜色
+                                        offset: 1,
+                                        color: 'rgb(127,245,238)'
+                                    }
+                                ]
+                            )*/
                         }, {
                             min: that.grading[1],
                             max: that.grading[2],
                             label: '三级',
-                            color: '#ffad1a'
+                            color: '#2a5cc0',
+                            /*color: new that.$echarts.graphic.LinearGradient(
+                                //右，下，左，上
+                                0, 0, 0, 1, [{
+                                    //0%位置的颜色
+                                    offset: 0,
+                                    color: 'rgb(24,98,150)'
+                                },
+                                    {
+                                        //100%位置的颜色
+                                        offset: 1,
+                                        color: 'rgb(25,177,227)'
+                                    }
+                                ]
+                            )*/
                         },
                             {
                                 min: that.grading[2],
                                 max: that.grading[3],
                                 label: '四级',
-                                color: '#ff6600'
+                                color: '#0f07b0'
+                                /*color: new that.$echarts.graphic.LinearGradient(
+                                    //右，下，左，上
+                                    0, 0, 0, 1, [{
+                                        //0%位置的颜色
+                                        offset: 0,
+                                        color: 'rgb(5,82,173)'
+                                    },
+                                        {
+                                            //100%位置的颜色
+                                            offset: 1,
+                                            color: 'rgb(72,124,251)'
+                                        }
+                                    ]
+                                )*/
                             },
                             {
                                 min: that.grading[3],
                                 // max: that.grading[4],
                                 label: '五级',
-                                color: '#ed0000'
+                                color: '#060086'
+                                /*color: new that.$echarts.graphic.LinearGradient(
+                                    //右，下，左，上
+                                    0, 0, 0, 1, [{
+                                        //0%位置的颜色
+                                        offset: 0,
+                                        color: 'rgb(5,29,138)'
+                                    },
+                                        {
+                                            //100%位置的颜色
+                                            offset: 1,
+                                            color: 'rgb(25,62,236)'
+                                        }
+                                    ]
+                                )*/
                             }
                         ],
                         left: 'right',
@@ -684,9 +754,10 @@
                         seriesIndex: [1],
                         textStyle: {
                             color: '#fff'
-                        }
+                        },
+
                         /*inRange: {
-                            color: ['#f7fbff', '#4e7cef', '#0549f3']
+                            color: ['#00e57c', '#ed0000']
                         }*/
                     };
 // 渲染地图
