@@ -4,11 +4,18 @@ import Login from "../views/Login";
 import App from "../App";
 
 Vue.use(VueRouter);
+<<<<<<< HEAD
+=======
+
+>>>>>>> cedd07da594057dc6d04b93f38fc44fcab65691f
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
     return originalPush.call(this, location).catch(err => err)
 };
+<<<<<<< HEAD
 
+=======
+>>>>>>> cedd07da594057dc6d04b93f38fc44fcab65691f
 
 
 
