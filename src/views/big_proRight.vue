@@ -625,7 +625,7 @@ created() {
 mounted() {
     this.getScale();
     this.renderChart();
-    console.log(this.typeAnalyze)
+    // console.log(this.typeAnalyze)
 
 },
 beforeCreate() {}, //生命周期 - 创建之前

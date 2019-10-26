@@ -84,7 +84,7 @@
         },
         mounted() {
 
-            console.log(this.$route.query.title);
+            // console.log(this.$route.query.title);
             // this.typeAnalyze = this.$route.query.title
 
         },

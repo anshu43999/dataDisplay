@@ -648,34 +648,35 @@
                         },
                         roam: false,
                     };
+                    let color=['rgba(255,0,0,0.2)','rgba(255,0,0,0.4)','rgba(255,0,0,0.6)','rgba(255,0,0,0.8)','rgba(255,0,0,1)'];
                     option.visualMap = {
                         type: 'piecewise',
                         pieces: [{
                             max: that.grading[0],
                             label: '一级',
-                            color: '#00e57c'
+                            color: color[0]
                         }, {
                             min: that.grading[0],
                             max: that.grading[1],
                             label: '二级',
-                            color: '#ffe71a'
+                            color: color[1]
                         }, {
                             min: that.grading[1],
                             max: that.grading[2],
                             label: '三级',
-                            color: '#ffad1a'
+                            color: color[2]
                         },
                             {
                                 min: that.grading[2],
                                 max: that.grading[3],
                                 label: '四级',
-                                color: '#ff6600'
+                                color: color[3]
                             },
                             {
                                 min: that.grading[3],
                                 // max: that.grading[4],
                                 label: '五级',
-                                color: '#ed0000'
+                                color: color[4]
                             }
                         ],
                         left: 'right',
@@ -684,9 +685,10 @@
                         seriesIndex: [1],
                         textStyle: {
                             color: '#fff'
-                        }
+                        },
+
                         /*inRange: {
-                            color: ['#f7fbff', '#4e7cef', '#0549f3']
+                            color: ['#00e57c', '#ed0000']
                         }*/
                     };
 // 渲染地图

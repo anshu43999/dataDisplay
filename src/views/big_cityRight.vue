@@ -3,7 +3,7 @@
     <div class='r'>
         <div class="r-t">
             <div class="chart-wrap">
-                <h3>近七日警情数据占比分析</h3>
+                <h3>{{this.title[0]}}</h3>
                 <div class="chartBox">
                     <div class="chart" id="proportionChart"></div>
                 </div>
@@ -15,26 +15,40 @@
             <div class="r-b-t">
                 <div class="r-b-t-l">
                     <div class="chart-wrap">
-                        <h3>近七日警情数据占比分析</h3>
+                        <h3>{{this.title[1]}}</h3>
                         <div class="chartBox">
-                            <div class="chart" id="proportionChart"></div>
+                            <div class="chart" id="subClassChart1"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="r-b-t-l">
-
+                    <div class="chart-wrap">
+                        <h3>{{this.title[2]}}</h3>
+                        <div class="chartBox">
+                            <div class="chart" id="subClassChart2"></div>
+                        </div>
+                    </div>
                 </div>
-
             </div>
 
             <div class="r-b-b">
                 <div class="r-b-b-l">
-
+                    <div class="chart-wrap">
+                        <h3>{{this.title[3]}}</h3>
+                        <div class="chartBox">
+                            <div class="chart" id="subClassChart3"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="r-b-b-l">
-
+                    <div class="chart-wrap">
+                        <h3>{{this.title[4]}}</h3>
+                        <div class="chartBox">
+                            <div class="chart" id="subClassChart4"></div>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -57,16 +71,32 @@
         data() {
 //这里存放数据
             return {
-                scale:1,
-                refreshCharts:[],
-                proportionSource:[
-                    {name:'110报警',value:25},
-                    {name:'122报警',value:25},
-                    {name:'119报警',value:25},
-                    {name:'综合报警',value:25},
-                    {name:'其他接警类型',value:25},
-                ],
-                proportionColor:[['#05dbb0','#ccfff5'],['#00a3c0','#9ff1ff'],['#4160fd','#a5b4ff'],['#bd0fdc','#f2aaff'],['#803ff7','#c3a2ff'],]
+                scale: 1,
+                refreshCharts: [],
+                proportionSource: [],
+                proportionColor: [],
+                title: [],
+                chartsObj:{},
+                axisesColor: '#0057ab',
+                dateArr:['10-1','10-2','10-3','10-4','10-5','10-6','10-7'],
+                //细类1
+                subClassSource1: [],
+                subClassColorList1: [],
+                //细类2
+                subClassSource2: [],
+                subClassColorList2: [],
+                //细类3
+                subClassSource3: [],
+                subClassColorList3: [],
+                //细类4
+                subClassSource4: [],
+                subClassColorList4: [],
+                //细类5
+                subClassSource5: [],
+                subClassColorList5: [],
+                //细类6
+                subClassSource6: [],
+                subClassColorList6: [],
             };
         },
 //监听属性 类似于data概念
@@ -78,15 +108,16 @@
             getScale() {
                 this.scale = localStorage.getItem('scale');
             },
-            percent(sourceArr,colorList){
-                let myChart=this.$echarts.init(document.getElementById('proportionChart'));
-                let titleArr=[];
-                let seriesArr=[];
-                sourceArr.forEach(function(item, index){
+            percent(sourceArr, colorList) {
+                let myChart = this.$echarts.init(document.getElementById('proportionChart'));
+                this.chartsObj.proportionChart = myChart;
+                let titleArr = [];
+                let seriesArr = [];
+                sourceArr.forEach(function (item, index) {
                     titleArr.push(
                         {
-                            text:item.name,
-                            left: index * 20 + 10 +'%',
+                            text: item.name,
+                            left: index * 20 + 10 + '%',
                             top: '80%',
                             textAlign: 'center',
                             textStyle: {
@@ -103,7 +134,7 @@
                             type: 'pie',
                             clockWise: false,
                             radius: [48, 54],
-                            itemStyle:  {
+                            itemStyle: {
                                 normal: {
                                     color: colorList[index][0],
                                     shadowColor: colorList[index][0],
@@ -114,17 +145,17 @@
                                     labelLine: {
                                         show: false
                                     },
-                                    fontSize:20
+                                    fontSize: 20
                                 }
                             },
                             hoverAnimation: false,
-                            center: [index * 20 + 10 +'%', '40%'],
+                            center: [index * 20 + 10 + '%', '40%'],
                             data: [{
                                 value: item.value,
                                 label: {
                                     normal: {
-                                        formatter: function(params){
-                                            return params.value+'%';
+                                        formatter: function (params) {
+                                            return params.value + '%';
                                         },
                                         position: 'center',
                                         show: true,
@@ -135,7 +166,7 @@
                                     }
                                 },
                             }, {
-                                value: 100-item.value,
+                                value: 100 - item.value,
                                 name: 'invisible',
                                 itemStyle: {
                                     normal: {
@@ -149,13 +180,106 @@
                         }
                     )
                 });
-                let option={
-                    title:titleArr,
+                let option = {
+                    title: titleArr,
                     series: seriesArr
                 };
                 myChart.setOption(option);
             },
-            renderChart(){
+            subClassChart(container, sourceArr, colorList) {
+                let myChart = this.$echarts.init(document.getElementById(container));
+                this.chartsObj[container] = myChart;
+                let option = {
+                    xAxis: {
+                        type: 'category',
+                        splitLine: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: this.axisesColor
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            fontSize: 20 * this.scale
+                        },
+                        data: this.dateArr
+                    },
+                    yAxis: {
+                        type: 'value',
+                        splitLine: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: this.axisesColor
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            fontSize: 20 * this.scale
+                        },
+                    },
+                    series: {
+                        type: 'bar',
+                        stack: 'chart',
+                        data: sourceArr,
+                        itemStyle: {
+                            color: new this.$echarts.graphic.LinearGradient(
+                                //右，下，左，上
+                                0, 0, 0, 1, [{
+                                    //0%位置的颜色
+                                    offset: 0,
+                                    color: colorList[0]
+                                },
+                                    {
+                                        //100%位置的颜色
+                                        offset: 1,
+                                        color: colorList[1]
+                                    }
+                                ]
+                            )
+                        },
+                        barWidth: 17 * this.scale
+                    },
+                    tooltip: {},
+                    grid: {
+                        top: 90 * this.scale,
+                        bottom: 80 * this.scale,
+                        left: 100 * this.scale,
+                        right: 80 * this.scale
+                    }
+                };
+                myChart.setOption(option);
+            },
+            renderChart() {
+                switch (this.$route.query.title) {
+                    case '市接警类型数据分析':
+                        this.proportionSource = [
+                            {name: '110报警', value: 25},
+                            {name: '122报警', value: 25},
+                            {name: '119报警', value: 25},
+                            {name: '综合报警', value: 25},
+                            {name: '其他接警类型', value: 25},
+                        ];
+                        this.proportionColor = [['#05dbb0', '#ccfff5'], ['#00a3c0', '#9ff1ff'], ['#4160fd', '#a5b4ff'], ['#bd0fdc', '#f2aaff'], ['#803ff7', '#c3a2ff']];
+                        this.title = ['近七日警情数据占比分析'];
+                        this.subClassSource1 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        this.subClassColorList1 = ['#6ffeff', '#00a0a6'];
+                        this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
+                        this.subClassColorList2 = ['#6ffeff', '#00a0a6'];
+                        break;
+                }
+                this.proportionSource.forEach(value => {
+                    this.title.push(value.name);
+                });
                 let myCharts = document.querySelectorAll('.chart');
                 myCharts.forEach(value => {
                     this.refreshCharts.push(value.getAttribute('id'))
@@ -168,7 +292,8 @@
                         Public.chartsReDraw(that.chartsObj, null, [], this.refreshCharts)
                     },
                     loadData() {
-                        that.percent(that.proportionSource,that.proportionColor);
+                        that.percent(that.proportionSource, that.proportionColor);
+                        that.subClassChart('subClassChart1',that.subClassSource1,that.subClassColorList1)
                     },
                 };
                 Index.init();
@@ -201,17 +326,20 @@
 </script>
 <style lang='scss' scoped>
     //@import url(); 引入公共css类
-    .chart-wrap{
+    .chart-wrap {
         width: 100%;
         height: 100%;
-        h3{
+
+        h3 {
             height: 10%;
             text-align: center;
         }
-        .chartBox{
+
+        .chartBox {
             width: 100%;
             height: 90%;
-            .chart{
+
+            .chart {
                 width: 100%;
                 height: 100%;
             }
