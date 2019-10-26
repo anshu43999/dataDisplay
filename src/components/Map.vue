@@ -11,6 +11,7 @@
                chartsObj:{},
                type:'',
                newStr : '',
+               flag : false,
            }
         },
         methods:{
@@ -40,7 +41,37 @@
                 });
                 //点击地图
                 myChart.on('click', function (params) {
-                    if (params.name in cityObj) {
+                    console.log('执行');
+                    console.log('click')
+                    console.log(params.data);
+                    console.log(that.flag);
+                    // if(that.flag){
+                    //     renderMap('山西省', mapdata);
+                    //     let str =  '省'+that.newStr
+                    //             console.log(str);
+                    //     let str1 = '全省'+that.newStr
+                    //     that.$router.push({name:str,query:{title:str1}});
+                    //     this.flag = false;
+                    //     return
+                    // }else{
+                    //     let str =  '市'+that.newStr
+                    //             // console.log(str);
+                    //     that.flag = true;
+                    //     that.$router.push({name:str,query:{title:str,city:params.name}});
+                    //     return
+
+                    // }
+                    // flag
+
+                    if(that.flag){
+                        that.flag = false;
+                        renderMap('山西省', mapdata);
+                        let str =  '省'+that.newStr;
+                                console.log(str);
+                        let str1 = '全省'+that.newStr
+                        that.$router.push({name:str,query:{title:str1}});
+                        
+                    }else if(params.name in cityObj) {
 // 如果点击的是11个市，绘制选中地区的二级地图
                         that.$http.get('/static/json/' + cityObj[params.name] + '_full.json').then(res => {
                             if (res.status === 200) {
@@ -52,28 +83,27 @@
                                         name: res.data.features[i].properties.name,
                                     })
                                 }
-                                renderMap(params.name, d);
-                                // that.type=that.$route.query.title;
+                                that.flag = true;
+                                console.log('这是鬼畜的原因')
 
-                                console.log(that.typeAnalyze);
 
-                                let str =  '市'+that.newStr
-                                console.log(str);
-
+                                let str =  '市'+that.newStr;
                                 that.$router.push({name:str,query:{title:str,city:params.name}});
+                                renderMap(params.name, d);
+                               
                             }
                         });
                     } else {
-                        console.log(that.typeAnalyze);
-// 点击县级时是否返回
-                        renderMap('山西省', mapdata);
+                        // console.log(that.typeAnalyze);
+                        // 点击县级时是否返回
+                        // renderMap('山西省', mapdata);
 
-                        let str =  '省'+that.newStr
-                                console.log(str);
+                        // let str =  '省'+that.newStr
+                        //         console.log(str);
 
-                        let str1 = '全省'+that.newStr
+                        // let str1 = '全省'+that.newStr
 
-                        that.$router.push({name:str,query:{title:str1}});
+                        // that.$router.push({name:str,query:{title:str1}});
                     }
                 });
                 //配置项
@@ -166,8 +196,11 @@
             // this.newStr 
         },
         created(){
-            this.newStr  = this.typeAnalyze.substring(2);
-            console.log(this.newStr);
+            if(this.typeAnalyze){
+                this.newStr  = this.typeAnalyze.substring(2);
+
+            }
+            // console.log(this.newStr);
             // this.newStr 
         }
     }
