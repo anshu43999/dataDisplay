@@ -332,7 +332,7 @@
                 });
                 myChart.on('click',function (params) {
                     // let str='全省'+that.newStr;
-                    that.getProvince();
+                    that.mapChart();
                     that.$router.go(-1);
                 })
             }
