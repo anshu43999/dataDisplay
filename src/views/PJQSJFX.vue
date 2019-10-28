@@ -3,7 +3,7 @@
         <my-header></my-header>
         <div class="headerBox">
             <h3 id="back" @click="goBack">返回</h3>
-            <div class="filter">
+            <div class="filter" v-show="filter_show">
                 <ul class="filterItem" @click="selectItem">
                     <li v-for="item in periodArr" :key="item">
                         <div>{{item}}</div>
@@ -17,14 +17,14 @@
                 <div class="chart-wrap">
                     <div class="chartBox">
                         <!-- <keep-alive> -->
-                            <my-map  :typeAnalyze='typeAnalyze' ></my-map>
+                            <my-map  :typeAnalyze='typeAnalyze'   @filter_btn='filter_btn'></my-map>
                         <!-- </keep-alive> -->
                     </div>
                 </div>
             </div>
             <div class="r">
 
-                <router-view  :typeAnalyze='typeAnalyze'></router-view>
+                <router-view  :typeAnalyze='typeAnalyze'  @filter_btn='filter_btn'></router-view>
 
 
 
@@ -80,6 +80,7 @@
                 subClassSource6: [],
                 subClassColorList6: [],
                 typeAnalyze: '111111',    //判断点击的类型
+                filter_show : true,
             }
         },
         methods: {
@@ -103,6 +104,11 @@
                 e.target.classList.add('active');
 
             },
+            filter_btn(v){
+                // this.filter_show = false;
+                console.log(v);
+                this.filter_show = v;
+            }
         },
         mounted() {
 

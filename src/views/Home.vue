@@ -1225,6 +1225,7 @@
                         dt.setMonth( dt.getMonth()-6 );
                         let halfYear=dt.getFullYear() + '-' + (dt.getMonth()+1);
                         e.target.parentNode.parentNode.parentNode.style.display='none';
+                        console.log(dt);
                         break;
                     default:
                         console.log('false');

@@ -626,7 +626,21 @@ methods: {
         };
         Index.init();
         // Index.loadData()
+        
     },
+
+    pdFilter_btn(){
+        let str = this.$route.query.title;
+
+        str = str.substring(0,1);
+        console.log(str);
+
+        if(str == '全'){
+            this.$emit('filter_btn',true)
+        }else{
+            this.$emit('filter_btn',false)
+        }
+    }
 
 },
 //生命周期 - 创建完成（可以访问当前this实例）
@@ -635,6 +649,7 @@ created() {
 },
 //生命周期 - 挂载完成（可以访问DOM元素）
 mounted() {
+    this.pdFilter_btn();
     this.getScale();
     this.renderChart();
     // console.log(this.typeAnalyze)
@@ -648,7 +663,9 @@ beforeUpdate() {}, //生命周期 - 更新之前
 updated() {}, //生命周期 - 更新之后
 beforeDestroy() {}, //生命周期 - 销毁之前
 destroyed() {}, //生命周期 - 销毁完成
-activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
+activated() {
+    console.log('缓存')
+}, //如果页面有keep-alive缓存功能，这个函数会触发
 }
 </script>
 <style lang='scss' scoped>

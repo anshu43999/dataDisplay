@@ -3,7 +3,7 @@
         <my-header></my-header>
         <div class="headerBox">
             <h3 id="back" @click="goBack">返回</h3>
-            <div class="filter">
+            <div class="filter" v-show="filter_show">
                 <ul class="filterItem" @click="selectItem">
                     <li v-for="item in periodArr" :key="item">
                         <div>{{item}}</div>
@@ -16,13 +16,13 @@
             <div class="l">
                 <div class="chart-wrap">
                     <div class="chartBox">
-                        <my-map  :typeAnalyze='typeAnalyze' ></my-map>
+                        <my-map  :typeAnalyze='typeAnalyze' @filter_btn='filter_btn'></my-map>
                     </div>
                 </div>
             </div>
 
             <div class="r">
-                <router-view  :typeAnalyze='typeAnalyze'></router-view>
+                <router-view  :typeAnalyze='typeAnalyze' @filter_btn='filter_btn'></router-view>
             </div>
         </main>
     </div>
@@ -41,6 +41,7 @@
             return {
                 typeAnalyze: '111111',
                 periodArr:['近7日','上周','近半年'],
+                filter_show : true,
             }
         },
         methods: {
@@ -414,6 +415,12 @@
                 });
                 e.target.classList.add('active')
             },
+            filter_btn(v){
+                // this.filter_show = false;
+                console.log(v);
+                this.filter_show = v;
+            }
+        
         },
         mounted() {
             this.selectedItem();

@@ -487,9 +487,23 @@
                     value.classList.remove('active');
                 });
                 e.target.classList.add('active')
+            },
+            pdFilter_btn(){
+                console.log('zheshi zhixing ')
+                let str = this.$route.query.title;
+
+                str = str.substring(0,1);
+                console.log(str);
+
+                if(str == '全'){
+                    this.$emit('filter_btn',true)
+                }else{
+                    this.$emit('filter_btn',false)
+                }
             }
         },
         mounted() {
+            this.pdFilter_btn();
             this.getScale();
             this.setName();
             this.renderChart();

@@ -431,6 +431,20 @@
                 };
                 Index.init();
             },
+
+
+            pdFilter_btn(){
+                let str = this.$route.query.title;
+
+                str = str.substring(0,1);
+                console.log(str);
+
+                if(str == '全'){
+                    this.$emit('filter_btn',true)
+                }else{
+                    this.$emit('filter_btn',false)
+                }
+            }
         },
 //生命周期 - 创建完成（可以访问当前this实例）
         created() {
@@ -438,6 +452,7 @@
         },
 //生命周期 - 挂载完成（可以访问DOM元素）
         mounted() {
+            this.pdFilter_btn();
             this.getScale();
             this.renderChart();
             // console.log(1111);
