@@ -1,7 +1,7 @@
 <template>
     <div id="container">
         <my-header></my-header>
-        <main>
+        <main @click="filter">
             <!--样式里的l,m,r,t,b分别代表左，中，右，上，下-->
             <div class="l">
                 <div class="l-t">
@@ -32,6 +32,20 @@
                     </div>
                 </div>
                 <div class="l-b">
+                    <div class="filter">
+                        <div class="iconBox"></div>
+                        <i class="iconfont iconguolv"></i>
+                        <div class="option">
+                            <div class="filterTitle">
+                                <div>时间筛选</div>
+                            </div>
+                            <ul class="filterItem" @click="selectItem">
+                                <li v-for="item in periodArr" :key="item.id">
+                                    <div>{{item.text}}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="chart-wrap">
                         <h3 @click="jump">警情分类数据分析</h3>
                         <div class="chartBox">
@@ -85,6 +99,20 @@
 
                 <div class="r-r">
                     <div class="r-r-t">
+                        <div class="filter">
+                            <div class="iconBox"></div>
+                            <i class="iconfont iconguolv"></i>
+                            <div class="option">
+                                <div class="filterTitle">
+                                    <div>时间筛选</div>
+                                </div>
+                                <ul class="filterItem" @click="selectItem">
+                                    <li v-for="item in periodArr" :key="item.id">
+                                        <div>{{item.text}}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="chart-wrap">
                             <h3 @click="jump">近七日接警类型数据分析</h3>
                             <div class="chartBox">
@@ -93,6 +121,20 @@
                         </div>
                     </div>
                     <div class="r-r-m">
+                        <div class="filter">
+                            <div class="iconBox"></div>
+                            <i class="iconfont iconguolv"></i>
+                            <div class="option">
+                                <div class="filterTitle">
+                                    <div>时间筛选</div>
+                                </div>
+                                <ul class="filterItem" @click="selectItem">
+                                    <li v-for="item in periodArr" :key="item.id">
+                                        <div>{{item.text}}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="chart-wrap">
                             <h3 @click="jump">近七日报警方式数据分析</h3>
                             <div class="chartBox">
@@ -101,6 +143,20 @@
                         </div>
                     </div>
                     <div class="r-r-b">
+                        <div class="filter">
+                            <div class="iconBox"></div>
+                            <i class="iconfont iconguolv"></i>
+                            <div class="option">
+                                <div class="filterTitle">
+                                    <div>时间筛选</div>
+                                </div>
+                                <ul class="filterItem" @click="selectItem">
+                                    <li v-for="item in periodArr" :key="item.id">
+                                        <div>{{item.text}}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                         <div class="chart-wrap">
                             <h3 @click="jump">近七日来话类型数据分析</h3>
                             <div class="chartBox">
@@ -131,6 +187,17 @@
                 axisesColor: '#0057ab',
                 //缩放值
                 scale: 1,
+                //筛选选项
+                periodArr:[{
+                    text:'近7日',
+                    id:'week'
+                },{
+                    text:'上周',
+                    id:'lastWeek'
+                },{
+                    text:'近半年',
+                    id:'halfYear'
+                }],
                 //默认获取本周数据
                 period: 'lastWeek',
                 //警情统计监测
@@ -161,23 +228,9 @@
                     {name: '举报', value: 850},
                     {name: '投诉监督', value: 700}
                 ],
-                //    地图
-                /*mapSource: [
-                    {name: "太原市", value: 80, value1: 70, value2: 35},
-                    {name: "长治市", value: 42, value1: 50, value2: 25},
-                    {name: "朔州市", value: 4, value1: 20, value2: 10},
-                    {name: "运城市", value: 53, value1: 60, value2: 30},
-                    {name: "大同市", value: 30, value1: 80, value2: 40},
-                    {name: "晋城市", value: 52, value1: 60, value2: 30},
-                    {name: "晋中市", value: 21, value1: 30, value2: 15},
-                    {name: "临汾市", value: 5, value1: 20, value2: 10},
-                    {name: "忻州市", value: 5, value1: 50, value2: 25},
-                    {name: "阳泉市", value: 10, value1: 30, value2: 15},
-                    {name: "吕梁市", value: 32, value1: 40, value2: 20},
-                ],*/
                 grading: [0.2, 0.4, 0.6, 0.8, 1],
                 mapSource: [
-                    {name: "太原市", value: 800, value1: 70},
+                    {name: "太原市", value: 80, value1: 70},
                     {name: "长治市", value: 42, value1: 50},
                     {name: "朔州市", value: 4, value1: 20},
                     {name: "运城市", value: 32, value1: 60},
@@ -247,8 +300,51 @@
                     {name: '骚扰电话', value: [456, 567, 569, 594, 189, 498, 155]},
                     {name: '系统测试', value: [652, 556, 155, 166, 562, 515, 565]},
                     {name: '其他来话类型', value: [256, 626, 515, 126, 512, 556, 488]}
-                ]
+                ],
                 // sevenlhlxsjfxSource:{}
+                time: {'jqflsjfx': 'week', 'jqsjfx': 'week', 'bjfssjfx': 'week', 'lhlxsjfx': 'week'},
+                option: {
+                    xAxis: {
+                        type: 'category',
+                        splitLine: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#0057ab'
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                    },
+                    yAxis: {
+                        splitLine: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#0057ab'
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        }
+                    },
+                    series: {
+                        type: 'bar',
+                        stack: 'chart',
+                    },
+                    grid: {
+                        left: '9%',
+                        right: '5%',
+                        top: '5%',
+                        bottom: '15%'
+                    },
+                    tooltip: {}
+                }
             }
         },
         methods: {
@@ -367,77 +463,19 @@
                 this.chartsObj.jqjqtjChart = myChart;
                 let sourceArr = this.jqjqtjScoure;
                 let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
-                let option = {
-                    xAxis: {
-                        type: 'category',
-
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            fontSize: 20 * this.scale,
-                        },
-                        data: dateArr
-                    },
-                    yAxis: {
-                        type: 'value',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            fontSize: 20 * this.scale,
-                        },
-                    },
-                    grid: {
-                        // width : 80 + '%',
-                        height: 75 + '%',
-                        left: 100 * this.scale,
-                        right: 50 * this.scale,
-                        top: 5 + '%',
-                        // bottom : 5 + '%',
-                        // height : 50,
-
-                    },
-                    series: {
-                        type: 'bar',
-                        data: sourceArr,
-                        itemStyle: {
-                            color: new this.$echarts.graphic.LinearGradient(
-                                //右，下，左，上
-                                0, 0, 0, 1, [{
-                                    //0%位置的颜色
-                                    offset: 0,
-                                    color: '#288cf7'
-                                },
-                                    {
-                                        //100%位置的颜色
-                                        offset: 1,
-                                        color: '#6653f1'
-                                    }
-                                ]
-                            )
-                        },
-                        barWidth: 17 * this.scale
-                    },
-                    tooltip: {}
+                let option = this.option;
+                option.series.data = sourceArr;
+                option.series.itemStyle = {
+                    color: this.gradient(['#288cf7', '#6653f1'])
+                };
+                option.series.barWidth = 20 * this.scale;
+                option.xAxis.data = dateArr;
+                option.xAxis.axisLabel = {
+                    fontSize: 20 * this.scale,
+                    interval: 0,
+                };
+                option.yAxis.axisLabel = {
+                    fontSize: 20 * this.scale,
                 };
                 myChart.setOption(option);
             },
@@ -450,101 +488,48 @@
                 sourceArr.forEach(value => {
                     xData.push(value.name);
                 });
-                let option = {
-                    xAxis: {
-                        type: 'category',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            fontSize: 16 * this.scale,
-                            rotate: 30,
-                            formatter: function (params) {
-                                let newParamsName = "";
-                                let paramsNameNumber = params.length;
-                                let provideNumber = 7;  //一行显示几个字
-                                let rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-                                if (paramsNameNumber > provideNumber) {
-                                    for (let p = 0; p < rowNumber; p++) {
-                                        let tempStr = "";
-                                        let start = p * provideNumber;
-                                        let end = start + provideNumber;
-                                        if (p == rowNumber - 1) {
-                                            tempStr = params.substring(start, paramsNameNumber);
-                                        } else {
-                                            tempStr = params.substring(start, end) + "\n";
-                                        }
-                                        newParamsName += tempStr;
-                                    }
-
-                                } else {
-                                    newParamsName = params;
-                                }
-                                return newParamsName
-                            }
-                        },
-                        data: xData
-                    },
-                    yAxis: {
-                        type: 'value',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLabel: {
-                            fontSize: 16 * this.scale,
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        }
-                    },
-                    series: {
-                        type: 'bar',
-                        stack: 'chart',
-                        data: sourceArr,
-                        itemStyle: {
-                            color: new this.$echarts.graphic.LinearGradient(
-                                //右，下，左，上
-                                0, 0, 0, 1, [{
-                                    //0%位置的颜色
-                                    offset: 0,
-                                    color: '#fcc60a'
-                                },
-                                    {
-                                        //100%位置的颜色
-                                        offset: 1,
-                                        color: '#f5834a'
-                                    }
-                                ]
-                            )
-                        },
-                        barWidth: 17 * this.scale
-                    },
-                    grid: {
-                        width: 85 + '%',
-                        height: 70 + "%",
-                        top: 5 + '%',
-                        // bottom : 5+ '%',
-
-                    },
-                    tooltip: {}
+                let option = this.option;
+                option.series.data = sourceArr;
+                option.series.itemStyle = {
+                    color: this.gradient(['#fcc60a', '#f5834a'])
                 };
+                option.series.barWidth = 20 * this.scale;
+                option.xAxis.data = xData;
+                option.xAxis.axisLabel = {
+                    fontSize: 20 * this.scale,
+                    rotate: 30,
+                    interval: 0,
+                    formatter: function (params) {
+                        let newParamsName = "";
+                        let paramsNameNumber = params.length;
+                        let provideNumber = 7;  //一行显示几个字
+                        let rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                        if (paramsNameNumber > provideNumber) {
+                            for (let p = 0; p < rowNumber; p++) {
+                                let tempStr = "";
+                                let start = p * provideNumber;
+                                let end = start + provideNumber;
+                                if (p == rowNumber - 1) {
+                                    tempStr = params.substring(start, paramsNameNumber);
+                                } else {
+                                    tempStr = params.substring(start, end) + "\n";
+                                }
+                                newParamsName += tempStr;
+                            }
+
+                        } else {
+                            newParamsName = params;
+                        }
+                        return newParamsName
+                    }
+                };
+                option.yAxis.axisLabel = {
+                    fontSize: 20 * this.scale,
+                };
+                option.grid.bottom = '24%';
                 myChart.setOption(option);
             },
+
             //地图
             mapChart() {
                 let cityObj = {};
@@ -765,7 +750,6 @@
                 }
             },
 
-
             //    今日接警类型数据分析、今日报警方式数据分析、今日来话类型数据分析
             /**
              * @param chartContainer String 图表容器
@@ -883,71 +867,40 @@
                         data: sourceArr['data'][i].value
                     });
                 }
-                let option = {
-                    legend: {
-                        textStyle: {
-                            fontSize: 20 * this.scale,
-                            color: '#63cbff'
-                        },
-                        itemWidth: 18 * this.scale,
-                        itemHeight: 18 * this.scale,
-                        width:'85%'
+                let option = this.option;
+                option.xAxis.boundaryGap = false;
+                option.xAxis.axisLabel=option.yAxis.axisLabel= {
+                    fontSize: 20 * this.scale
+                };
+                option.xAxis.data = sourceArr['date'];
+                option.yAxis.splitLine = {
+                    show: true,
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#03eeff'
+                    }
+                };
+                option.series = seriesArr;
+                option.tooltip = {
+                    trigger: 'axis',
+                    axisPointer: {
+                        lineStyle: {
+                            color: '#57617B'
+                        }
                     },
-                    xAxis: {
-                        type: 'category',
-                        splitLine: {
-                            show: false
-                        },
-                        boundaryGap: false,
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            fontSize: 20 * this.scale,
-                        },
-                        data: sourceArr['date']
+                };
+                option.legend = {
+                    textStyle: {
+                        fontSize: 20 * this.scale,
+                        color: '#63cbff'
                     },
-                    yAxis: {
-                        type: 'value',
-                        splitLine: {
-                            show: true,
-                            lineStyle: {
-                                type: 'dashed',
-                                color: '#03eeff'
-                            }
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            fontSize: 20 * this.scale,
-                        },
-                    },
-                    series: seriesArr,
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            lineStyle: {
-                                color: '#57617B'
-                            }
-                        },
-                    },
-                    grid: {
-                        top: 100 * this.scale,
-                        bottom: 60 * this.scale
-                    },
+                    itemWidth: 18 * this.scale,
+                    itemHeight: 18 * this.scale,
+                    width: '85%'
+                };
+                option.grid = {
+                    top: 100 * this.scale,
+                    bottom: 60 * this.scale,
                 };
                 myChart.setOption(option);
             },
@@ -974,71 +927,40 @@
                         data: sourceArr[i].value
                     });
                 }
-                let option = {
-                    legend: {
-                        textStyle: {
-                            fontSize: 20 * this.scale,
-                            color: '#63cbff'
-                        },
-                        itemWidth: 18 * this.scale,
-                        itemHeight: 18 * this.scale,
-                        width:'85%'
+                let option = this.option;
+                option.xAxis.boundaryGap = false;
+                option.xAxis.axisLabel=option.yAxis.axisLabel= {
+                    fontSize: 20 * this.scale
+                };
+                option.xAxis.data = dateArr;
+                option.yAxis.splitLine = {
+                    show: true,
+                    lineStyle: {
+                        type: 'dashed',
+                        color: '#03eeff'
+                    }
+                };
+                option.series = seriesArr;
+                option.tooltip = {
+                    trigger: 'axis',
+                    axisPointer: {
+                        lineStyle: {
+                            color: '#57617B'
+                        }
                     },
-                    xAxis: {
-                        type: 'category',
-                        splitLine: {
-                            show: false
-                        },
-                        boundaryGap: false,
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            fontSize: 20 * this.scale,
-                        },
-                        data: dateArr
+                };
+                option.legend = {
+                    textStyle: {
+                        fontSize: 20 * this.scale,
+                        color: '#63cbff'
                     },
-                    yAxis: {
-                        type: 'value',
-                        splitLine: {
-                            show: true,
-                            lineStyle: {
-                                type: 'dashed',
-                                color: '#03eeff'
-                            }
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            fontSize: 20 * this.scale,
-                        },
-                    },
-                    series: seriesArr,
-                    tooltip: {
-                        trigger: 'axis',
-                        axisPointer: {
-                            lineStyle: {
-                                color: '#57617B'
-                            }
-                        },
-                    },
-                    grid: {
-                        top: 100 * this.scale,
-                        bottom: 60 * this.scale
-                    },
+                    itemWidth: 18 * this.scale,
+                    itemHeight: 18 * this.scale,
+                    width: '85%'
+                };
+                option.grid = {
+                    top: 100 * this.scale,
+                    bottom: 60 * this.scale,
                 };
                 myChart.setOption(option);
             },
@@ -1065,9 +987,8 @@
                         let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7);
                         let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
                         break;
+
                 }
-                let day = '20191024';
-                let date = new Date();
             },
             // 跳转
             jump(e) {
@@ -1083,7 +1004,7 @@
                         this.$router.push({name: '省接警类型数据分析', query: {title: '全省来话类型数据分析'}});
                         break;
                     case '警情分类数据分析':
-                        this.$router.push({name: '全省警情分类数据分析', query: {title: '全省警情分类数据分析'}});
+                        this.$router.push({name: '省警情分类数据分析', query: {title: '全省警情分类数据分析'}});
                         break;
                 }
             },
@@ -1218,40 +1139,87 @@
                 this.sevenjjlxsjfxSource.data = dataArr;
                 this.sevenjjlxsjfxSource.date = dateArr;
                 this.sevenjjlxsjfxSource.color = ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'];
+            },
+            gradient(colorList) {
+                return new this.$echarts.graphic.LinearGradient(
+                    //右，下，左，上
+                    0, 0, 0, 1, [{
+                        //0%位置的颜色
+                        offset: 0,
+                        color: colorList[0]
+                    },
+                        {
+                            //100%位置的颜色
+                            offset: 1,
+                            color: colorList[1]
+                        }
+                    ]
+                )
+            },
+            renderChart(){
+                let myCharts = document.querySelectorAll('.chart');
+                myCharts.forEach(value => {
+                    this.refreshCharts.push(value.getAttribute('id'))
+                });
+                let that = this;
+                let Index = {
+                    init() {
+                        this.loadData();
+                        Public.chartsResize(that.chartsObj);
+                        Public.chartsReDraw(that.chartsObj, null, [
+                            ''
+                        ], that.refreshCharts)
+                    },
+                    loadData() {
+                        that.panChart();
+                        that.jqjqtjChart();
+                        that.jqflsjfxChart();
+                        that.mapChart();
+                        //console.log(that.sevenjjlxsjfxSource);
+                        that.jrPieChart('jrPieChart', that.jrjjlxsjfxSourceSource, that.jrjjlxsjfxSourceColor);
+                        that.jrPieChart('jrbjfssjfxChart', that.jrbjfssjfxSource, that.jrbjfssjfxColor);
+                        that.jrPieChart('jrrlhlxsjfxChart', that.jrrlhlxsjfxSource, that.jrrlhlxsjfxColor);
+                        that.sevensjfx('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor);
+                        that.sevensjfx1('sevenbjfssjfxChart', that.sevenbjfssjfxSource, that.jrbjfssjfxColor);
+                        that.sevensjfx1('sevenlhlxsjfxChart', that.sevenlhlxsjfxSource, that.jrrlhlxsjfxColor);
+                    },
+                };
+                Index.init();
+            },
+            selectedItem(){
+                let item = document.querySelectorAll('.option>.filterItem>li>div');
+                item[0].classList.add('active');
+            },
+            selectItem(e){
+                let item = document.querySelectorAll('.option>.filterItem>li>div');
+                item.forEach((value) => {
+                    value.classList.remove('active');
+                });
+                e.target.classList.add('active')
+            },
+            filter(e){
+                let ele=e.target.getAttribute('class');
+                let option=document.getElementsByClassName('option');
+                if (ele==='iconBox'){
+                    for (let i=0;i<option.length;i++){
+                        option[i].style.display='none';
+                    }
+                    let selected=e.target.parentNode.lastChild;
+                    selected.style.display='block';
+                }
+                if (ele===null){
+                    for (let i=0;i<option.length;i++){
+                        option[i].style.display='none';
+                    }
+                }
             }
         },
         mounted() {
             this.getScale();
             this.change();
             this.getDate();
-            let myCharts = document.querySelectorAll('.chart');
-            myCharts.forEach(value => {
-                this.refreshCharts.push(value.getAttribute('id'))
-            });
-            let that = this;
-            let Index = {
-                init() {
-                    this.loadData();
-                    Public.chartsResize(that.chartsObj);
-                    Public.chartsReDraw(that.chartsObj, null, [
-                        ''
-                    ], that.refreshCharts)
-                },
-                loadData() {
-                    that.panChart();
-                    that.jqjqtjChart();
-                    that.jqflsjfxChart();
-                    that.mapChart();
-                    //console.log(that.sevenjjlxsjfxSource);
-                    that.jrPieChart('jrPieChart', that.jrjjlxsjfxSourceSource, that.jrjjlxsjfxSourceColor);
-                    that.jrPieChart('jrbjfssjfxChart', that.jrbjfssjfxSource, that.jrbjfssjfxColor);
-                    that.jrPieChart('jrrlhlxsjfxChart', that.jrrlhlxsjfxSource, that.jrrlhlxsjfxColor);
-                    that.sevensjfx('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor);
-                    that.sevensjfx1('sevenbjfssjfxChart', that.sevenbjfssjfxSource, that.jrbjfssjfxColor);
-                    that.sevensjfx1('sevenlhlxsjfxChart', that.sevenlhlxsjfxSource, that.jrrlhlxsjfxColor);
-                },
-            };
-            Index.init();
+            this.renderChart();
+            this.selectedItem();
         }
     }
 </script>
@@ -1271,6 +1239,105 @@
         .l > div, .m > div, .r > div {
             width: 100%;
             align-content: space-between;
+        }
+
+        .filter{
+            position: absolute;
+            right: 0;
+            width: 1.5rem;
+            height: 1.5rem;
+            z-index: 999;
+            .iconBox{
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 999;
+            }
+            .iconguolv{
+                color: #17fff3;
+                font-weight: lighter;
+                transform: scale(0.5);
+                transform-origin: top right;
+                margin-top: 0.1rem;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            .option{
+                width: 10rem;
+                height: 9.6rem;
+                position: absolute;
+                top:0;
+                right: -0.5rem;
+                background: url("../assets/images/index/filter.png");
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                display: none;
+                .filterTitle{
+                    color: #17fff3;
+                    position: absolute;
+                    top:1.3rem;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    height: 16%;
+                    div{
+                        width: 167%;
+                        height: 167%;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        transform: scale(0.6);
+                        transform-origin: left top;
+                        letter-spacing: 2px;
+                    }
+                }
+                .filterItem{
+                    position: absolute;
+                    top: 33%;
+                    width: 70%;
+                    height: 50%;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    li{
+                        width: 100%;
+                        height: 27.4%;
+                        div{
+                            width: 167%;
+                            height: 167%;
+                            transform: scale(0.6);
+                            transform-origin: left top;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            letter-spacing: 2px;
+                            cursor: pointer;
+                            background-image: linear-gradient(-86deg,
+                                    #0b5fa7 0%,
+                                    #0b5fa7 100%);
+                            border-style: solid;
+                            border-width: 1px;
+                            border-image-source: linear-gradient(268deg,
+                                    #0493e4 41%,
+                                    #0492e3 43%,
+                                    rgba(8, 120, 197, 0.5) 71%,
+                                    #0b5fa7 100%);
+                            border-image-slice: 1;
+                            &.active{
+                                background-image: linear-gradient(-86deg,
+                                        #53b0ff 0%,
+                                        #0b5fa7 100%);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         .l {
@@ -1300,7 +1367,8 @@
                 background-image: url('../assets/images/index/l-b-bg.png');
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
-                // margin-bottom:3.3%; 
+                // margin-bottom:3.3%;
+                position: relative;
             }
 
             //内容
@@ -1414,49 +1482,20 @@
                     }
                 }
 
-                .r-l-t {
+                .r-l-t,.r-l-m,.r-l-b {
                     height: 30%;
                     background-image: url('../assets/images/index/r-l-all.png');
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
                 }
 
-                .r-l-b {
+                .r-r-t,.r-r-m,.r-r-b {
                     height: 30%;
-                    background-image: url('../assets/images/index/r-l-all.png');
+                    background-image: url('../assets/images/index/r-r-all-1.png');
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
+                    position: relative;
                 }
-
-                .r-l-m {
-                    height: 30%;
-                    background-image: url('../assets/images/index/r-l-all.png');
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;
-                }
-
-
-                .r-r-t {
-                    height: 30%;
-                    background-image: url('../assets/images/index/r-r-all.png');
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;
-                }
-
-                .r-r-m {
-                    height: 30%;
-                    background-image: url('../assets/images/index/r-r-all.png');
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;;
-                }
-
-                .r-r-b {
-                    height: 30%;
-                    background-image: url('../assets/images/index/r-r-all.png');
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;;
-                }
-
             }
 
             .r-r {

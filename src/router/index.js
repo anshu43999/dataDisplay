@@ -88,20 +88,19 @@ const routes = [
                 ]
             },
             {
-                path: "pjqfsjfx",
+                path: "pjqflsjfx",
                 name: '全省警情分类数据分析',
                 component: () => import("../views/PJQFLSJFX"),
-
                 children : [
                     {
                         path : 'province_dataAnalyze',
-                        name : '省接警类型数据分析',
-                        component: () => import("../views/PJQFLSJFX"),
+                        name : '省警情分类数据分析',
+                        component: () => import("../views/small_proRight"),
                     },
                     {
                         path : 'city_dataAnalyze',
-                        name : '市接警类型数据分析',
-                        component: () => import("../views/PJQFLSJFX"),
+                        name : '市警情分类数据分析',
+                        component: () => import("../views/small_cityRight"),
                     }
                 ]
             }

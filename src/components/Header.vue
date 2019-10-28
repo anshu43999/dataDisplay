@@ -1,9 +1,9 @@
 <!--  -->
 <template>
-<div class='header_wrap'>
-    <div class="header_main">
+<div id='header_wrap' @click="handleClick">
+    <div id="header_main">
         <div style="margin: 0 auto;width:40%;display : flex">
-            <div class="header_title">山西省公安厅110指挥中心警情数据可视化平台</div>
+            <div id="header_title">山西省公安厅110指挥中心警情数据可视化平台</div>
             <time id="headerTime"></time>
         </div>
         
@@ -30,7 +30,9 @@ computed: {},
 watch: {},
 //方法集合
 methods: {
-
+    handleClick(e){
+        this.$parent.filter(e);
+    }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
@@ -52,17 +54,17 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 <style lang='scss' scoped>
 //@import url(); 引入公共css类
 
-.header_wrap{
+#header_wrap{
     background-color: #011426;
     // height:10rem;
     background-image: url('../assets/images/index/top.png');
     background-repeat: no-repeat;
     background-size: contain;
     background-position: 99% center;
-    .header_main{
+    #header_main{
         height: 100%;
     }
-    .header_title{
+    #header_title{
         height: 5rem;
         overflow: hidden;
         line-height: 5rem;

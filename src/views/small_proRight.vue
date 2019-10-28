@@ -1,36 +1,104 @@
 <template>
-    <div id="pjqflsjfx">
-        <my-header></my-header>
-        <h3 id="back" @click="goBack">返回</h3>
-        <main>
-            <!--样式里的l,m,r,t,b分别代表左，中，右，上，下-->
-            <div class="l">
+    <div class="r">
+        <div class="r-t">
+            <div class="r-t-l">
                 <div class="chart-wrap">
+                    <h3>{{this.chartTitle[0]}}</h3>
                     <div class="chartBox">
-                        <my-map  :typeAnalyze='typeAnalyze' ></my-map>
+                        <div class="chart" id="bar"></div>
                     </div>
                 </div>
             </div>
-
-            <div class="r">
-                <router-view  :typeAnalyze='typeAnalyze'></router-view>
+            <div class="r-t-r">
+                <div class="chart-wrap">
+                    <h3>{{this.chartTitle[1]}}</h3>
+                    <div class="chartBox">
+                        <div class="chart" id="proportionChart"></div>
+                    </div>
+                </div>
             </div>
-        </main>
+        </div>
+        <div class="r-b">
+            <div class="chart-wrap">
+                <h3>{{this.chartTitle[2]}}</h3>
+                <div class="selectListBox">
+                    <ul @click="selectItem">
+                        <li v-for="item in jqflsjfxSource" :key="item.name">
+                            <div>{{item.name}}</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="chart" id="detailChart"></div>
+                <div class="chart" id="detailProportionChart"></div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-    import MyHeader from "../components/Header";
-    import MyMap from "../components/Map";
-
     export default {
-        name: "PJQFLSJFX",
-        components: {
-            MyMap, MyHeader
-        },
-        data() {
+        name: "small_proRight",
+        props: ['typeAnalyze'],
+        data(){
             return {
-                typeAnalyze: '111111',
+                scale: 1,
+                //需要刷新的图表
+                refreshCharts: [],
+                //    所有的图标对象
+                chartsObj: {},
+                //坐标轴颜色
+                axisesColor: '#0057ab',
+                //标题
+                chartTitle: [],
+                jqflsjfxSource: [
+                    {name: '刑事', value: 1300},
+                    {name: '行政(治安)', value: 1500},
+                    {name: '交通类', value: 900},
+                    {name: '消防救援', value: 900},
+                    {name: '群众救助', value: 1400},
+                    {name: '应急联动事件(非警情事件)', value: 1100},
+                    {name: '群体事件', value: 1500},
+                    {name: '纠纷', value: 1400},
+                    {name: '灾害事故', value: 800},
+                    {name: '举报', value: 850},
+                    {name: '投诉监督', value: 700}
+                ],
+                proportionSource: [
+                    {name: '刑事', value: 23.5},
+                    {name: '行政(治安)', value: 14},
+                    {name: '交通类', value: 13.45},
+                    {name: '消防救援', value: 23},
+                    {name: '群众救助', value: 12.4},
+                    {name: '应急联动事件(非警情事件)', value: 13.2},
+                    {name: '群体事件', value: 14.56},
+                    {name: '纠纷', value: 45},
+                    {name: '灾害事故', value: 43},
+                    {name: '举报', value: 15.5},
+                    {name: '投诉监督', value: 12}
+                ],
+                detailSource: [
+                    {name: '危害国家安全', value: 3},
+                    {name: '危害公共安全', value: 12},
+                    {name: '防火', value: 4},
+                    {name: '爆炸', value: 1},
+                    {name: '劫持', value: 1},
+                    {name: '侵犯人身、民主权利', value: 6},
+                    {name: '杀人', value: 7},
+                    {name: '伤害', value: 8},
+                    {name: '强奸', value: 2},
+                    {name: '绑架', value: 2},
+                    {name: '抢劫', value: 6},
+                    {name: '盗窃', value: 7},
+                    {name: '诈骗 ', value: 10},
+                    {name: '抢夺 ', value: 13},
+                    {name: '妨碍社会管理秩序 ', value: 9},
+                    {name: '破坏市场经济秩序 ', value: 11},
+                    {name: '破坏金融管理秩序 ', value: 8},
+                    {name: '金融诈骗 ', value: 9},
+                    {name: '侵犯财产 ', value: 6},
+                    {name: '破坏环境资源 ', value: 16},
+                    {name: '其他刑事警情 ', value: 15},
+                ],
             }
         },
         methods: {
@@ -179,6 +247,22 @@
                                 color: function (value, index) {
                                     return colorList[index];
                                 }
+                            },
+                            interval: 0,
+                            formatter:function (value,index) {
+                                let type=index%2===0?'up':'down';
+                                console.log(type);
+                                return '{'+type+'|'+value+'}'
+                            },
+                            rich:{
+                                up:{
+                                    height:5,
+                                    fontSize:20*this.scale,
+                                },
+                                down:{
+                                    height:25,
+                                    fontSize:20*this.scale,
+                                }
                             }
                         },
                         data: xData,
@@ -199,7 +283,8 @@
                         },
                         axisLabel: {
                             show: true,
-                            formatter: '{value} %'
+                            formatter: '{value} %',
+                            fontSize:20*this.scale,
                         }
                     },
                     series: {
@@ -223,7 +308,8 @@
                                 position: 'top',
                                 formatter: function (params) {
                                     return params.value + '%'
-                                }
+                                },
+                                fontSize:20*this.scale,
                             }
                         },
                         data: sourceArr,
@@ -232,7 +318,7 @@
                     tooltip: {},
                     grid: {
                         top: 90 * this.scale,
-                        bottom: 90 * this.scale,
+                        bottom: 114 * this.scale,
                         left: 140 * this.scale
                     }
                 };
@@ -405,185 +491,135 @@
             }
         },
         mounted() {
-            // this.getScale();
-            // this.setName();
-            // this.renderChart();
-            // this.selectedItem();
-
+            this.getScale();
+            this.setName();
+            this.renderChart();
+            this.selectedItem();
         },
-        created(){
-            this.typeAnalyze = this.$route.query.title
-        }
     }
 </script>
 
 <style scoped lang="scss">
-    //样式里的l, m, r, t, b分别代表左，中，右，上，下
-    //布局
-    #pjqflsjfx{
+    h3{
+        height: 10%;
+        text-align: center;
+    }
+    .chart-wrap{
         width: 100%;
+        height: 100%;
+    }
+    .chartBox{
+        height: 90%;
+    }
+
+    .l > div, .m > div, .r > div {
+        width: 100%;
+        align-content: space-between;
+    }
+
+    .chart {
+        width: 100%;
+        height: 100%;
+    }
+    .r {
+        width: 72.6%;
         height: 100%;
         display: flex;
         flex-direction: column;
-        // justify-content: space-around;
-
-        // main{
-        //     padding:0 2rem 4rem;
-        // }
-    }
-
-    #back {
-        color: #17fff3;
-        cursor: pointer;
-        width: 2rem;
-    }
-
-    main {
-        display: flex;
-        flex:  1;
-        padding: 0 2rem 4rem;
-        flex-direction: row;
         justify-content: space-between;
 
-        h3{
-            height: 10%;
-            text-align: center;
-        }
-        .chartBox{
-            height: 90%;
-        }
-
-        .l > div, .m > div, .r > div {
+        .r-t {
             width: 100%;
-            align-content: space-between;
-        }
-
-        .chart {
-            width: 100%;
-            height: 100%;
-        }
-
-        .l {
-            width: 25.73%;
-            height: 100%;
-            background-image: url('../assets/images/index/m.png') ;
-            background-repeat: no-repeat;
-            background-size:100% 100%;
-
-            .chart {
-                width: 100%;
-                height: 100%;
-            }
+            height: 38.58%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
 
             .chartBox {
                 width: 100%;
+                height: 90%;
+            }
+
+            .r-t-l {
+                width: 37.26%;
                 height: 100%;
-            }
-        }
-
-        .chart-wrap {
-            // border: .0625rem solid rgba(76, 180, 231, 0.33);
-            width: 100%;
-            height: 100%;
-        }
-
-        .r {
-            width: 72.6%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-
-            .r-t {
-                width: 100%;
-                height: 38.58%;
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-
-                .chartBox {
-                    width: 100%;
-                    height: 90%;
-                }
-
-                .r-t-l {
-                    width: 37.26%;
-                    height: 100%;
-                    background-image: url('../assets/images/index/l-t-bg.png') ;
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;
-
-
-                }
-
-                .r-t-r {
-                    width: 60.52%;
-                    height: 100%;
-                    background-image: url('../assets/images/index/l-t-bg.png') ;
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;
-                }
-            }
-
-            .r-b {
-                width: 100%;
-                height: 57.78%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-
                 background-image: url('../assets/images/index/l-t-bg.png') ;
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
 
-                .selectListBox {
-                    width: 12.14%;
-                    height: 100%;
-                    float: left;
 
-                    ul {
+            }
+
+            .r-t-r {
+                width: 60.52%;
+                height: 100%;
+                background-image: url('../assets/images/index/l-t-bg.png') ;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+            }
+        }
+
+        .r-b {
+            width: 100%;
+            height: 57.78%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            background-image: url('../assets/images/index/l-t-bg.png') ;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+
+            h3{
+                height: 8%;
+            }
+
+            .selectListBox {
+                width: 12.14%;
+                height: 100%;
+                float: left;
+
+                ul {
+                    width: 100%;
+                    height: 21.67rem;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    background-image: url('../assets/images/type/bg.png') ;
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+                    box-shadow:0 0 5px #011425;
+                    li{
                         width: 100%;
-                        height: 21.67rem;
-                        margin-top: 1.44rem;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: space-between;
-                        background-image: url('../assets/images/type/bg.png') ;
-                        background-repeat: no-repeat;
-                        background-size: 100% 100%;
-                        box-shadow:0 0 5px #011425;
-                        li{
-                            width: 100%;
-                            height: 5.85%;
-                            background-image: url('../assets/images/type/itemBg.png') ;
-                            div{
-                                width: 166%;
-                                height: 167%;
-                                transform: scale(0.6);
-                                transform-origin: left top;
-                                text-align: center;
-                                line-height: 2;
-                                cursor: pointer;
-                                &.active{
-                                    background: #4c7fff;
-                                }
+                        height: 5.85%;
+                        background-image: url('../assets/images/type/itemBg.png') ;
+                        div{
+                            width: 166%;
+                            height: 167%;
+                            transform: scale(0.6);
+                            transform-origin: left top;
+                            text-align: center;
+                            line-height: 2;
+                            cursor: pointer;
+                            &.active{
+                                background: #4c7fff;
                             }
                         }
                     }
                 }
+            }
 
-                .chart {
-                    width: 36.97%;
-                    height: 80%;
-                    float: left;
-                    margin-left: 1.01rem;
-                    margin-top: 2rem;
-                }
-                .chart:nth-child(3){
-                    float: left;
-                    width: 32.77rem;
-                    margin-right: 3rem;
-                }
+            .chart {
+                width: 36.97%;
+                height: 80%;
+                float: left;
+                margin-left: 1.01rem;
+                margin-top: 1rem;
+            }
+            .chart:nth-child(3){
+                float: left;
+                width: 32.77rem;
+                margin-right: 3rem;
             }
         }
     }
