@@ -226,6 +226,9 @@ methods: {
                 axisTick: {
                     show: false
                 },
+                axisLabel:{
+                    fontSize:20*this.scale,
+                },
                 data: dateArr
             },
             yAxis: {
@@ -245,7 +248,10 @@ methods: {
                 },
                 axisTick: {
                     show: false
-                }
+                },
+                axisLabel:{
+                    fontSize:20*this.scale,
+                },
             },
             series: seriesArr,
             tooltip: {
@@ -290,12 +296,13 @@ methods: {
                     show: false
                 },
                 axisLabel: {
-                    showL: true,
+                    show:true,
                     textStyle: {
                         color: function (value, index) {
                             return colorList[index];
                         }
-                    }
+                    },
+                    fontSize:20*this.scale
                 },
                 data: xData,
             },
@@ -315,7 +322,8 @@ methods: {
                 },
                 axisLabel: {
                     show: true,
-                    formatter: '{value} %'
+                    formatter: '{value} %',
+                    fontSize:20*this.scale
                 }
             },
             series: {
@@ -339,7 +347,8 @@ methods: {
                         position: 'top',
                         formatter: function (params) {
                             return params.value+'%'
-                        }
+                        },
+                        fontSize:20*this.scale
                     }
                 },
                 data: sourceArr,

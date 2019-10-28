@@ -1,7 +1,10 @@
 <template>
     <div id="pjqsjfx">
         <my-header></my-header>
-        <h3 id="back" @click="goBack">返回</h3>
+        <div class="headerBox">
+            <h3 id="back" @click="goBack">返回</h3>
+            <div class="filter"></div>
+        </div>
         <main>
             <!--样式里的l,m,r,t,b分别代表左，中，右，上，下-->
             <div class="l">
@@ -113,10 +116,26 @@
         }
     }
 
+    .headerBox{
+        width: 100%;
+        position: relative;
+        margin-top: -2rem;
+        height: 4rem;
+        padding:0 2rem;
+        #back {
+            color: #17fff3;
+            cursor: pointer;
+            float: left;
+        }
 
-    #back {
-        color: #17fff3;
-        cursor: pointer;
+        .filter{
+            width: 16rem;
+            height: 4rem;
+            background: url("../assets/images/province/filterBg.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            float: right;
+        }
     }
 
     main {

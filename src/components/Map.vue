@@ -185,7 +185,7 @@
                                 that.$router.push({name:str,query:{title:str,city:params.name}});
                                 console.log(params.name)
                                 renderMap(params.name, d);
-                               
+
                             }
                         });
                     } else {
@@ -201,7 +201,6 @@
                     animationEasing: 'cubicOut',
                     animationDurationUpdate: 1000,
                 };
-
                 function renderMap(map, data) {
                 // 初始化绘制全国地图配置
                     option.title.subtext = map;
@@ -232,7 +231,6 @@
                                         show: true,
                                         color: '#fff',
                                     },
-
                                     emphasis: {
                                         label: {
                                             show: true
@@ -311,8 +309,8 @@
 </script>
 
 <style scoped lang="scss">
-.chart{
-    width: 100%;
-    height: 100%;
-}
+    .chart{
+        width: 100%;
+        height: 100%;
+    }
 </style>
