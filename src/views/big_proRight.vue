@@ -110,9 +110,6 @@
                     </div>
                 </div>
             </div>
-
-
-
 </div>
 </template>
 
@@ -135,7 +132,7 @@ return {
     //缩放值
     scale: 1,
     //默认获取本周数据
-    period: 'week',
+    ProvincePeriod: 'week',
     //标题
     chartTitle: [],
     mapData: {name: '报警事件总数', value: 96666},
@@ -165,6 +162,7 @@ return {
     subClassSource6: [],
     subClassColorList6: [],
 
+    period:{}
 };
 },
 //监听属性 类似于data概念
@@ -176,6 +174,7 @@ methods: {
      //获取缩放值
     getScale() {
         this.scale = localStorage.getItem('scale');
+        this.period=JSON.parse(sessionStorage.getItem('period'));
     },
     //趋势图
     sevensjfx(chartContainer, sourceArr, colorList) {
@@ -365,19 +364,8 @@ methods: {
     },
     //    细类柱状图
     subclassBar(chartContainer, sourceArr, colorList) {
-        // console.log(this.show);
-        // let flag = true;
-
-        
-        // if(flag) return;
-
-    
         let myChart = this.$echarts.init(document.getElementById(chartContainer));
 
-
-
-
-        
         this.chartsObj[chartContainer] = myChart;
         let option = {
             xAxis: {
@@ -493,12 +481,16 @@ methods: {
                 ];
                 this.subClassSource1 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                 this.subClassColorList1 = ['#6ffeff', '#00a0a6'];
+
                 this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                 this.subClassColorList2 = ['#7fd7fc', '#0083ba'];
+
                 this.subClassSource3 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                 this.subClassColorList3 = ['#6f87ff', '#0024dd'];
+
                 this.subClassSource4 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                 this.subClassColorList4 = ['#ff6cfa', '#a0009b'];
+                this.ProvincePeriod=this.period.jjlx.per;
                 break;
             case '全省报警方式数据分析':
                 this.show=true;
@@ -527,12 +519,17 @@ methods: {
                 ];
                 this.subClassSource1 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                 this.subClassColorList1 = ['#ffebaf', '#ffd75e'];
+
                 this.subClassSource2 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                 this.subClassColorList2 = ['#7fd7fc', '#0083ba'];
+
                 this.subClassSource3 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                 this.subClassColorList3 = ['#6f87ff', '#0024dd'];
+
                 this.subClassSource4 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                 this.subClassColorList4 = ['#a650ff', '#5200a7'];
+
+                this.ProvincePeriod=this.period.jjlx.per;
                 break;
             case '全省来话类型数据分析':
                 this.show=false;
@@ -583,12 +580,7 @@ methods: {
                 this.subClassSource6 = [1200, 1500, 900, 900, 1300, 1200, 1500, 1400, 800, 800, 700];
                 this.subClassColorList6 = ['#b0fffb', '#119b9d'];
 
-                // this.subClassColorList1 = ['#ff6cfa', '#a0009b'];
-                // this.subClassColorList2 = ['#8298ff', '#324fcc'];
-                // this.subClassColorList3 = ['#6163ff', '#3032d7'];
-                // this.subClassColorList4 = ['#ad81ff', '#733be3'];
-                // this.subClassColorList5 = ['#8919ee', '#620ab4'];
-                // this.subClassColorList6 = ['#b0fffb', '#119b9d'];
+                this.ProvincePeriod=this.period.jjlx.per;
 
                 break;
             default:
@@ -628,6 +620,9 @@ methods: {
         // Index.loadData()
     },
 
+    filterSelect(){
+        console.log(1);
+    }
 },
 //生命周期 - 创建完成（可以访问当前this实例）
 created() {
@@ -638,7 +633,7 @@ mounted() {
     this.getScale();
     this.renderChart();
     // console.log(this.typeAnalyze)
-
+this.filterSelect();
   
 
 },

@@ -3,7 +3,7 @@
         <my-header></my-header>
         <div class="headerBox">
             <h3 id="back" @click="goBack">返回</h3>
-            <div class="filter">
+            <div class="filter" v-if="filterShow">
                 <ul class="filterItem" @click="selectItem">
                     <li v-for="item in periodArr" :key="item">
                         <div>{{item}}</div>
@@ -43,6 +43,7 @@
         data() {
             return {
                 show:true,
+                filterShow:true,
                 //图表公用
                 refreshCharts: [],
                 chartsObj: {},
@@ -101,11 +102,13 @@
                     value.classList.remove('active');
                 });
                 e.target.classList.add('active');
-
             },
+            changeSelect(provincePeriod){
+                this.period=provincePeriod;
+                console.log(this.period);
+            }
         },
         mounted() {
-
 this.selectedItem();
 
 

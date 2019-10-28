@@ -41,7 +41,7 @@
                             </div>
                             <ul class="filterItem" @click="selectItem">
                                 <li v-for="item in periodArr" :key="item">
-                                    <div>{{item}}</div>
+                                    <div data-id="jqfl">{{item}}</div>
                                 </li>
                             </ul>
                         </div>
@@ -108,7 +108,7 @@
                                 </div>
                                 <ul class="filterItem" @click="selectItem">
                                     <li v-for="item in periodArr" :key="item">
-                                        <div>{{item}}</div>
+                                        <div data-id="jjlx">{{item}}</div>
                                     </li>
                                 </ul>
                             </div>
@@ -130,7 +130,7 @@
                                 </div>
                                 <ul class="filterItem" @click="selectItem">
                                     <li v-for="item in periodArr" :key="item">
-                                        <div>{{item}}</div>
+                                        <div data-id="bjfs">{{item}}</div>
                                     </li>
                                 </ul>
                             </div>
@@ -152,7 +152,7 @@
                                 </div>
                                 <ul class="filterItem" @click="selectItem">
                                     <li v-for="item in periodArr" :key="item">
-                                        <div>{{item}}</div>
+                                        <div data-id="lhlx">{{item}}</div>
                                     </li>
                                 </ul>
                             </div>
@@ -188,9 +188,14 @@
                 //缩放值
                 scale: 1,
                 //筛选选项
-                periodArr:['近7日','上周','近半年'],
+                periodArr: ['近7日', '上周', '近半年'],
                 //默认获取本周数据
-                period: 'lastWeek',
+                period: {
+                    jqfl: {start: '', end: '',per:''},
+                    jjlx: {start: '', end: '',per:''},
+                    lhlx: {start: '', end: '',per:''},
+                    bjfs: {start: '', end: '',per:''},
+                },
                 //警情统计监测
                 jqtjjcData: [
                     {name: '报警事件总数', value: 18364},
@@ -283,6 +288,7 @@
                 ],
                 // sevenbjfssjfxSource:{},
                 //    近七日来话类型数据分析
+                //    近七日来话类型数据分析
                 sevenlhlxsjfxSource: [
                     {name: '报警求助、举报投诉', value: [580, 630, 700, 400, 250, 156, 894]},
                     {name: '处警反馈', value: [468, 498, 481, 168, 79, 455, 155]},
@@ -293,7 +299,6 @@
                     {name: '其他来话类型', value: [256, 626, 515, 126, 512, 556, 488]}
                 ],
                 // sevenlhlxsjfxSource:{}
-                time: {'jqflsjfx': 'week', 'jqsjfx': 'week', 'bjfssjfx': 'week', 'lhlxsjfx': 'week'},
                 option: {
                     xAxis: {
                         type: 'category',
@@ -963,32 +968,6 @@
                 };
                 myChart.setOption(option);
             },
-            // 日期
-            /*getDate() {
-                switch (this.period) {
-                    case "week":
-                        let date1 = new Date();
-                        let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
-                        let timestamp = (new Date()).getTime();
-                        let day = timestamp - 6 * 24 * 60 * 60 * 1000;
-                        let date2 = new Date(day);
-                        let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
-                        // console.log(end1);
-                        break;
-                    case 'lastWeek':
-                        let d = new Date();
-// set to Monday of this week
-                        d.setDate(d.getDate() - (d.getDay() + 6) % 7);
-// set to previous Monday
-                        let date3 = new Date(d.setDate(d.getDate() - 7));
-                        let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
-// create new date of day before
-                        let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7);
-                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
-                        break;
-
-                }
-            },*/
             // 跳转
             jump(e) {
                 let h3 = e.currentTarget;
@@ -1189,8 +1168,11 @@
                 Index.init();
             },
             selectedItem() {
-                let item = document.querySelectorAll('.option>.filterItem>li>div');
-                item[0].classList.add('active');
+                let item = document.querySelectorAll('.option>.filterItem');
+                item.forEach(value => {
+                    let child=value.firstChild.firstChild;
+                    child.classList.add('active');
+                })
             },
             selectItem(e) {
                 let item = document.querySelectorAll('.option>.filterItem>li>div');
@@ -1206,7 +1188,11 @@
                         let day = timestamp - 6 * 24 * 60 * 60 * 1000;
                         let date2 = new Date(day);
                         let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
-                        e.target.parentNode.parentNode.parentNode.style.display='none';
+                        e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                        let type1 = e.target.getAttribute('data-id');
+                        this.period[type1].start=start1;
+                        this.period[type1].end=end1;
+                        this.period[type1].per='week';
                         break;
                     case'上周':
                         let d = new Date();
@@ -1216,20 +1202,30 @@
                         let date3 = new Date(d.setDate(d.getDate() - 7));
                         let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
 // create new date of day before
-                        let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7);
+                        let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6);
                         let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
-                        e.target.parentNode.parentNode.parentNode.style.display='none';
+                        e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                        let type2 = e.target.getAttribute('data-id');
+                        this.period[type2].start=Monday;
+                        this.period[type2].end=Sunday;
+                        this.period[type2].per='lastWeek';
                         break;
                     case'近半年':
                         let dt = new Date();
-                        dt.setMonth( dt.getMonth()-6 );
-                        let halfYear=dt.getFullYear() + '-' + (dt.getMonth()+1);
-                        e.target.parentNode.parentNode.parentNode.style.display='none';
+                        let today=dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
+                        dt.setMonth(dt.getMonth() - 5);
+                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0')+dt.getDate().toString();
+                        e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                        let type3 = e.target.getAttribute('data-id');
+                        this.period[type3].start=today;
+                        this.period[type3].end=halfYear;
+                        this.period[type3].per='halfYear';
                         break;
                     default:
                         console.log('false');
                         break;
-                }
+                };
+                sessionStorage.setItem('period', JSON.stringify(this.period));
             },
             filter(e) {
                 let ele = e.target.getAttribute('class');
@@ -1246,9 +1242,32 @@
                         option[i].style.display = 'none';
                     }
                 }
+            },
+
+            setperiod(){
+                let date1 = new Date();
+                let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                let timestamp = (new Date()).getTime();
+                let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                let date2 = new Date(day);
+                let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                this.period.jjlx.start=start1;
+                this.period.jjlx.end=end1;
+                this.period.jjlx.per='week';
+                this.period.bjfs.start=start1;
+                this.period.bjfs.end=end1;
+                this.period.bjfs.per='week';
+                this.period.jqfl.start=start1;
+                this.period.jqfl.end=end1;
+                this.period.jqfl.per='week';
+                this.period.lhlx.start=start1;
+                this.period.lhlx.end=end1;
+                this.period.lhlx.per='week';
+                sessionStorage.setItem('period', JSON.stringify(this.period));
             }
         },
         mounted() {
+            this.setperiod();
             this.getScale();
             this.selectedItem();
             this.change();
