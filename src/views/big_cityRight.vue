@@ -440,6 +440,19 @@
         mounted() {
             this.getScale();
             this.renderChart();
+            // console.log(1111);
+
+
+
+            // if (window.performance.navigation.type == 1) {
+            //     console.log("页面被刷新1111111111")
+            // }else{
+            //     console.log("首次被加载1111111")
+            // }
+
+
+           
+
         },
         beforeCreate() {
         }, //生命周期 - 创建之前

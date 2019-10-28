@@ -7,7 +7,9 @@
             <div class="l">
                 <div class="chart-wrap">
                     <div class="chartBox">
-                        <my-map  :typeAnalyze='typeAnalyze' ></my-map>
+                        <!-- <keep-alive> -->
+                            <my-map  :typeAnalyze='typeAnalyze' ></my-map>
+                        <!-- </keep-alive> -->
                     </div>
                 </div>
             </div>
@@ -86,6 +88,8 @@
 
             // console.log(this.$route.query.title);
             // this.typeAnalyze = this.$route.query.title
+            
+
 
         },
         created(){
