@@ -50,7 +50,8 @@
             },
             //返回
             goBack() {
-                this.$router.go(-1);
+                // this.$router.go(-1);
+                this.$router.push('/index/home');
             },
             setName() {
                 this.chartTitle = ['警情分类数据分析', '警情分类数据占比分析','警情分类数据占比分析']

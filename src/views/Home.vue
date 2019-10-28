@@ -457,7 +457,7 @@
                 let option = this.option;
                 option.series.data = sourceArr;
                 option.series.itemStyle = {
-                    color: this.gradient(['#288cf7', '#6653f1'])
+                    color: this.gradient(['#00dce4', '#529fff'])
                 };
                 option.series.barWidth = 20 * this.scale;
                 option.xAxis.data = dateArr;
