@@ -40,8 +40,8 @@
                                 <div>时间筛选</div>
                             </div>
                             <ul class="filterItem" @click="selectItem">
-                                <li v-for="item in periodArr" :key="item.id">
-                                    <div>{{item.text}}</div>
+                                <li v-for="item in periodArr" :key="item">
+                                    <div>{{item}}</div>
                                 </li>
                             </ul>
                         </div>
@@ -107,8 +107,8 @@
                                     <div>时间筛选</div>
                                 </div>
                                 <ul class="filterItem" @click="selectItem">
-                                    <li v-for="item in periodArr" :key="item.id">
-                                        <div>{{item.text}}</div>
+                                    <li v-for="item in periodArr" :key="item">
+                                        <div>{{item}}</div>
                                     </li>
                                 </ul>
                             </div>
@@ -129,8 +129,8 @@
                                     <div>时间筛选</div>
                                 </div>
                                 <ul class="filterItem" @click="selectItem">
-                                    <li v-for="item in periodArr" :key="item.id">
-                                        <div>{{item.text}}</div>
+                                    <li v-for="item in periodArr" :key="item">
+                                        <div>{{item}}</div>
                                     </li>
                                 </ul>
                             </div>
@@ -151,8 +151,8 @@
                                     <div>时间筛选</div>
                                 </div>
                                 <ul class="filterItem" @click="selectItem">
-                                    <li v-for="item in periodArr" :key="item.id">
-                                        <div>{{item.text}}</div>
+                                    <li v-for="item in periodArr" :key="item">
+                                        <div>{{item}}</div>
                                     </li>
                                 </ul>
                             </div>
@@ -188,16 +188,7 @@
                 //缩放值
                 scale: 1,
                 //筛选选项
-                periodArr:[{
-                    text:'近7日',
-                    id:'week'
-                },{
-                    text:'上周',
-                    id:'lastWeek'
-                },{
-                    text:'近半年',
-                    id:'halfYear'
-                }],
+                periodArr:['近7日','上周','近半年'],
                 //默认获取本周数据
                 period: 'lastWeek',
                 //警情统计监测
@@ -618,6 +609,14 @@
                                     show: true
                                 }
                             },
+                            itemStyle: {
+                                emphasis: {
+                                    label: {
+                                        show: true
+                                    },
+                                    areaColor: '#ffde7b'
+                                }
+                            },
                         },
                     ];
                     option.geo = {
@@ -869,7 +868,7 @@
                 }
                 let option = this.option;
                 option.xAxis.boundaryGap = false;
-                option.xAxis.axisLabel=option.yAxis.axisLabel= {
+                option.xAxis.axisLabel = option.yAxis.axisLabel = {
                     fontSize: 20 * this.scale
                 };
                 option.xAxis.data = sourceArr['date'];
@@ -929,7 +928,7 @@
                 }
                 let option = this.option;
                 option.xAxis.boundaryGap = false;
-                option.xAxis.axisLabel=option.yAxis.axisLabel= {
+                option.xAxis.axisLabel = option.yAxis.axisLabel = {
                     fontSize: 20 * this.scale
                 };
                 option.xAxis.data = dateArr;
@@ -965,7 +964,7 @@
                 myChart.setOption(option);
             },
             // 日期
-            getDate() {
+            /*getDate() {
                 switch (this.period) {
                     case "week":
                         let date1 = new Date();
@@ -989,7 +988,7 @@
                         break;
 
                 }
-            },
+            },*/
             // 跳转
             jump(e) {
                 let h3 = e.currentTarget;
@@ -1005,6 +1004,9 @@
                         break;
                     case '警情分类数据分析':
                         this.$router.push({name: '省警情分类数据分析', query: {title: '全省警情分类数据分析'}});
+                        break;
+                    default:
+                        console.log('false');
                         break;
                 }
             },
@@ -1156,7 +1158,7 @@
                     ]
                 )
             },
-            renderChart(){
+            renderChart() {
                 let myCharts = document.querySelectorAll('.chart');
                 myCharts.forEach(value => {
                     this.refreshCharts.push(value.getAttribute('id'))
@@ -1186,40 +1188,71 @@
                 };
                 Index.init();
             },
-            selectedItem(){
+            selectedItem() {
                 let item = document.querySelectorAll('.option>.filterItem>li>div');
                 item[0].classList.add('active');
             },
-            selectItem(e){
+            selectItem(e) {
                 let item = document.querySelectorAll('.option>.filterItem>li>div');
                 item.forEach((value) => {
                     value.classList.remove('active');
                 });
-                e.target.classList.add('active')
-            },
-            filter(e){
-                let ele=e.target.getAttribute('class');
-                let option=document.getElementsByClassName('option');
-                if (ele==='iconBox'){
-                    for (let i=0;i<option.length;i++){
-                        option[i].style.display='none';
-                    }
-                    let selected=e.target.parentNode.lastChild;
-                    selected.style.display='block';
+                e.target.classList.add('active');
+                switch (e.target.innerHTML) {
+                    case'近7日':
+                        let date1 = new Date();
+                        let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                        let timestamp = (new Date()).getTime();
+                        let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                        let date2 = new Date(day);
+                        let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                        e.target.parentNode.parentNode.parentNode.style.display='none';
+                        break;
+                    case'上周':
+                        let d = new Date();
+// set to Monday of this week
+                        d.setDate(d.getDate() - (d.getDay() + 6) % 7);
+// set to previous Monday
+                        let date3 = new Date(d.setDate(d.getDate() - 7));
+                        let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
+// create new date of day before
+                        let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7);
+                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
+                        e.target.parentNode.parentNode.parentNode.style.display='none';
+                        break;
+                    case'近半年':
+                        let dt = new Date();
+                        dt.setMonth( dt.getMonth()-6 );
+                        let halfYear=dt.getFullYear() + '-' + (dt.getMonth()+1);
+                        e.target.parentNode.parentNode.parentNode.style.display='none';
+                        break;
+                    default:
+                        console.log('false');
+                        break;
                 }
-                if (ele===null){
-                    for (let i=0;i<option.length;i++){
-                        option[i].style.display='none';
+            },
+            filter(e) {
+                let ele = e.target.getAttribute('class');
+                let option = document.getElementsByClassName('option');
+                if (ele === 'iconBox') {
+                    for (let i = 0; i < option.length; i++) {
+                        option[i].style.display = 'none';
+                    }
+                    let selected = e.target.parentNode.lastChild;
+                    selected.style.display = 'block';
+                }
+                if (ele === null) {
+                    for (let i = 0; i < option.length; i++) {
+                        option[i].style.display = 'none';
                     }
                 }
             }
         },
         mounted() {
             this.getScale();
-            this.change();
-            this.getDate();
-            this.renderChart();
             this.selectedItem();
+            this.change();
+            this.renderChart();
         }
     }
 </script>
@@ -1241,13 +1274,14 @@
             align-content: space-between;
         }
 
-        .filter{
+        .filter {
             position: absolute;
             right: 0;
             width: 1.5rem;
             height: 1.5rem;
             z-index: 999;
-            .iconBox{
+
+            .iconBox {
                 width: 100%;
                 height: 100%;
                 position: absolute;
@@ -1255,46 +1289,51 @@
                 left: 0;
                 z-index: 999;
             }
-            .iconguolv{
+
+            .iconguolv {
                 color: #17fff3;
                 font-weight: lighter;
-                transform: scale(0.5);
+                transform: scale(0.4);
                 transform-origin: top right;
                 margin-top: 0.1rem;
                 position: absolute;
-                top: 0;
-                left: 0;
+                top: 0.08rem;
+                right: 0.2rem;
             }
-            .option{
-                width: 10rem;
-                height: 9.6rem;
+
+            .option {
+                width: 12rem;
+                height: 11.43rem;
                 position: absolute;
-                top:0;
+                top: 0;
                 right: -0.5rem;
                 background: url("../assets/images/index/filter.png");
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
                 display: none;
-                .filterTitle{
+
+                .filterTitle {
                     color: #17fff3;
                     position: absolute;
-                    top:1.3rem;
+                    top: 1.3rem;
                     left: 0;
                     right: 0;
                     margin: auto;
                     height: 16%;
-                    div{
+
+                    div {
                         width: 167%;
                         height: 167%;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                         transform: scale(0.6);
                         transform-origin: left top;
                         letter-spacing: 2px;
                     }
                 }
-                .filterItem{
+
+                .filterItem {
                     position: absolute;
                     top: 33%;
                     width: 70%;
@@ -1305,17 +1344,19 @@
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
-                    li{
+
+                    li {
                         width: 100%;
                         height: 27.4%;
-                        div{
+
+                        div {
                             width: 167%;
                             height: 167%;
                             transform: scale(0.6);
                             transform-origin: left top;
-                            display:flex;
-                            align-items:center;
-                            justify-content:center;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
                             letter-spacing: 2px;
                             cursor: pointer;
                             background-image: linear-gradient(-86deg,
@@ -1329,7 +1370,8 @@
                                     rgba(8, 120, 197, 0.5) 71%,
                                     #0b5fa7 100%);
                             border-image-slice: 1;
-                            &.active{
+
+                            &.active {
                                 background-image: linear-gradient(-86deg,
                                         #53b0ff 0%,
                                         #0b5fa7 100%);
@@ -1482,16 +1524,20 @@
                     }
                 }
 
-                .r-l-t,.r-l-m,.r-l-b {
+                .iconguolv {
+                    right: 0.3rem;
+                }
+
+                .r-l-t, .r-l-m, .r-l-b {
                     height: 30%;
                     background-image: url('../assets/images/index/r-l-all.png');
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
                 }
 
-                .r-r-t,.r-r-m,.r-r-b {
+                .r-r-t, .r-r-m, .r-r-b {
                     height: 30%;
-                    background-image: url('../assets/images/index/r-r-all-1.png');
+                    background-image: url('../assets/images/index/r-r-all.png');
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
                     position: relative;

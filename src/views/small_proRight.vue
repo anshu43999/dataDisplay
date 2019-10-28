@@ -251,7 +251,6 @@
                             interval: 0,
                             formatter:function (value,index) {
                                 let type=index%2===0?'up':'down';
-                                console.log(type);
                                 return '{'+type+'|'+value+'}'
                             },
                             rich:{

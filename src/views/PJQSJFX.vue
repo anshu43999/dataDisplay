@@ -3,7 +3,13 @@
         <my-header></my-header>
         <div class="headerBox">
             <h3 id="back" @click="goBack">返回</h3>
-            <div class="filter"></div>
+            <div class="filter">
+                <ul class="filterItem" @click="selectItem">
+                    <li v-for="item in periodArr" :key="item">
+                        <div>{{item}}</div>
+                    </li>
+                </ul>
+            </div>
         </div>
         <main>
             <!--样式里的l,m,r,t,b分别代表左，中，右，上，下-->
@@ -41,8 +47,8 @@
                 axisesColor: '#0057ab',
                 //缩放值
                 scale: 1,
-                //默认获取本周数据
-                period: 'week',
+                //筛选
+                periodArr:['近7日','上周','近半年'],
                 //标题
                 chartTitle: [],
                 mapData: {name: '报警事件总数', value: 96666},
@@ -83,13 +89,21 @@
             goBack() {
                 this.$router.push('/index/home');
             },
+            selectedItem() {
+                let item = document.querySelectorAll('.filter>.filterItem>li>div');
+                item[0].classList.add('active');
+            },
+            selectItem(e) {
+                let item = document.querySelectorAll('.filter>.filterItem>li>div');
+                item.forEach((value) => {
+                    value.classList.remove('active');
+                });
+                e.target.classList.add('active');
 
+            },
         },
         mounted() {
-
-            // console.log(this.$route.query.title);
-            // this.typeAnalyze = this.$route.query.title
-
+this.selectedItem();
         },
         created(){
             this.typeAnalyze = this.$route.query.title
@@ -115,13 +129,15 @@
     .headerBox{
         width: 100%;
         position: relative;
-        margin-top: -2rem;
+        margin-top: -3rem;
         height: 4rem;
         padding:0 2rem;
+        margin-bottom: 0.7rem;
         #back {
             color: #17fff3;
             cursor: pointer;
             float: left;
+            line-height: 4rem;
         }
 
         .filter{
@@ -131,6 +147,39 @@
             background-repeat: no-repeat;
             background-size: 100% 100%;
             float: right;
+            position: relative;
+            .filterItem{
+                width: 13.8rem;
+                height: 1.4rem;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                display: flex;
+                flex-direction: row;
+                align-content: space-between;
+                li{
+                    width: 33.33%;
+                    div{
+                        width: 167%;
+                        height: 167%;
+                        background: url("../assets/images/province/filterItemBg.png");
+                        transform: scale(0.6);
+                        transform-origin: left top;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        cursor: pointer;
+                        &.active{
+                            background-image: linear-gradient(-86deg,
+                                    #53b0ff 0%,
+                                    #0b5fa7 100%);
+                        }
+                    }
+                }
+            }
         }
     }
 

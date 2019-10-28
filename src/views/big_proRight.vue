@@ -591,6 +591,9 @@ methods: {
                 // this.subClassColorList6 = ['#b0fffb', '#119b9d'];
 
                 break;
+            default:
+                console.log('false');
+                break;
         }
         let Index = {
             init() {

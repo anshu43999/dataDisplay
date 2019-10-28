@@ -180,7 +180,7 @@
                 },
             };
             Index.init();
-            console.log(this.typeAnalyze);
+            // console.log(this.typeAnalyze);
             // this.typeAnalyze.slice(0,1);
             // this.newStr  = this.typeAnalyze.substring(2);
             // console.log(newStr);
