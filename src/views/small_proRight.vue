@@ -318,7 +318,11 @@
                         data: sourceArr,
                         z: 10
                     },
-                    tooltip: {},
+                    tooltip: {
+                        formatter:function (params) {
+                            return params.marker+params.data.name+'：'+params.data.value+'%';
+                        }
+                    },
                     grid: {
                         top: 90 * this.scale,
                         bottom: 114 * this.scale,
@@ -419,7 +423,8 @@
                         left:80,
                         top: 0,
                         bottom: 0
-                    }
+                    },
+                    tooltip:{}
                 };
                 myChart.setOption(option);
             },

@@ -351,7 +351,11 @@
                         data: sourceArr,
                         z: 10
                     },
-                    tooltip: {},
+                    tooltip: {
+                        formatter:function (params) {
+                            return params.marker+params.data.name+'：'+params.data.value+'%';
+                        }
+                    },
                     grid: {
                         top: 90 * this.scale,
                         bottom: 90 * this.scale,

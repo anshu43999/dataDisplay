@@ -420,7 +420,12 @@
                             );
                         });
                         return result;
-                    })()
+                    })(),
+                    tooltip:{
+                        formatter:function (params) {
+                            return params.seriesName+'：'+params.data.value+'%';
+                        }
+                    }
                 };
                 myChart.setOption(option);
             },

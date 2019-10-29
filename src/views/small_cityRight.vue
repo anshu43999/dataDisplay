@@ -398,7 +398,8 @@
                         left:80,
                         top: 0,
                         bottom: 0
-                    }
+                    },
+                    tooltip:{}
                 };
                 myChart.setOption(option);
             },
