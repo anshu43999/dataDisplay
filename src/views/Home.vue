@@ -638,14 +638,7 @@
                                 normal: {
                                     show: true,
                                     formatter: function (params) {
-                                        /*if (params.data.value1) {
-                                            let valueType = params.data.value[1] ? 'valueUp' : 'valueDown';
-                                            return params.name +
-                                                '：{' + valueType + '|' + params.data.value1 + '}';
-                                        } else {
-                                            return params.name
-                                        }*/
-                                        console.log(params.data.name, params.data.value);
+                                        // console.log(params.data.name, params.data.value);
                                         let style='';
                                         if (params.data.value<that.grading[0]){
                                             style='colorZero';
@@ -669,26 +662,6 @@
                                     fontWeight:'normal',
                                     color: '#1af7f1',
                                     rich: {
-                                        /*fontZero: {
-                                            color: '#c6ffe5',
-                                            fontSize: 8,
-                                        },
-                                        fontOne: {
-                                            color: '#ffe71b',
-                                            fontSize: 8,
-                                        },
-                                        fontTwo: {
-                                            color: '#ffac1b',
-                                            fontSize: 8,
-                                        },
-                                        fontThere: {
-                                            color: '#ff6600',
-                                            fontSize: 8,
-                                        },
-                                        fontFour:{
-                                            color: '#e12d00',
-                                            fontSize: 8,
-                                        },*/
                                         colorZero: {
                                             color: '#c6ffe5',
                                             fontSize: 12,
@@ -723,70 +696,6 @@
                                 },
                                 emphasis: {
                                     show: true,
-                                    /*formatter: function (params) {
-                                        /!*if (params.data.value1) {
-                                            let valueType = params.data.value[1] ? 'valueUp' : 'valueDown';
-                                            return params.name +
-                                                '：{' + valueType + '|' + params.data.value1 + '}';
-                                        } else {
-                                            return params.name
-                                        }*!/
-                                        let style='';
-                                        if (params.data.value<that.grading[0]){
-                                            style='colorZero';
-                                        }else if (params.data.value>that.grading[0]&&params.data.value<that.grading[1]){
-                                            style='colorOne';
-                                        }else if (params.data.value>that.grading[1]&&params.data.value<that.grading[2]) {
-                                            style='colorTwo';
-                                        }else if (params.data.value>that.grading[2]&&params.data.value<that.grading[3]) {
-                                            style='colorThere';
-                                        }else {
-                                            style='colorFour';
-                                        }
-                                        if (params.data.value1) {
-                                            return params.name +':{'+style+'|'+ params.data.value1 + '}';
-                                        } else {
-                                            return params.name
-                                        }
-                                    },
-                                    position: 'inside',
-                                    /!* backgroundColor: 'rgba(255,255,255,0.8)',
-                                     padding: [4, 5],
-                                     borderRadius: 3,
-                                     borderWidth: 1,
-                                     borderColor: 'rgba(0,0,0,0.5)',*!/
-                                    color: '#fff',
-                                    fontSize:20,
-                                    rich: {
-                                        /!*valueUp: {
-                                            color: '#019D2D',
-                                            fontSize: 14
-                                        },
-                                        valueDown: {
-                                            color: '#019D2D',
-                                            fontSize: 14
-                                        },*!/
-                                        colorZero: {
-                                            color: '#fffe0b',
-                                            fontSize: 20
-                                        },
-                                        colorOne: {
-                                            color: '#38ff04',
-                                            fontSize: 20
-                                        },
-                                        colorTwo: {
-                                            color: '#0cffed',
-                                            fontSize: 20
-                                        },
-                                        colorThere: {
-                                            color: '#ff0bf8',
-                                            fontSize: 20
-                                        },
-                                        colorFour:{
-                                            color: '#ff171a',
-                                            fontSize: 20
-                                        }
-                                    }*/
                                 }
                             },
                             itemStyle: {
@@ -974,8 +883,9 @@
                         },
                         data: sourceArr.sort(function (a, b) {
                             return a.value - b.value;
-                        })
+                        }),
                     }, {
+                        name:'内圈',
                         type: 'pie',
                         radius: ['10%', '12%'],
                         center: ['50%', '50%'],
@@ -1007,7 +917,10 @@
                         hoverAnimation: false,
                         data: [
                             {value: 10},
-                        ]
+                        ],
+                        tooltip:{
+                            show:false
+                        }
                     }]
                 };
                 myChart.setOption(option);
