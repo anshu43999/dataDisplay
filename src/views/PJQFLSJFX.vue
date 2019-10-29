@@ -3,7 +3,7 @@
         <my-header></my-header>
         <div class="headerBox">
             <h3 id="back" @click="goBack">返回</h3>
-            <div class="filter">
+            <div class="filter" v-show="filter_show">
                 <ul class="filterItem" @click="selectItem">
                     <li v-for="item in periodArr" :key="item">
                         <div>{{item}}</div>
@@ -16,13 +16,13 @@
             <div class="l">
                 <div class="chart-wrap">
                     <div class="chartBox">
-                        <my-map  :typeAnalyze='typeAnalyze' ></my-map>
+                        <my-map :typeAnalyze='typeAnalyze' @filter_btn='filter_btn'></my-map>
                     </div>
                 </div>
             </div>
 
             <div class="r">
-                <router-view  :typeAnalyze='typeAnalyze'></router-view>
+                <router-view :typeAnalyze='typeAnalyze' @filter_btn='filter_btn'></router-view>
             </div>
         </main>
     </div>
@@ -39,387 +39,127 @@
         },
         data() {
             return {
-                typeAnalyze: '111111',
-                periodArr:['近7日','上周','近半年'],
+                show: true,
+                filterShow: true,
+                //缩放值
+                scale: 1,
+                //筛选
+                periodArr: ['近7日', '上周', '近半年'],
+                typeAnalyze: '111111',    //判断点击的类型
+                filter_show: true,
+
+                //筛选时间
+                myPeriod:{},
+                pageName:'',
+                startDate:'',
+                endDate:'',
             }
         },
         methods: {
-            //获取缩放值
-            getScale() {
-                this.scale = localStorage.getItem('scale');
+            //获取筛选日期
+            getStorage() {
+                switch(this.$route.query.title){
+                    case '全省警情分类数据分析':
+                        this.myPeriod = JSON.parse(sessionStorage.getItem('jqfl'));
+                        this.pageName='jqfl';
+                        this.startDate=this.myPeriod.start;
+                        this.endDate=this.myPeriod.end;
+                        break;
+                    default:
+                        console.log('false');
+                }
             },
             //返回
             goBack() {
-                // this.$router.go(-1);
                 this.$router.push('/index/home');
             },
-            setName() {
-                this.chartTitle = ['警情分类数据分析', '警情分类数据占比分析','警情分类数据占比分析']
-            },
-            //柱状图
-            barChart() {
-                let xData = [];
-                this.jqflsjfxSource.forEach(value => {
-                    xData.push(value.name);
-                });
-                let sourceArr = this.jqflsjfxSource;
-                let myChart = this.$echarts.init(document.getElementById('bar'));
-                this.chartsObj['bar'] = myChart;
-                let colorList = ['#fcc60a', '#f5834a'];
-                let option = {
-                    xAxis: {
-                        type: 'category',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            rotate: 30,
-                            formatter: function (params) {
-                                let newParamsName = "";
-                                let paramsNameNumber = params.length;
-                                let provideNumber = 7;  //一行显示几个字
-                                let rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-                                if (paramsNameNumber > provideNumber) {
-                                    for (let p = 0; p < rowNumber; p++) {
-                                        let tempStr = "";
-                                        let start = p * provideNumber;
-                                        let end = start + provideNumber;
-                                        if (p == rowNumber - 1) {
-                                            tempStr = params.substring(start, paramsNameNumber);
-                                        } else {
-                                            tempStr = params.substring(start, end) + "\n";
-                                        }
-                                        newParamsName += tempStr;
-                                    }
-
-                                } else {
-                                    newParamsName = params;
-                                }
-                                return newParamsName
-                            },
-                            fontSize:20*this.scale,
-                            interval:0
-                        },
-                        data: xData
-                    },
-                    yAxis: {
-                        type: 'value',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel:{
-                            fontSize:20*this.scale
-                        }
-                    },
-                    series: {
-                        type: 'bar',
-                        stack: 'chart',
-                        data: sourceArr,
-                        itemStyle: {
-                            color: new this.$echarts.graphic.LinearGradient(
-                                //右，下，左，上
-                                0, 0, 0, 1, [{
-                                    //0%位置的颜色
-                                    offset: 0,
-                                    color: colorList[0]
-                                },
-                                    {
-                                        //100%位置的颜色
-                                        offset: 1,
-                                        color: colorList[1]
-                                    }
-                                ]
-                            )
-                        },
-                        barWidth: 17 * this.scale
-                    },
-                    grid:{
-                        top:80*this.scale,
-                        bottom:120*this.scale
-                    },
-                    tooltip: {},
-                };
-                myChart.setOption(option);
-            },
-            //占比
-            percent() {
-                let myChart = this.$echarts.init(document.getElementById('proportionChart'));
-                this.chartsObj['proportionChart'] = myChart;
-                let colorList = ['#ff4860', '#84fff7', '#e3ff7c', '#b137ff', '#387eff', '#ffa4d6', '#a4ffb1', '#cde3ff', '#ec7b15', '#1fa78f', '#8dffd5', '#8e88ff'];
-                let xData = [];
-                let sourceArr = this.proportionSource;
-                sourceArr.forEach(value => {
-                    xData.push(value.name);
-                });
-                let option = {
-                    xAxis: {
-                        type: 'category',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            showL: true,
-                            textStyle: {
-                                color: function (value, index) {
-                                    return colorList[index];
-                                }
-                            }
-                        },
-                        data: xData,
-                    },
-                    yAxis: {
-                        type: 'value',
-                        splitLine: {
-                            show: false
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: this.axisesColor
-                            }
-                        },
-                        axisLabel: {
-                            show: true,
-                            formatter: '{value} %'
-                        }
-                    },
-                    series: {
-                        type: 'pictorialBar',
-                        barCategoryGap: '-50%',
-                        symbol: 'path://M0,10 L10,10 C5.5,10 5.5,5 5,0 C4.5,5 4.5,10 0,10 z',
-                        itemStyle: {
-                            normal: {
-                                color: function (params) {
-                                    return colorList[params.dataIndex]
-                                },
-                                opacity: 0.8
-                            },
-                            emphasis: {
-                                opacity: 1
-                            }
-                        },
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top',
-                                formatter: function (params) {
-                                    return params.value + '%'
-                                }
-                            }
-                        },
-                        data: sourceArr,
-                        z: 10
-                    },
-                    tooltip: {},
-                    grid: {
-                        top: 90 * this.scale,
-                        bottom: 90 * this.scale,
-                        left: 140 * this.scale
-                    }
-                };
-                myChart.setOption(option);
-            },
-            //细类
-            detailChart() {
-                let myChart = this.$echarts.init(document.getElementById('detailChart'));
-                let sourceArr = this.detailSource;
-                let yData = [];
-                let colorList = ['#0054a2', '#00a0a3'];
-                for (let i = 0; i < sourceArr.length; i++) {
-                    yData.push(sourceArr[i].name);
-                }
-                let option = {
-                    xAxis: {
-                        type: 'value',
-                        splitLine: {
-                            show: true,
-                            lineStyle: {
-                                color: '#0c9ca3',
-                                type: 'dashed'
-                            }
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: '#0c9ca3',
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            show: false,
-                        },
-                        position: 'top',
-                    },
-                    yAxis: {
-                        type: 'category',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: '#0c9ca3',
-                                type: 'dashed'
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            show: true,
-                            fontSize: 20 * this.scale
-                        },
-                        data: yData
-                    },
-                    series: {
-                        type: 'bar',
-                        data: sourceArr,
-                        itemStyle: {
-                            normal: {
-                                color: new this.$echarts.graphic.LinearGradient(
-                                    //右，下，左，上
-                                    0, 0, 1, 0, [{
-                                        //0%位置的颜色
-                                        offset: 0,
-                                        color: colorList[0]
-                                    },
-                                        {
-                                            //100%位置的颜色
-                                            offset: 1,
-                                            color: colorList[1]
-                                        }
-                                    ]
-                                )
-                            }
-                        },
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'right',
-                                formatter: function (params) {
-                                    return params.value
-                                },
-                                color: '#0c9ca3',
-                                fontSize:20*this.scale
-                            }
-                        },
-                        barWidth: 17 * this.scale
-                    },
-                    grid: {
-                        left:80,
-                        top: 0,
-                        bottom: 0
-                    }
-                };
-                myChart.setOption(option);
-            },
-            detailProportionChart(){
-                let myChart=this.$echarts.init(document.getElementById('detailProportionChart'));
-                let sourceArr=this.detailSource;
-                let colorList=['#815179','#66a99f','#fc6262','#8cacc7','#eacf79','#63d3c3','#e9ab50','#b7564f','#d8bcca','#89b8c7','#a4c585','#49bcf3','#8e88ff', '#ff8155','#3ecf6a','#fff497','#c64f47','#81799e','#2f9a94','#9e57b7','#d58a85'];
-                sourceArr.forEach((value, index) => {
-                    value.itemStyle={
-                        normal: {
-                            color: colorList[index],
-                        },
-                    };
-                    value.label={
-                        textStyle: {
-                            color: colorList[index],
-                            fontSize:20*this.scale,
-                        },
-                    };
-                });
-                let option={
-                    tooltip: {},
-                    series: {
-                        type: 'sunburst',
-                        radius: ['47%', '60%'],
-                        center: ['50%', '50%'],
-                        data: sourceArr,
-                        label: {
-                            rotate: 'radial',
-                            align:'left',
-                            position:'top',
-                            distance:26,
-                        },
-                        itemStyle: {
-                            borderColor: '#021f3b',
-                        },
-                    }
-                };
-                myChart.setOption(option);
-            },
-            renderChart() {
-                let myCharts = document.querySelectorAll('.chart');
-                myCharts.forEach(value => {
-                    this.refreshCharts.push(value.getAttribute('id'))
-                });
-                let that = this;
-                let Index = {
-                    init() {
-                        this.loadData();
-                        Public.chartsResize(that.chartsObj);
-                        Public.chartsReDraw(that.chartsObj, null, [], this.refreshCharts)
-                    },
-                    loadData() {
-                        that.barChart();
-                        that.percent();
-                        that.detailChart();
-                        that.detailProportionChart();
-                    },
-                };
-                Index.init();
-            },
+            //筛选选中项
             selectedItem() {
                 let item = document.querySelectorAll('.filter>.filterItem>li>div');
-                item[0].classList.add('active');
+                if (this.myPeriod.per==='week'){
+                    item[0].classList.add('active');
+                }else if (this.myPeriod.per==='lastWeek'){
+                    item[1].classList.add('active');
+                }else {
+                    item[2].classList.add('active');
+                }
             },
+            // 筛选点击
             selectItem(e) {
                 let item = document.querySelectorAll('.filter>.filterItem>li>div');
                 item.forEach((value) => {
                     value.classList.remove('active');
                 });
-                e.target.classList.add('active')
+                e.target.classList.add('active');
+                switch (e.target.innerText) {
+                    case "近7日":
+                        let date1 = new Date();
+                        let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                        let timestamp = (new Date()).getTime();
+                        let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                        let date2 = new Date(day);
+                        let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                        this.myPeriod.per='week';
+                        this.myPeriod.start=start1;
+                        this.myPeriod.end=end1;
+                        this.startDate=start1;
+                        this.endDate=end1;
+                        break;
+                    case "上周":
+                        let d = new Date();
+// set to Monday of this week
+                        d.setDate(d.getDate() - (d.getDay() + 6) % 7);
+// set to previous Monday
+                        let date3 = new Date(d.setDate(d.getDate() - 7));
+                        let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
+// create new date of day before
+                        let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6);
+                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
+                        this.myPeriod.per='lastWeek';
+                        this.myPeriod.start=Monday;
+                        this.myPeriod.end=Sunday;
+                        this.startDate=Monday;
+                        this.endDate=Sunday;
+                        break;
+                    case "近半年":
+                        let dt = new Date();
+                        let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
+                        dt.setMonth(dt.getMonth() - 5);
+                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString();
+                        this.myPeriod.per='halfYear';
+                        this.myPeriod.start=today;
+                        this.myPeriod.end=halfYear;
+                        this.startDate=today;
+                        this.endDate=halfYear;
+                        break;
+                    default:
+                        console.log('false');
+                }
+                // console.log(this.startDate);
+                sessionStorage.setItem(this.pageName,JSON.stringify(this.myPeriod));
+            },
+            filter_btn(v) {
+                // this.filter_show = false;
+                // console.log(v);
+                this.filter_show = v;
             },
         },
         mounted() {
+            this.getStorage();
             this.selectedItem();
-
         },
-        created(){
+        watch:{
+            myPeriod:{//深度监听，可监听到对象、数组的变化
+                handler(val, oldVal){
+                    // console.log(val,oldVal);//但是这两个值打印出来却都是一样的
+                    // console.log(val.per,oldVal.per);
+                    // console.log(this.$children[2].renderChart());
+                    this.$children[2].renderChart()
+                },
+                deep:true
+            }
+        },
+        created() {
             this.typeAnalyze = this.$route.query.title
         }
     }
@@ -428,7 +168,7 @@
 <style scoped lang="scss">
     //样式里的l, m, r, t, b分别代表左，中，右，上，下
     //布局
-    #pjqflsjfx{
+    #pjqflsjfx {
         width: 100%;
         height: 100%;
         display: flex;
@@ -440,13 +180,14 @@
         // }
     }
 
-    .headerBox{
+    .headerBox {
         width: 100%;
         position: relative;
         margin-top: -3rem;
         height: 4rem;
-        padding:0 2rem;
+        padding: 0 2rem;
         margin-bottom: 0.7rem;
+
         #back {
             color: #17fff3;
             cursor: pointer;
@@ -454,7 +195,7 @@
             line-height: 4rem;
         }
 
-        .filter{
+        .filter {
             width: 16rem;
             height: 4rem;
             background: url("../assets/images/province/filterBg.png");
@@ -462,7 +203,8 @@
             background-size: 100% 100%;
             float: right;
             position: relative;
-            .filterItem{
+
+            .filterItem {
                 width: 13.8rem;
                 height: 1.4rem;
                 position: absolute;
@@ -474,9 +216,11 @@
                 display: flex;
                 flex-direction: row;
                 align-content: space-between;
-                li{
+
+                li {
                     width: 33.33%;
-                    div{
+
+                    div {
                         width: 167%;
                         height: 167%;
                         background: url("../assets/images/province/filterItemBg.png");
@@ -486,7 +230,8 @@
                         align-items: center;
                         justify-content: center;
                         cursor: pointer;
-                        &.active{
+
+                        &.active {
                             background-image: linear-gradient(-86deg,
                                     #53b0ff 0%,
                                     #0b5fa7 100%);
@@ -496,18 +241,20 @@
             }
         }
     }
+
     main {
         display: flex;
-        flex:  1;
+        flex: 1;
         padding: 0 2rem 4rem;
         flex-direction: row;
         justify-content: space-between;
 
-        h3{
+        h3 {
             height: 10%;
             text-align: center;
         }
-        .chartBox{
+
+        .chartBox {
             height: 90%;
         }
 
@@ -524,9 +271,9 @@
         .l {
             width: 25.73%;
             height: 100%;
-            background-image: url('../assets/images/index/m.png') ;
+            background-image: url('../assets/images/index/m.png');
             background-repeat: no-repeat;
-            background-size:100% 100%;
+            background-size: 100% 100%;
 
             .chart {
                 width: 100%;
@@ -567,7 +314,7 @@
                 .r-t-l {
                     width: 37.26%;
                     height: 100%;
-                    background-image: url('../assets/images/index/l-t-bg.png') ;
+                    background-image: url('../assets/images/index/l-t-bg.png');
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
 
@@ -577,7 +324,7 @@
                 .r-t-r {
                     width: 60.52%;
                     height: 100%;
-                    background-image: url('../assets/images/index/l-t-bg.png') ;
+                    background-image: url('../assets/images/index/l-t-bg.png');
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
                 }
@@ -590,7 +337,7 @@
                 flex-direction: column;
                 justify-content: space-between;
 
-                background-image: url('../assets/images/index/l-t-bg.png') ;
+                background-image: url('../assets/images/index/l-t-bg.png');
                 background-repeat: no-repeat;
                 background-size: 100% 100%;
 
@@ -606,15 +353,17 @@
                         display: flex;
                         flex-direction: column;
                         justify-content: space-between;
-                        background-image: url('../assets/images/type/bg.png') ;
+                        background-image: url('../assets/images/type/bg.png');
                         background-repeat: no-repeat;
                         background-size: 100% 100%;
-                        box-shadow:0 0 5px #011425;
-                        li{
+                        box-shadow: 0 0 5px #011425;
+
+                        li {
                             width: 100%;
                             height: 5.85%;
-                            background-image: url('../assets/images/type/itemBg.png') ;
-                            div{
+                            background-image: url('../assets/images/type/itemBg.png');
+
+                            div {
                                 width: 166%;
                                 height: 167%;
                                 transform: scale(0.6);
@@ -622,7 +371,8 @@
                                 text-align: center;
                                 line-height: 2;
                                 cursor: pointer;
-                                &.active{
+
+                                &.active {
                                     background: #4c7fff;
                                 }
                             }
@@ -637,7 +387,8 @@
                     margin-left: 1.01rem;
                     margin-top: 2rem;
                 }
-                .chart:nth-child(3){
+
+                .chart:nth-child(3) {
                     float: left;
                     width: 32.77rem;
                     margin-right: 3rem;

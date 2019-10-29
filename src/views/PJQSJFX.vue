@@ -3,7 +3,8 @@
         <my-header></my-header>
         <div class="headerBox">
             <h3 id="back" @click="goBack">返回</h3>
-            <div class="filter" v-if="filterShow">
+            <div class="filter" v-show="filter_show">
+
                 <ul class="filterItem" @click="selectItem">
                     <li v-for="item in periodArr" :key="item">
                         <div>{{item}}</div>
@@ -17,15 +18,14 @@
                 <div class="chart-wrap">
                     <div class="chartBox">
                         <!-- <keep-alive> -->
-                            <my-map  :typeAnalyze='typeAnalyze' ></my-map>
+                        <my-map :typeAnalyze='typeAnalyze' @filter_btn='filter_btn'></my-map>
                         <!-- </keep-alive> -->
                     </div>
                 </div>
             </div>
             <div class="r">
 
-                <router-view  :typeAnalyze='typeAnalyze'></router-view>
-
+                <router-view :typeAnalyze='typeAnalyze' @filter_btn='filter_btn'></router-view>
 
 
             </div>
@@ -39,86 +39,142 @@
 
     export default {
         name: "PJQSJFX",
-        components: {MyHeader,MyMap},
+        components: {MyHeader, MyMap},
         data() {
             return {
-                show:true,
-                filterShow:true,
-                //图表公用
-                refreshCharts: [],
-                chartsObj: {},
-                axisesColor: '#0057ab',
+                show: true,
+                filterShow: true,
                 //缩放值
                 scale: 1,
                 //筛选
-                periodArr:['近7日','上周','近半年'],
-                //标题
-                chartTitle: [],
-                mapData: {name: '报警事件总数', value: 96666},
-                //近七日接警类型数据分析
-                trendChartSource: [],
-                trendChartColor: [],
-                //    警情数据占比分析
-                proportionSource: [],
-                //市
-                citySource: ['太原市', '大同市', '朔州市', '忻州市', '吕梁市', '晋中市', '阳泉市', '长治市', '晋城市', '临汾市', '运城市'],
-                //细类1
-                subClassSource1: [],
-                subClassColorList1: [],
-                //细类2
-                subClassSource2: [],
-                subClassColorList2: [],
-                //细类3
-                subClassSource3: [],
-                subClassColorList3: [],
-                //细类4
-                subClassSource4: [],
-                subClassColorList4: [],
-                //细类5
-                subClassSource5: [],
-                subClassColorList5: [],
-                //    //细类6
-                subClassSource6: [],
-                subClassColorList6: [],
+                periodArr: ['近7日', '上周', '近半年'],
                 typeAnalyze: '111111',    //判断点击的类型
+                filter_show: true,
+
+                //筛选时间
+                myPeriod:{},
+                pageName:'',
+                startDate:'',
+                endDate:'',
             }
         },
         methods: {
-            //获取缩放值
-            getScale() {
-                this.scale = localStorage.getItem('scale');
+            //获取筛选日期
+            getStorage() {
+                switch(this.$route.query.title){
+                    case '全省接警类型数据分析':
+                        this.myPeriod = JSON.parse(sessionStorage.getItem('jjlx'));
+                        this.pageName='jjlx';
+                        this.startDate=this.myPeriod.start;
+                        this.endDate=this.myPeriod.end;
+                        break;
+                    case '全省报警方式数据分析':
+                        this.myPeriod = JSON.parse(sessionStorage.getItem('bjfs'));
+                        this.pageName='bjfs';
+                        this.startDate=this.myPeriod.start;
+                        this.endDate=this.myPeriod.end;
+                        break;
+                    case '全省来话类型数据分析':
+                        this.myPeriod = JSON.parse(sessionStorage.getItem('lhlx'));
+                        this.pageName='lhlx';
+                        this.startDate=this.myPeriod.start;
+                        this.endDate=this.myPeriod.end;
+                        break;
+                    default:
+                        console.log('false');
+                }
             },
             //返回
             goBack() {
                 this.$router.push('/index/home');
             },
+            //筛选选中项
             selectedItem() {
                 let item = document.querySelectorAll('.filter>.filterItem>li>div');
-                item[0].classList.add('active');
+                if (this.myPeriod.per==='week'){
+                    item[0].classList.add('active');
+                }else if (this.myPeriod.per==='lastWeek'){
+                    item[1].classList.add('active');
+                }else {
+                    item[2].classList.add('active');
+                }
             },
+            // 筛选点击
             selectItem(e) {
                 let item = document.querySelectorAll('.filter>.filterItem>li>div');
                 item.forEach((value) => {
                     value.classList.remove('active');
                 });
                 e.target.classList.add('active');
+                switch (e.target.innerText) {
+                    case "近7日":
+                        let date1 = new Date();
+                        let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                        let timestamp = (new Date()).getTime();
+                        let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                        let date2 = new Date(day);
+                        let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                        this.myPeriod.per='week';
+                        this.myPeriod.start=start1;
+                        this.myPeriod.end=end1;
+                        this.startDate=start1;
+                        this.endDate=end1;
+                        break;
+                    case "上周":
+                        let d = new Date();
+// set to Monday of this week
+                        d.setDate(d.getDate() - (d.getDay() + 6) % 7);
+// set to previous Monday
+                        let date3 = new Date(d.setDate(d.getDate() - 7));
+                        let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
+// create new date of day before
+                        let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6);
+                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
+                        this.myPeriod.per='lastWeek';
+                        this.myPeriod.start=Monday;
+                        this.myPeriod.end=Sunday;
+                        this.startDate=Monday;
+                        this.endDate=Sunday;
+                    break;
+                    case "近半年":
+                        let dt = new Date();
+                        let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
+                        dt.setMonth(dt.getMonth() - 5);
+                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString();
+                        this.myPeriod.per='halfYear';
+                        this.myPeriod.start=today;
+                        this.myPeriod.end=halfYear;
+                        this.startDate=today;
+                        this.endDate=halfYear;
+                        break;
+                    default:
+                        console.log('false');
+                }
+                // console.log(this.startDate);
+                sessionStorage.setItem(this.pageName,JSON.stringify(this.myPeriod));
             },
-            changeSelect(provincePeriod){
-                this.period=provincePeriod;
-                console.log(this.period);
-            }
+            filter_btn(v) {
+                // this.filter_show = false;
+                // console.log(v);
+                this.filter_show = v;
+            },
         },
         mounted() {
-this.selectedItem();
-
-
-            // console.log(this.$route.query.title);
-            // this.typeAnalyze = this.$route.query.title
-            
-
+            this.getStorage();
+            this.selectedItem();
         },
-        created(){
+        created() {
             this.typeAnalyze = this.$route.query.title
+        },
+        watch:{
+            myPeriod:{//深度监听，可监听到对象、数组的变化
+                handler(val, oldVal){
+                    // console.log(val,oldVal);//但是这两个值打印出来却都是一样的
+                    // console.log(val.per,oldVal.per);
+                    this.$children[2].renderChart();
+                },
+                deep:true
+            }
         }
     }
 </script>
@@ -126,25 +182,26 @@ this.selectedItem();
 <style scoped lang="scss">
     //样式里的l, m, r, t, b分别代表左，中，右，上，下
     //布局
-    #pjqsjfx{
+    #pjqsjfx {
         width: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
 
-        main{
-            padding:0 2rem 4rem; 
+        main {
+            padding: 0 2rem 4rem;
         }
     }
 
-    .headerBox{
+    .headerBox {
         width: 100%;
         position: relative;
         margin-top: -3rem;
         height: 4rem;
-        padding:0 2rem;
+        padding: 0 2rem;
         margin-bottom: 0.7rem;
+
         #back {
             color: #17fff3;
             cursor: pointer;
@@ -152,7 +209,7 @@ this.selectedItem();
             line-height: 4rem;
         }
 
-        .filter{
+        .filter {
             width: 16rem;
             height: 4rem;
             background: url("../assets/images/province/filterBg.png");
@@ -160,7 +217,8 @@ this.selectedItem();
             background-size: 100% 100%;
             float: right;
             position: relative;
-            .filterItem{
+
+            .filterItem {
                 width: 13.8rem;
                 height: 1.4rem;
                 position: absolute;
@@ -172,9 +230,11 @@ this.selectedItem();
                 display: flex;
                 flex-direction: row;
                 align-content: space-between;
-                li{
+
+                li {
                     width: 33.33%;
-                    div{
+
+                    div {
                         width: 167%;
                         height: 167%;
                         background: url("../assets/images/province/filterItemBg.png");
@@ -184,7 +244,8 @@ this.selectedItem();
                         align-items: center;
                         justify-content: center;
                         cursor: pointer;
-                        &.active{
+
+                        &.active {
                             background-image: linear-gradient(-86deg,
                                     #53b0ff 0%,
                                     #0b5fa7 100%);
@@ -205,12 +266,13 @@ this.selectedItem();
             width: 100%;
             align-content: space-between;
         }
+
         .l {
             width: 25.73%;
-            height:100%;
-            background-image: url('../assets/images/index/m.png') ;
+            height: 100%;
+            background-image: url('../assets/images/index/m.png');
             background-repeat: no-repeat;
-            background-size:100% 100%;
+            background-size: 100% 100%;
 
             .chartBox {
                 width: 100%;
@@ -231,7 +293,7 @@ this.selectedItem();
 
         }
 
-        .chart{
+        .chart {
             width: 100%;
             height: 100%;
         }
@@ -258,17 +320,17 @@ this.selectedItem();
                 .r-t-l {
                     width: 37.25%;
                     height: 100%;
-                    background-image: url('../assets/images/index/l-t-bg.png') ;
+                    background-image: url('../assets/images/index/l-t-bg.png');
                     background-repeat: no-repeat;
-                    background-size:100% 100%;
+                    background-size: 100% 100%;
                 }
 
                 .r-t-r {
                     width: 60.5%;
                     height: 100%;
-                    background-image: url('../assets/images/index/l-t-bg.png') ;
+                    background-image: url('../assets/images/index/l-t-bg.png');
                     background-repeat: no-repeat;
-                    background-size:100% 100%;
+                    background-size: 100% 100%;
                 }
             }
 
@@ -286,20 +348,21 @@ this.selectedItem();
                     flex-direction: row;
                     justify-content: space-between;
 
-                    .r-b-t-l-1, .r-b-t-r-1,.r-b-b-l-1,.r-b-b-r-1 {
+                    .r-b-t-l-1, .r-b-t-r-1, .r-b-b-l-1, .r-b-b-r-1 {
                         width: 48.91%;
                         height: 100%;
-                        background-image: url('../assets/images/index/l-t-bg.png') ;
+                        background-image: url('../assets/images/index/l-t-bg.png');
                         background-repeat: no-repeat;
-                        background-size:100% 100%;
+                        background-size: 100% 100%;
                     }
-                    .r-b-t-l-2,.r-b-t-m-2, .r-b-t-r-2,.r-b-b-l-2,.r-b-b-r-2,.r-b-b-m-2 {
+
+                    .r-b-t-l-2, .r-b-t-m-2, .r-b-t-r-2, .r-b-b-l-2, .r-b-b-r-2, .r-b-b-m-2 {
                         width: 32%;
                         height: 100%;
                         // background: white;
-                        background-image: url('../assets/images/index/l-t-bg.png') ;
+                        background-image: url('../assets/images/index/l-t-bg.png');
                         background-repeat: no-repeat;
-                        background-size:100% 100%;
+                        background-size: 100% 100%;
                     }
                 }
             }

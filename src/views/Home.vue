@@ -179,6 +179,7 @@
         components: {MyHeader},
         data() {
             return {
+                select: true,
                 //需要刷新的图表
                 refreshCharts: [],
                 //    所有的图标对象
@@ -190,12 +191,10 @@
                 //筛选选项
                 periodArr: ['近7日', '上周', '近半年'],
                 //默认获取本周数据
-                period: {
-                    jqfl: {start: '', end: '',per:''},
-                    jjlx: {start: '', end: '',per:''},
-                    lhlx: {start: '', end: '',per:''},
-                    bjfs: {start: '', end: '',per:''},
-                },
+                jqfl: {start: '', end: '', per: ''},
+                jjlx: {start: '', end: '', per: ''},
+                lhlx: {start: '', end: '', per: ''},
+                bjfs: {start: '', end: '', per: ''},
                 //警情统计监测
                 jqtjjcData: [
                     {name: '报警事件总数', value: 18364},
@@ -227,7 +226,7 @@
                 grading: [0.2, 0.4, 0.6, 0.8, 1],
                 mapSource: [
                     {name: "太原市", value: 80, value1: 70},
-                    {name: "长治市", value: 42, value1: 50},
+                    {name: "长治市", value: 30, value1: 50},
                     {name: "朔州市", value: 4, value1: 20},
                     {name: "运城市", value: 32, value1: 60},
                     {name: "大同市", value: 30, value1: 80},
@@ -299,7 +298,7 @@
                     {name: '其他来话类型', value: [256, 626, 515, 126, 512, 556, 488]}
                 ],
                 // sevenlhlxsjfxSource:{}
-                option: {
+                /*option: {
                     xAxis: {
                         type: 'category',
                         splitLine: {
@@ -340,7 +339,7 @@
                         bottom: '15%'
                     },
                     tooltip: {}
-                }
+                }*/
             }
         },
         methods: {
@@ -459,19 +458,61 @@
                 this.chartsObj.jqjqtjChart = myChart;
                 let sourceArr = this.jqjqtjScoure;
                 let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
-                let option = this.option;
-                option.series.data = sourceArr;
-                option.series.itemStyle = {
-                    color: this.gradient(['#00dce4', '#529fff'])
-                };
-                option.series.barWidth = 20 * this.scale;
-                option.xAxis.data = dateArr;
-                option.xAxis.axisLabel = {
-                    fontSize: 20 * this.scale,
-                    interval: 0,
-                };
-                option.yAxis.axisLabel = {
-                    fontSize: 20 * this.scale,
+                let option={
+                    xAxis: {
+                        type: 'category',
+                            splitLine: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: true,
+                                lineStyle: {
+                                color: '#0057ab'
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            fontSize: 20 * this.scale,
+                            interval: 0,
+                        },
+                        data: dateArr
+                    },
+                    yAxis: {
+                        splitLine: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: true,
+                                lineStyle: {
+                                color: '#0057ab'
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            fontSize: 20 * this.scale,
+                            interval: 0,
+                        }
+                    },
+                    series: {
+                        type: 'bar',
+                            stack: 'chart',
+                        data:sourceArr,
+                        itemStyle:{
+                            color: this.gradient(['#00dce4', '#529fff'])
+                        },
+                        barWidth: 20 * this.scale
+                    },
+                    grid: {
+                        left: '9%',
+                            right: '5%',
+                            top: '5%',
+                            bottom: '15%'
+                    },
+                    tooltip: {}
                 };
                 myChart.setOption(option);
             },
@@ -484,45 +525,85 @@
                 sourceArr.forEach(value => {
                     xData.push(value.name);
                 });
-                let option = this.option;
-                option.series.data = sourceArr;
-                option.series.itemStyle = {
-                    color: this.gradient(['#fcc60a', '#f5834a'])
-                };
-                option.series.barWidth = 20 * this.scale;
-                option.xAxis.data = xData;
-                option.xAxis.axisLabel = {
-                    fontSize: 20 * this.scale,
-                    rotate: 30,
-                    interval: 0,
-                    formatter: function (params) {
-                        let newParamsName = "";
-                        let paramsNameNumber = params.length;
-                        let provideNumber = 7;  //一行显示几个字
-                        let rowNumber = Math.ceil(paramsNameNumber / provideNumber);
-                        if (paramsNameNumber > provideNumber) {
-                            for (let p = 0; p < rowNumber; p++) {
-                                let tempStr = "";
-                                let start = p * provideNumber;
-                                let end = start + provideNumber;
-                                if (p == rowNumber - 1) {
-                                    tempStr = params.substring(start, paramsNameNumber);
-                                } else {
-                                    tempStr = params.substring(start, end) + "\n";
-                                }
-                                newParamsName += tempStr;
+                let option={
+                    xAxis: {
+                        type: 'category',
+                        splitLine: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#0057ab'
                             }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel : {
+                            fontSize: 20 * this.scale,
+                            rotate: 30,
+                            interval: 0,
+                            formatter: function (params) {
+                                let newParamsName = "";
+                                let paramsNameNumber = params.length;
+                                let provideNumber = 7;  //一行显示几个字
+                                let rowNumber = Math.ceil(paramsNameNumber / provideNumber);
+                                if (paramsNameNumber > provideNumber) {
+                                    for (let p = 0; p < rowNumber; p++) {
+                                        let tempStr = "";
+                                        let start = p * provideNumber;
+                                        let end = start + provideNumber;
+                                        if (p == rowNumber - 1) {
+                                            tempStr = params.substring(start, paramsNameNumber);
+                                        } else {
+                                            tempStr = params.substring(start, end) + "\n";
+                                        }
+                                        newParamsName += tempStr;
+                                    }
 
-                        } else {
-                            newParamsName = params;
+                                } else {
+                                    newParamsName = params;
+                                }
+                                return newParamsName
+                            }
+                        },
+                        data: xData
+                    },
+                    yAxis: {
+                        splitLine: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: '#0057ab'
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            fontSize: 20 * this.scale,
                         }
-                        return newParamsName
-                    }
+                    },
+                    series: {
+                        type: 'bar',
+                        stack: 'chart',
+                        data:sourceArr,
+                        itemStyle:{
+                            color: this.gradient(['#fcc60a', '#f5834a'])
+                        },
+                        barWidth: 20 * this.scale
+                    },
+                    grid: {
+                        left: '9%',
+                        right: '5%',
+                        top: '5%',
+                        bottom: '24%'
+                    },
+                    tooltip: {}
                 };
-                option.yAxis.axisLabel = {
-                    fontSize: 20 * this.scale,
-                };
-                option.grid.bottom = '24%';
                 myChart.setOption(option);
             },
 
@@ -577,6 +658,7 @@
                             mapType: map,
                             roam: false,
                             data: data,
+                            zoom: 1.18,   //这里是关键，一定要放在 series中
                             nameMap: {
                                 '山西省': '山西省'
                             },
@@ -584,59 +666,176 @@
                                 normal: {
                                     show: true,
                                     formatter: function (params) {
-                                        if (params.data.value1) {
+                                        /*if (params.data.value1) {
                                             let valueType = params.data.value[1] ? 'valueUp' : 'valueDown';
                                             return params.name +
                                                 '：{' + valueType + '|' + params.data.value1 + '}';
                                         } else {
                                             return params.name
+                                        }*/
+                                        let style='';
+                                        let font='';
+                                        if (params.data.value<that.grading[0]){
+                                            style='colorZero';
+                                            font='fontZero';
+                                        }else if (params.data.value>=that.grading[0]&&params.data.value<that.grading[1]){
+                                            style='colorOne';
+                                            font='fontOne';
+                                        }else if (params.data.value>=that.grading[1]&&params.data.value<that.grading[2]) {
+                                            style='colorTwo';
+                                            font='fontTwo';
+                                        }else if (params.data.value>=that.grading[2]&&params.data.value<that.grading[3]) {
+                                            style='colorThere';
+                                            font='fontThere';
+                                        }else {
+                                            style='colorFour';
+                                            font='fontFour';
+                                        }
+                                        if (params.data.value1) {
+                                            return  '{'+font+'|'+params.name+'-}{'+style+'|'+params.data.value1 + '}';
+                                        } else {
+                                            return params.name
                                         }
                                     },
                                     position: 'inside',
-                                    backgroundColor: '#fff',
-                                    padding: [4, 5],
-                                    borderRadius: 3,
-                                    borderWidth: 1,
-                                    borderColor: 'rgba(0,0,0,0.5)',
-                                    color: '#333',
+                                    fontSize:8,
+                                    fontWeight:'normal',
+                                    color: '#fff',
                                     rich: {
-                                        valueUp: {
+                                        /*valueUp: {
                                             color: '#019D2D',
                                             fontSize: 14
                                         },
                                         valueDown: {
                                             color: '#019D2D',
                                             fontSize: 14
+                                        },*/
+                                        fontZero: {
+                                            color: '#fffeaa',
+                                            fontSize: 8,
                                         },
+                                        fontOne: {
+                                            color: '#ffef3b',
+                                            fontSize: 8,
+                                        },
+                                        fontTwo: {
+                                            color: '#ffc426',
+                                            fontSize: 8,
+                                        },
+                                        fontThere: {
+                                            color: '#ff9710',
+                                            fontSize: 8,
+                                        },
+                                        fontFour:{
+                                            color: '#ff6a2f',
+                                            fontSize: 8,
+                                        },
+                                        colorZero: {
+                                            color: '#fffeaa',
+                                            fontSize: 12,
+                                            fontWeight:'bold'
+                                        },
+                                        colorOne: {
+                                            color: '#ffef3b',
+                                            fontSize: 12,
+                                            fontWeight:'bold'
+                                        },
+                                        colorTwo: {
+                                            color: '#ffc426',
+                                            fontSize: 12,
+                                            fontWeight:'bold'
+                                        },
+                                        colorThere: {
+                                            color: '#ff9710',
+                                            fontSize: 12,
+                                            fontWeight:'bold'
+                                        },
+                                        colorFour:{
+                                            color: '#ff6a2f',
+                                            fontSize: 12,
+                                            fontWeight:'bold'
+                                        }
                                     }
                                 },
                                 emphasis: {
-                                    show: true
+                                    show: true,
+                                    /*formatter: function (params) {
+                                        /!*if (params.data.value1) {
+                                            let valueType = params.data.value[1] ? 'valueUp' : 'valueDown';
+                                            return params.name +
+                                                '：{' + valueType + '|' + params.data.value1 + '}';
+                                        } else {
+                                            return params.name
+                                        }*!/
+                                        let style='';
+                                        if (params.data.value<that.grading[0]){
+                                            style='colorZero';
+                                        }else if (params.data.value>that.grading[0]&&params.data.value<that.grading[1]){
+                                            style='colorOne';
+                                        }else if (params.data.value>that.grading[1]&&params.data.value<that.grading[2]) {
+                                            style='colorTwo';
+                                        }else if (params.data.value>that.grading[2]&&params.data.value<that.grading[3]) {
+                                            style='colorThere';
+                                        }else {
+                                            style='colorFour';
+                                        }
+                                        if (params.data.value1) {
+                                            return params.name +':{'+style+'|'+ params.data.value1 + '}';
+                                        } else {
+                                            return params.name
+                                        }
+                                    },
+                                    position: 'inside',
+                                    /!* backgroundColor: 'rgba(255,255,255,0.8)',
+                                     padding: [4, 5],
+                                     borderRadius: 3,
+                                     borderWidth: 1,
+                                     borderColor: 'rgba(0,0,0,0.5)',*!/
+                                    color: '#fff',
+                                    fontSize:20,
+                                    rich: {
+                                        /!*valueUp: {
+                                            color: '#019D2D',
+                                            fontSize: 14
+                                        },
+                                        valueDown: {
+                                            color: '#019D2D',
+                                            fontSize: 14
+                                        },*!/
+                                        colorZero: {
+                                            color: '#fffe0b',
+                                            fontSize: 20
+                                        },
+                                        colorOne: {
+                                            color: '#38ff04',
+                                            fontSize: 20
+                                        },
+                                        colorTwo: {
+                                            color: '#0cffed',
+                                            fontSize: 20
+                                        },
+                                        colorThere: {
+                                            color: '#ff0bf8',
+                                            fontSize: 20
+                                        },
+                                        colorFour:{
+                                            color: '#ff171a',
+                                            fontSize: 20
+                                        }
+                                    }*/
                                 }
                             },
                             itemStyle: {
                                 emphasis: {
                                     label: {
-                                        show: true
+                                        show: true,
+                                        color:'#fff'
                                     },
-                                    areaColor: '#ffde7b'
+                                    areaColor: '#5a3cff',
                                 }
                             },
                         },
                     ];
-                    option.geo = {
-                        show: true,
-                        map: map,
-                        label: {
-                            normal: {
-                                show: false
-                            },
-                            emphasis: {
-                                show: false,
-                            }
-                        },
-                        roam: false,
-                    };
                     // let color=['rgba(255,0,0,0.2)','rgba(255,0,0,0.4)','rgba(255,0,0,0.6)','rgba(255,0,0,0.8)','rgba(255,0,0,1)'];
                     option.visualMap = {
                         type: 'piecewise',
@@ -871,49 +1070,80 @@
                         data: sourceArr['data'][i].value
                     });
                 }
-                let option = this.option;
-                option.xAxis.boundaryGap = false;
-                option.xAxis.axisLabel = option.yAxis.axisLabel = {
-                    fontSize: 20 * this.scale
-                };
-                option.xAxis.data = sourceArr['date'];
-                option.yAxis.splitLine = {
-                    show: true,
-                    lineStyle: {
-                        type: 'dashed',
-                        color: '#03eeff'
+                let option = {
+                    legend: {
+                        textStyle: {
+                            fontSize: 20 * this.scale,
+                            color: function (params) {
+                                return colorList[params.dataIndex]
+                            }
+                        },
+                        itemWidth: 20 * this.scale,
+                        itemHeight: 20 * this.scale,
+                    },
+                    xAxis: {
+                        type: 'category',
+                        splitLine: {
+                            show: false
+                        },
+                        boundaryGap: false,
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: this.axisesColor
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel:{
+                            fontSize:20*this.scale
+                        },
+                        data: sourceArr['date']
+                    },
+                    yAxis: {
+                        type: 'value',
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                type: 'dashed',
+                                color: '#03eeff'
+                            }
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: this.axisesColor
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel:{
+                            fontSize:20*this.scale
+                        },
+                    },
+                    series: seriesArr,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            lineStyle: {
+                                color: '#57617B'
+                            }
+                        },
+                    },
+                    grid: {
+                        top: 90 * this.scale,
+                        bottom: 60 * this.scale
                     }
-                };
-                option.series = seriesArr;
-                option.tooltip = {
-                    trigger: 'axis',
-                    axisPointer: {
-                        lineStyle: {
-                            color: '#57617B'
-                        }
-                    },
-                };
-                option.legend = {
-                    textStyle: {
-                        fontSize: 20 * this.scale,
-                        color: '#63cbff'
-                    },
-                    itemWidth: 18 * this.scale,
-                    itemHeight: 18 * this.scale,
-                    width: '85%'
-                };
-                option.grid = {
-                    top: 100 * this.scale,
-                    bottom: 60 * this.scale,
                 };
                 myChart.setOption(option);
             },
             sevensjfx1(chartContainer, sourceArr, colorList) {
                 let seriesArr = [];
-                let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
+                let dateArr = ['10-1','10-2','10-3','10-4','10-5','10-6','10-7'];
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
                 this.chartsObj[chartContainer] = myChart;
-                dateArr.reverse();
                 for (let i = 0; i < sourceArr.length; i++) {
                     seriesArr.push({
                         name: sourceArr[i].name,
@@ -926,45 +1156,77 @@
                             }
                         },
                         lineStyle: {
-                            width: 2
+                            width: 3
                         },
                         data: sourceArr[i].value
                     });
                 }
-                let option = this.option;
-                option.xAxis.boundaryGap = false;
-                option.xAxis.axisLabel = option.yAxis.axisLabel = {
-                    fontSize: 20 * this.scale
-                };
-                option.xAxis.data = dateArr;
-                option.yAxis.splitLine = {
-                    show: true,
-                    lineStyle: {
-                        type: 'dashed',
-                        color: '#03eeff'
+                let option = {
+                    legend: {
+                        textStyle: {
+                            fontSize: 12 * this.scale,
+                            color: function (params) {
+                                return colorList[params.dataIndex]
+                            }
+                        },
+                        itemWidth: 12 * this.scale,
+                        itemHeight: 12 * this.scale,
+                    },
+                    xAxis: {
+                        type: 'category',
+                        splitLine: {
+                            show: false
+                        },
+                        boundaryGap: false,
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: this.axisesColor
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel:{
+                            fontSize:20*this.scale
+                        },
+                        data: dateArr
+                    },
+                    yAxis: {
+                        type: 'value',
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                type: 'dashed',
+                                color: '#03eeff'
+                            }
+                        },
+                        axisLine: {
+                            show: true,
+                            lineStyle: {
+                                color: this.axisesColor
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel:{
+                            fontSize:20*this.scale
+                        },
+                    },
+                    series: seriesArr,
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            lineStyle: {
+                                color: '#57617B'
+                            }
+                        },
+                    },
+                    grid: {
+                        top: 90 * this.scale,
+                        bottom: 60 * this.scale
                     }
-                };
-                option.series = seriesArr;
-                option.tooltip = {
-                    trigger: 'axis',
-                    axisPointer: {
-                        lineStyle: {
-                            color: '#57617B'
-                        }
-                    },
-                };
-                option.legend = {
-                    textStyle: {
-                        fontSize: 20 * this.scale,
-                        color: '#63cbff'
-                    },
-                    itemWidth: 18 * this.scale,
-                    itemHeight: 18 * this.scale,
-                    width: '85%'
-                };
-                option.grid = {
-                    top: 100 * this.scale,
-                    bottom: 60 * this.scale,
                 };
                 myChart.setOption(option);
             },
@@ -1121,6 +1383,7 @@
                 this.sevenjjlxsjfxSource.date = dateArr;
                 this.sevenjjlxsjfxSource.color = ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'];
             },
+            //柱状图渐变
             gradient(colorList) {
                 return new this.$echarts.graphic.LinearGradient(
                     //右，下，左，上
@@ -1137,6 +1400,7 @@
                     ]
                 )
             },
+            //渲染图表
             renderChart() {
                 let myCharts = document.querySelectorAll('.chart');
                 myCharts.forEach(value => {
@@ -1167,19 +1431,71 @@
                 };
                 Index.init();
             },
+            //进入渲染选中的选项
             selectedItem() {
+                // console.log(this.period);
                 let item = document.querySelectorAll('.option>.filterItem');
-                item.forEach(value => {
-                    let child=value.firstChild.firstChild;
-                    child.classList.add('active');
-                })
+                // console.log(item);
+                switch (this.jqfl.per) {
+                    case "week":
+                        item[0].firstChild.firstChild.classList.add('active');
+                        break;
+                    case "lastWeek":
+                        item[0].childNodes[1].childNodes[0].classList.add('active');
+                        break;
+                    case "halfYear":
+                        item[0].childNodes[2].childNodes[0].classList.add('active');
+                        break;
+                    default:
+                        console.log('false');
+                }
+                switch (this.jjlx.per) {
+                    case "week":
+                        item[1].firstChild.firstChild.classList.add('active');
+                        break;
+                    case "lastWeek":
+                        item[1].childNodes[1].childNodes[0].classList.add('active');
+                        break;
+                    case "halfYear":
+                        item[1].childNodes[2].childNodes[0].classList.add('active');
+                        break;
+                    default:
+                        console.log('false');
+                }
+                switch (this.bjfs.per) {
+                    case "week":
+                        item[2].firstChild.firstChild.classList.add('active');
+                        break;
+                    case "lastWeek":
+                        item[2].childNodes[1].childNodes[0].classList.add('active');
+                        break;
+                    case "halfYear":
+                        item[2].childNodes[2].childNodes[0].classList.add('active');
+                        break;
+                    default:
+                        console.log('false');
+                }
+                switch (this.lhlx.per) {
+                    case "week":
+                        item[3].firstChild.firstChild.classList.add('active');
+                        break;
+                    case "lastWeek":
+                        item[3].childNodes[1].childNodes[0].classList.add('active');
+                        break;
+                    case "halfYear":
+                        item[3].childNodes[2].childNodes[0].classList.add('active');
+                        break;
+                    default:
+                        console.log('false');
+                }
             },
+            //选择选项
             selectItem(e) {
-                let item = document.querySelectorAll('.option>.filterItem>li>div');
+                let item = document.querySelectorAll('.option>.filterItem');
                 item.forEach((value) => {
                     value.classList.remove('active');
+                    console.log(value);
                 });
-                e.target.classList.add('active');
                 switch (e.target.innerHTML) {
                     case'近7日':
                         let date1 = new Date();
@@ -1190,9 +1506,12 @@
                         let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
                         e.target.parentNode.parentNode.parentNode.style.display = 'none';
                         let type1 = e.target.getAttribute('data-id');
-                        this.period[type1].start=start1;
-                        this.period[type1].end=end1;
-                        this.period[type1].per='week';
+                        this[type1].start = start1;
+                        this[type1].end = end1;
+                        this[type1].per = 'week';
+                        this.start=start1;
+                        console.log(e.target);
+                        e.target.firstChild.firstChild.classList.add('active');
                         break;
                     case'上周':
                         let d = new Date();
@@ -1206,27 +1525,33 @@
                         let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
                         e.target.parentNode.parentNode.parentNode.style.display = 'none';
                         let type2 = e.target.getAttribute('data-id');
-                        this.period[type2].start=Monday;
-                        this.period[type2].end=Sunday;
-                        this.period[type2].per='lastWeek';
+                        this[type2].start = Monday;
+                        this[type2].end = Sunday;
+                        this[type2].per = 'lastWeek';
+                        e.target.childNodes[1].firstChild.classList.add('active');
                         break;
                     case'近半年':
                         let dt = new Date();
-                        let today=dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
+                        let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
                         dt.setMonth(dt.getMonth() - 5);
-                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0')+dt.getDate().toString();
+                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString();
                         e.target.parentNode.parentNode.parentNode.style.display = 'none';
                         let type3 = e.target.getAttribute('data-id');
-                        this.period[type3].start=today;
-                        this.period[type3].end=halfYear;
-                        this.period[type3].per='halfYear';
+                        this[type3].start = today;
+                        this[type3].end = halfYear;
+                        this[type3].per = 'halfYear';
+                        e.target.childNodes[2].firstChild.classList.add('active');
                         break;
                     default:
                         console.log('false');
                         break;
-                };
-                sessionStorage.setItem('period', JSON.stringify(this.period));
+                }
+                sessionStorage.setItem('jqfl', JSON.stringify(this.jqfl));
+                sessionStorage.setItem('jjlx', JSON.stringify(this.jjlx));
+                sessionStorage.setItem('bjfs', JSON.stringify(this.bjfs));
+                sessionStorage.setItem('lhlx', JSON.stringify(this.lhlx));
             },
+            //筛选显示隐藏
             filter(e) {
                 let ele = e.target.getAttribute('class');
                 let option = document.getElementsByClassName('option');
@@ -1243,28 +1568,42 @@
                     }
                 }
             },
+            //获取或保存筛选时间
+            setperiod() {
+                if (sessionStorage.getItem('jqfl')&&sessionStorage.getItem('jjlx')&&sessionStorage.getItem('bjfs')&&sessionStorage.getItem('lhlx')) {
+                    this.jqfl = JSON.parse(sessionStorage.getItem('jqfl'));
+                    this.jjlx = JSON.parse(sessionStorage.getItem('jjlx'));
+                    this.bjfs = JSON.parse(sessionStorage.getItem('bjfs'));
+                    this.lhlx = JSON.parse(sessionStorage.getItem('lhlx'));
+                } else {
+                    let date1 = new Date();
+                    let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                    let timestamp = (new Date()).getTime();
+                    let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                    let date2 = new Date(day);
+                    let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                    this.jjlx.start = start1;
+                    this.jjlx.end = end1;
+                    this.jjlx.per = 'week';
+                    this.bjfs.start = start1;
+                    this.bjfs.end = end1;
+                    this.bjfs.per = 'week';
+                    this.jqfl.start = start1;
+                    this.jqfl.end = end1;
+                    this.jqfl.per = 'week';
+                    this.lhlx.start = start1;
+                    this.lhlx.end = end1;
+                    this.lhlx.per = 'week';
+                    this.time = 'week';
+                    this.start = start1;
+                    this.end = end1;
+                    sessionStorage.setItem('jqfl', JSON.stringify(this.jqfl));
+                    sessionStorage.setItem('jjlx', JSON.stringify(this.jjlx));
+                    sessionStorage.setItem('bjfs', JSON.stringify(this.bjfs));
+                    sessionStorage.setItem('lhlx', JSON.stringify(this.lhlx));
+                }
+            },
 
-            setperiod(){
-                let date1 = new Date();
-                let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
-                let timestamp = (new Date()).getTime();
-                let day = timestamp - 6 * 24 * 60 * 60 * 1000;
-                let date2 = new Date(day);
-                let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
-                this.period.jjlx.start=start1;
-                this.period.jjlx.end=end1;
-                this.period.jjlx.per='week';
-                this.period.bjfs.start=start1;
-                this.period.bjfs.end=end1;
-                this.period.bjfs.per='week';
-                this.period.jqfl.start=start1;
-                this.period.jqfl.end=end1;
-                this.period.jqfl.per='week';
-                this.period.lhlx.start=start1;
-                this.period.lhlx.end=end1;
-                this.period.lhlx.per='week';
-                sessionStorage.setItem('period', JSON.stringify(this.period));
-            }
         },
         mounted() {
             this.setperiod();

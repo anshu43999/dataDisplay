@@ -26,7 +26,7 @@
 
 
                 let refresh = this.$route.query.title.substring(0,1);
-                console.log(refresh);
+                // console.log(refresh);
 
                 let Session = window.sessionStorage;
                 let num = Session.getItem('city')
@@ -36,7 +36,7 @@
                 if(refresh == '市' && num == 1 ){
                     let Session = window.sessionStorage;
                     // Session.setItem('city',0)
-                    console.log('市刷新');
+                    // console.log('市刷新');
                     let city = that.$route.query.city;
                     let sxCityObj = {
                         '临汾市': 141000,
@@ -61,14 +61,14 @@
                                     name: res.data.features[i].properties.name,
                                 })
                             }
-                            console.log(d);
+                            // console.log(d);
 
                             that.flag = true;
                             
-                            console.log(that.newStr)
-                            console.log('这是鬼畜的原因')
+                            // console.log(that.newStr)
+                            // console.log('这是鬼畜的原因')
                             let str =  '市'+that.newStr;
-                            console.log(str);
+                            // console.log(str);
                             // that.$router.push({name:str,query:{title:str,city:city}});
                             renderMap(city, d);
                             
@@ -76,7 +76,7 @@
                     });
 
                 }else if(refresh == '全'){
-                    console.log('省刷新');
+                    // console.log('省刷新');
                     Session.setItem('city',1)   // 进入省   city 标识设置为1
                     this.$http.get('static/json/140000_full.json').then(res => {
                         if (res.status === 200) {
@@ -87,8 +87,8 @@
                                 });
                                 cityObj[res.data.features[i].properties.name] = res.data.features[i].properties.adcode;
                             }
-                            console.log(cityObj)
-                            console.log( d)
+                            // console.log(cityObj)
+                            // console.log( d)
 
                             mapdata = d;
                             // 注册地图
@@ -104,27 +104,27 @@
                 //点击地图    点击时触发
                 myChart.on('click', function (params) {
                     // console.log('执行');
-                    console.log('click')
+                    // console.log('click')
                     // console.log(params.data);
-                    console.log(that.flag);
+                    // console.log(that.flag);
                     if(that.flag){     //
-                        console.log('全省');
+                        // console.log('全省');
                         that.flag = false;
-                        console.log(mapdata);
+                        // console.log(mapdata);
 
 
                         if(mapdata[0]){
-                            console.log('有数据');
+                            // console.log('有数据');
 
                             renderMap('山西省', mapdata);
-                            console.log(that.newStr)
+                            // console.log(that.newStr)
                             let str =  '省'+that.newStr;
                                     console.log(str);
                             let str1 = '全省'+that.newStr;
-                            console.log(str);
+                            // console.log(str);
                             that.$router.push({name:str,query:{title:str1}});
                         }else{
-                            console.log('无数据');
+                            // console.log('无数据');
 
                             that.$http.get('static/json/140000_full.json').then(res => {
                                 if (res.status === 200) {
@@ -135,8 +135,8 @@
                                         });
                                         cityObj[res.data.features[i].properties.name] = res.data.features[i].properties.adcode;
                                     }
-                                    console.log(cityObj)
-                                    console.log( d)
+                                    // console.log(cityObj)
+                                    // console.log( d)
 
                                     mapdata = d;
                                     // 注册地图
@@ -152,7 +152,7 @@
                             });
 
                         }
-                        console.log(mapdata);
+                        // console.log(mapdata);
 
 
 
@@ -160,7 +160,7 @@
 
                         
 
-                        console.log('开始渲染全省地图');
+                        // console.log('开始渲染全省地图');
                         
                     }else if(params.name in cityObj) {
                         // 如果点击的是11个市，绘制选中地区的二级地图
@@ -183,7 +183,7 @@
                                 // console.log('这是鬼畜的原因')
                                 let str =  '市'+that.newStr;
                                 that.$router.push({name:str,query:{title:str,city:params.name}});
-                                console.log(params.name)
+                                // console.log(params.name)
                                 renderMap(params.name, d);
 
                             }
@@ -210,6 +210,7 @@
                             type: 'map',
                             mapType: map,
                             roam: false,
+                            zoom: 1.18,   //这里是关键，一定要放在 series中
                             data: data,
                             nameMap: {
                                 '山西省': '山西省'
@@ -224,41 +225,47 @@
                             },
                             itemStyle: {
                                 normal: {
-                                    areaColor: '#667aed',
-                                    borderColor: '#fff',
-                                    borderWidth: 1.5,
+                                    areaColor: '#347dd6',
+                                    borderColor: '#2054bc',
+                                    borderWidth: 1,
                                     label: {
                                         show: true,
                                         color: '#fff',
                                     },
-                                    emphasis: {
-                                        label: {
-                                            show: true
-                                        }
-                                    }
+                                },
+                                emphasis: {
+                                    label: {
+                                        show: true
+                                    },
+                                    areaColor: '#ffde7b',
                                 }
                             },
                         },
                     ];
-                    option.geo = {
-                        show: true,
-                        map: map,
-                        label: {
-                            normal: {
-                                show: false
-                            },
-                            emphasis: {
-                                show: false,
-                            }
-                        },
-                        roam: false,
-                    };
 // 渲染地图
                     myChart.setOption(option);
                 }
             },
+            pdFilter_btn(){
+                let str = this.$route.query.title;
+
+                str = str.substring(0,1);
+                // console.log(str);
+
+                if(str == '全'){
+                    this.$emit('filter_btn',true)
+                }else{
+                    this.$emit('filter_btn',false)
+                }
+                
+
+
+                
+
+            }
         },
         mounted() {
+            this.pdFilter_btn();
             let that=this;
             let Index = {
                 init() {
@@ -306,6 +313,9 @@
 
             
 
+        },
+        updated(){
+            // console.log('updated');
         }
     }
 </script>

@@ -22,7 +22,7 @@
             <div class="chart-wrap">
                 <h3>{{this.chartTitle[2]}}</h3>
                 <div class="selectListBox">
-                    <ul @click="">
+                    <ul @click="selectItem">
                         <li v-for="item in jqflsjfxSource" :key="item.name">
                             <div>{{item.name}}</div>
                         </li>
@@ -440,6 +440,7 @@
                 myChart.setOption(option);
             },
             renderChart() {
+                console.log(2);
                 let myCharts = document.querySelectorAll('.chart');
                 myCharts.forEach(value => {
                     this.refreshCharts.push(value.getAttribute('id'))
@@ -470,9 +471,22 @@
                     value.classList.remove('active');
                 });
                 e.target.classList.add('active')
+            },
+            pdFilter_btn(){
+                let str = this.$route.query.title;
+
+                str = str.substring(0,1);
+                console.log(str);
+
+                if(str == '全'){
+                    this.$emit('filter_btn',true)
+                }else{
+                    this.$emit('filter_btn',false)
+                }
             }
         },
         mounted() {
+            this.pdFilter_btn();
             this.getScale();
             this.setName();
             this.renderChart();
