@@ -426,7 +426,7 @@
                             that.subclassBar('subClassChart8', that.subClassSource4, that.subClassColorList4);
                             that.subclassBar('subClassChart9', that.subClassSource5, that.subClassColorList5);
                             that.subclassBar('subClassChart10', that.subClassSource6, that.subClassColorList6);
-                        },1500)
+                        },100)
                     },
                 };
                 Index.init();

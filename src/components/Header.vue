@@ -55,7 +55,7 @@ activated() {}, //如果页面有keep-alive缓存功能，这个函数会触发
 //@import url(); 引入公共css类
 
 #header_wrap{
-    background-color: #011426;
+    // background-color: #011426;
     // height:10rem;
     background-image: url('../assets/images/index/top.png');
     background-repeat: no-repeat;

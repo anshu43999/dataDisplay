@@ -180,6 +180,17 @@
         data() {
             return {
                 select: true,
+                // 接口
+                findUrl : [
+                    'recJQTJB/findJQNum',//警情统计监测
+                    'recJQTJB/findJQSevenDayShen',//近期警情统计
+                    '',//警情分类数据分析
+                    'recJQTJB/findXZQHNum',//map
+                    'recJJLXTJB/findJJLXShen',///  饼    今日接警类型数据分析
+                    'recJJLXTJB/findJJLXSevenDayShen',///  右   七日接警类型数据分析
+                    'recBJFSTJB/findBJFSShen',  //   今日报警方式数据分析   
+                    'recBJFSTJB/findBJFSSevenDayShen', //    七日报警方式数据分析    
+                ],
                 //需要刷新的图表
                 refreshCharts: [],
                 //    所有的图标对象
@@ -197,18 +208,21 @@
                 bjfs: {start: '', end: '', per: ''},
                 //警情统计监测
                 jqtjjcData: [
-                    {name: '报警事件总数', value: 18364},
-                    {name: '有效警情总数', value: 18364},
-                    {name: '处警事件总数', value: 18364},
-                    {name: '反馈事件总数', value: 18364},
+                    {name: '报警事件总数', value: 4512},
+                    {name: '有效警情总数', value: 2361},
+                    {name: '处警事件总数', value: 2316},
+                    {name: '反馈事件总数', value: 7312},
                 ],
                 jqtjjcSource: [
-                    {name: '处警时间占比', value: 85, radius: '65%'},
-                    {name: '有效警情占比', value: 90, radius: '75%'},
-                    {name: '反馈事件占比', value: 95, radius: '65%'}
+                    {name: '处警事件占比', value: 45, radius: '65%'},
+                    {name: '有效警情占比', value: 21, radius: '75%'},
+                    {name: '反馈事件占比', value: 63, radius: '65%'}
                 ],
-                //    近期警情统计
+                //    近期警情统计  y
                 jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500],
+                //  近期警情统计  x
+                jqjqtjXdata:['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
+
                 //    警情分类数据分析
                 jqflsjfxSource: [
                     {name: '刑事', value: 1300},
@@ -269,77 +283,35 @@
                 ],
                 jrrlhlxsjfxColor: ['#6c96ff', '#4160fb', '#2626e7', '#e344ff', '#00b3e9', '#803ff7', '#6905c6', '#17fff3'],
                 //    近七日接警类型数据分析
-                /*sevenjjlxsjfxSource: [
-                    {name: '110报警', value: [580, 630, 700, 400, 250, 156, 894]},
-                    {name: '122报警', value: [468, 498, 481, 168, 79, 455, 155]},
-                    {name: '119报警', value: [483, 558, 465, 48, 188, 465, 455]},
-                    {name: '综合报警', value: [671, 465, 184, 561, 455, 268, 145]},
-                    {name: '其他接警类型', value: [456, 567, 569, 594, 189, 498, 155]},
-                ],*/
-                sevenjjlxsjfxSource: {},
+                sevenjjlxsjfxSource: [
+                    {name: '110报警', value: [436, 413, 439, 506, 431, 426, 434]},
+                    {name: '122报警', value: [320, 370, 350, 412, 346, 348, 427]},
+                    {name: '119报警', value: [240, 274, 245, 260, 248, 278, 272]},
+                    {name: '综合报警', value: [142, 152, 107, 168, 146, 164, 151]},
+                    {name: '其他接警类型', value: [14, 15, 14, 10, 12, 15, 17]},
+                ],
+                // sevenjjlxsjfxSource: {},
                 //    近七日报警方式数据分析
                 sevenbjfssjfxSource: [
-                    {name: '电话报警', value: [580, 630, 700, 400, 250, 156, 894]},
-                    {name: '来人来电报警', value: [468, 498, 481, 168, 79, 455, 155]},
-                    {name: '技防报警', value: [483, 558, 465, 48, 188, 465, 455]},
-                    {name: '短信报警', value: [671, 465, 184, 561, 455, 268, 145]},
-                    {name: '其他报警方式', value: [456, 567, 569, 594, 189, 498, 155]}
+                    {name: '电话报警', value: [436, 413, 439, 506, 431, 426, 434]},
+                    {name: '来人来电报警', value: [320, 370, 350, 412, 346, 348, 427]},
+                    {name: '技防报警', value: [240, 274, 245, 260, 248, 278, 272]},
+                    {name: '短信报警', value: [142, 152, 107, 168, 146, 164, 151]},
+                    {name: '其他报警方式', value: [14, 15, 14, 10, 12, 15, 17]}
                 ],
                 // sevenbjfssjfxSource:{},
                 //    近七日来话类型数据分析
                 //    近七日来话类型数据分析
                 sevenlhlxsjfxSource: [
-                    {name: '报警求助、举报投诉', value: [580, 630, 700, 400, 250, 156, 894]},
-                    {name: '处警反馈', value: [468, 498, 481, 168, 79, 455, 155]},
-                    {name: '信息咨询', value: [483, 558, 465, 48, 188, 465, 455]},
-                    {name: '重复报警', value: [671, 465, 184, 561, 455, 268, 145]},
-                    {name: '骚扰电话', value: [456, 567, 569, 594, 189, 498, 155]},
-                    {name: '系统测试', value: [652, 556, 155, 166, 562, 515, 565]},
-                    {name: '其他来话类型', value: [256, 626, 515, 126, 512, 556, 488]}
+                    {name: '报警求助、举报投诉', value: [560, 525, 494, 568, 516, 554, 523]},
+                    {name: '处警反馈', value: [451, 450, 438, 443, 468, 461, 431]},
+                    {name: '信息咨询', value: [382, 380, 351, 384, 345, 387, 364]},
+                    {name: '重复报警', value: [301, 298, 310, 320, 316, 302, 286]},
+                    {name: '骚扰电话', value: [230, 231, 204, 215, 228, 209, 232]},
+                    {name: '系统测试', value: [123, 130, 128, 110, 125, 135, 120]},
+                    {name: '其他来话类型', value: [15, 13, 20, 18, 16, 17, 18]}
                 ],
                 // sevenlhlxsjfxSource:{}
-                /*option: {
-                    xAxis: {
-                        type: 'category',
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: '#0057ab'
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                    },
-                    yAxis: {
-                        splitLine: {
-                            show: false
-                        },
-                        axisLine: {
-                            show: true,
-                            lineStyle: {
-                                color: '#0057ab'
-                            }
-                        },
-                        axisTick: {
-                            show: false
-                        }
-                    },
-                    series: {
-                        type: 'bar',
-                        stack: 'chart',
-                    },
-                    grid: {
-                        left: '9%',
-                        right: '5%',
-                        top: '5%',
-                        bottom: '15%'
-                    },
-                    tooltip: {}
-                }*/
             }
         },
         methods: {
@@ -673,26 +645,21 @@
                                         } else {
                                             return params.name
                                         }*/
+                                        console.log(params.data.name, params.data.value);
                                         let style='';
-                                        let font='';
                                         if (params.data.value<that.grading[0]){
                                             style='colorZero';
-                                            font='fontZero';
-                                        }else if (params.data.value>=that.grading[0]&&params.data.value<that.grading[1]){
+                                        }else if (params.data.value>=that.grading[0]&&params.data.value<=that.grading[1]){
                                             style='colorOne';
-                                            font='fontOne';
-                                        }else if (params.data.value>=that.grading[1]&&params.data.value<that.grading[2]) {
+                                        }else if (params.data.value>=that.grading[1]&&params.data.value<=that.grading[2]) {
                                             style='colorTwo';
-                                            font='fontTwo';
-                                        }else if (params.data.value>=that.grading[2]&&params.data.value<that.grading[3]) {
+                                        }else if (params.data.value>=that.grading[2]&&params.data.value<=that.grading[3]) {
                                             style='colorThere';
-                                            font='fontThere';
                                         }else {
                                             style='colorFour';
-                                            font='fontFour';
                                         }
                                         if (params.data.value1) {
-                                            return  '{'+font+'|'+params.name+'-}{'+style+'|'+params.data.value1 + '}';
+                                            return  params.name+'-{'+style+'|'+params.data.value1 + '}';
                                         } else {
                                             return params.name
                                         }
@@ -700,59 +667,56 @@
                                     position: 'inside',
                                     fontSize:8,
                                     fontWeight:'normal',
-                                    color: '#fff',
+                                    color: '#1af7f1',
                                     rich: {
-                                        /*valueUp: {
-                                            color: '#019D2D',
-                                            fontSize: 14
-                                        },
-                                        valueDown: {
-                                            color: '#019D2D',
-                                            fontSize: 14
-                                        },*/
-                                        fontZero: {
-                                            color: '#fffeaa',
+                                        /*fontZero: {
+                                            color: '#c6ffe5',
                                             fontSize: 8,
                                         },
                                         fontOne: {
-                                            color: '#ffef3b',
+                                            color: '#ffe71b',
                                             fontSize: 8,
                                         },
                                         fontTwo: {
-                                            color: '#ffc426',
+                                            color: '#ffac1b',
                                             fontSize: 8,
                                         },
                                         fontThere: {
-                                            color: '#ff9710',
+                                            color: '#ff6600',
                                             fontSize: 8,
                                         },
                                         fontFour:{
-                                            color: '#ff6a2f',
+                                            color: '#e12d00',
                                             fontSize: 8,
-                                        },
+                                        },*/
                                         colorZero: {
-                                            color: '#fffeaa',
+                                            color: '#c6ffe5',
                                             fontSize: 12,
+                                            fontFamily:'heijian',
                                             fontWeight:'bold'
                                         },
                                         colorOne: {
-                                            color: '#ffef3b',
+                                            color: '#ffe71b',
                                             fontSize: 12,
+                                            fontFamily:'heijian',
                                             fontWeight:'bold'
                                         },
                                         colorTwo: {
-                                            color: '#ffc426',
+                                            color: '#ffac1b',
                                             fontSize: 12,
+                                            fontFamily:'heijian',
                                             fontWeight:'bold'
                                         },
                                         colorThere: {
-                                            color: '#ff9710',
+                                            color: '#ff6600',
                                             fontSize: 12,
+                                            fontFamily:'heijian',
                                             fontWeight:'bold'
                                         },
                                         colorFour:{
-                                            color: '#ff6a2f',
+                                            color: '#e12d00',
                                             fontSize: 12,
+                                            fontFamily:'heijian',
                                             fontWeight:'bold'
                                         }
                                     }
@@ -1156,7 +1120,7 @@
                             }
                         },
                         lineStyle: {
-                            width: 3
+                            width: 2
                         },
                         data: sourceArr[i].value
                     });
@@ -1252,7 +1216,7 @@
                 }
             },
             //    数据转换
-            change() {
+            /*change() {
                 let dataArr = [];
                 let data = {
                     "sevenDays": {
@@ -1382,7 +1346,7 @@
                 this.sevenjjlxsjfxSource.data = dataArr;
                 this.sevenjjlxsjfxSource.date = dateArr;
                 this.sevenjjlxsjfxSource.color = ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'];
-            },
+            },*/
             //柱状图渐变
             gradient(colorList) {
                 return new this.$echarts.graphic.LinearGradient(
@@ -1424,7 +1388,8 @@
                         that.jrPieChart('jrPieChart', that.jrjjlxsjfxSourceSource, that.jrjjlxsjfxSourceColor);
                         that.jrPieChart('jrbjfssjfxChart', that.jrbjfssjfxSource, that.jrbjfssjfxColor);
                         that.jrPieChart('jrrlhlxsjfxChart', that.jrrlhlxsjfxSource, that.jrrlhlxsjfxColor);
-                        that.sevensjfx('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor);
+                        // that.sevensjfx('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor);
+                        that.sevensjfx1('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor);
                         that.sevensjfx1('sevenbjfssjfxChart', that.sevenbjfssjfxSource, that.jrbjfssjfxColor);
                         that.sevensjfx1('sevenlhlxsjfxChart', that.sevenlhlxsjfxSource, that.jrrlhlxsjfxColor);
                     },
@@ -1603,14 +1568,237 @@
                     sessionStorage.setItem('lhlx', JSON.stringify(this.lhlx));
                 }
             },
+            // 警情统计监测  左上角
+            getJqtj(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[0],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        tjTime: 20160909,
+                    }
+                })
+                .then(function (res) {
+                    // console.log(res);
+                    // console.log(res['data'][0]);
+                    // cjsl: 14020      //处警事件总数 // fksl: 7419   //反馈事件总数 // hb: 0      //环比
+                    // jjsl: 18669    //报警事件总数 // yxjq: 4887  //有效警情总数
+                    this.jqtjjcData[0]['value'] = res['data'][0]['jjsl'];
+                    this.jqtjjcData[1]['value'] = res['data'][0]['yxjq'];
+                    this.jqtjjcData[2]['value'] = res['data'][0]['cjsl'];
+                    this.jqtjjcData[3]['value'] = res['data'][0]['fksl'];
+
+                    // 处警事件占比
+                    let sum1 = res['data'][0]['cjsl']/res['data'][0]['yxjq'];
+                    // console.log(sum);
+                    // 有效警情占比
+                    let sum2 = res['data'][0]['yxjq']/res['data'][0]['jjsl'];
+                    // 反馈事件占比
+                    let sum3 = res['data'][0]['fksl']/res['data'][0]['cjsl'];
+
+                    this.jqtjjcSource[0]['value'] = sum1.toFixed(2) * 100;
+                    this.jqtjjcSource[1]['value'] = sum2.toFixed(2) * 100;
+                    this.jqtjjcSource[2]['value'] = sum3.toFixed(2) * 100;
+
+                    console.log(this.jqtjjcSource)
+                    this.panChart();
+                }.bind(this))
+            },
+            // 近期警情统计  左 中
+            getJqjq(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[1],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        startTime : 20160909,  //开始 
+                        endTime :  20160915     //结束
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                    let y = [];
+                    let x = [];
+                    res['data'].forEach(item=>{
+                        // console.log(item);
+                        x.push(item['tjrq']);
+                        y.push(item['jjsl']);
+                    });
+                    console.log(y);
+                    console.log(x);
+                    this.jqjqtjScoure = y;
+                    // this.jqjqtjChart();
+                    
+                    
+
+                //    近期警情统计  y
+                // jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500]
+                // //  近期警情统计  x
+                // jqjqtjXdata:['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
+
+                  }.bind(this))
+            },
+            // 警情分类数据分析
+            getFlsj(){
+
+            },
+            // 地图
+            getMapData(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[3],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        tjTime : 20160909,  //今天 
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })
+
+            },
+            //接警类型数据分析    饼
+            getJjlx(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[4],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        tjTime : 20160909,  //今天 
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })   
+            },
+            // 近七日接警类型数据分析    右边
+            getJjlxSeven(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[5],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        startTime : '20160909',
+                        endTime : '20160915',
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })   
+            },
+            // 今日报警方式数据分析
+            getBjfs(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[6],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        tjTime : 20160909,  //今天 
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })   
+
+            },
+            // 近七日报警方式数据分析
+            getBjfsSeven(){
+                 this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[7],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        startTime : '20160909',
+                        endTime : '20160915',
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })   
+                
+            },
+
+            // 今日来话类型数据分析
+
+            // 近七日来话类型数据分析
 
         },
         mounted() {
             this.setperiod();
             this.getScale();
             this.selectedItem();
-            this.change();
+            // this.change();
             this.renderChart();
+            // this.getJqtj();
+            // this.getJqjq();
+            // this.getMapData();
+            // this.getJjlx();
+            // this.getJjlxSeven();
+            // this.getBjfs();
+            // this.getBjfsSeven();
         }
     }
 </script>
@@ -1618,6 +1806,10 @@
 <style scoped lang="scss">
     //样式里的l, m, r, t, b分别代表左，中，右，上，下
     //布局
+    @font-face {
+        font-family: heijian;
+        src: url('../assets/style/font/heijian.ttf');
+    }
     main {
         display: flex;
         flex-direction: row;
@@ -1849,6 +2041,7 @@
                     p:first-child {
                         font-size: 3rem;
                         letter-spacing: 0.3rem;
+                        font-family: heijian;
                     }
 
                     p:nth-child(2) {

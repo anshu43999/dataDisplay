@@ -64,7 +64,7 @@
         methods : {
             submit(){
                  this.active = true;
-
+                 this.$router.push({name:'首页'})
 
 
                 //   this.active = false;

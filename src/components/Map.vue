@@ -225,19 +225,20 @@
                             },
                             itemStyle: {
                                 normal: {
-                                    areaColor: '#347dd6',
-                                    borderColor: '#2054bc',
+                                    areaColor: '#243cce',
+                                    borderColor: '#122496',
                                     borderWidth: 1,
                                     label: {
                                         show: true,
-                                        color: '#fff',
+                                        color: '#1af7f1',
                                     },
                                 },
                                 emphasis: {
                                     label: {
-                                        show: true
+                                        show: true,
+                                        color: '#1af7f1'
                                     },
-                                    areaColor: '#ffde7b',
+                                    areaColor: '#2049ff',
                                 }
                             },
                         },

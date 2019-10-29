@@ -22,7 +22,7 @@
             <div class="chart-wrap">
                 <h3>{{this.chartTitle[2]}}</h3>
                 <div class="selectListBox">
-                    <ul>
+                    <ul @click="selectItem">
                         <li v-for="item in jqflsjfxSource" :key="item.name">
                             <div>{{item.name}}</div>
                         </li>
@@ -485,6 +485,17 @@
                 this.startDate=this.myPeriod.start;
                 this.endDate=this.myPeriod.end;
             },
+            selectedItem(){
+                let item = document.querySelectorAll('.selectListBox>ul>li>div');
+                item[0].classList.add('active');
+            },
+            selectItem(e){
+                let item = document.querySelectorAll('.selectListBox>ul>li>div');
+                item.forEach((value) => {
+                    value.classList.remove('active');
+                });
+                e.target.classList.add('active')
+            },
             pdFilter_btn(){
                 console.log('zheshi zhixing ');
                 let str = this.$route.query.title;
@@ -504,6 +515,7 @@
             this.getScale();
             this.setName();
             this.renderChart();
+            this.selectedItem();
         },
     }
 </script>
