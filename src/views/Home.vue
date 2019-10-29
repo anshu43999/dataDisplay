@@ -179,6 +179,17 @@
         components: {MyHeader},
         data() {
             return {
+                // 接口
+                findUrl : [
+                    'recJQTJB/findJQNum',//警情统计监测
+                    'recJQTJB/findJQSevenDayShen',//近期警情统计
+                    '',//警情分类数据分析
+                    'recJQTJB/findXZQHNum',//map
+                    'recJJLXTJB/findJJLXShen',///  饼    今日接警类型数据分析
+                    'recJJLXTJB/findJJLXSevenDayShen',///  右   七日接警类型数据分析
+                    'recBJFSTJB/findBJFSShen',  //   今日报警方式数据分析   
+                    'recBJFSTJB/findBJFSSevenDayShen', //    七日报警方式数据分析    
+                ],
                 //需要刷新的图表
                 refreshCharts: [],
                 //    所有的图标对象
@@ -193,18 +204,21 @@
                 period: 'lastWeek',
                 //警情统计监测
                 jqtjjcData: [
-                    {name: '报警事件总数', value: 18364},
-                    {name: '有效警情总数', value: 18364},
-                    {name: '处警事件总数', value: 18364},
-                    {name: '反馈事件总数', value: 18364},
+                    {name: '报警事件总数', value: 4512},
+                    {name: '有效警情总数', value: 2361},
+                    {name: '处警事件总数', value: 2316},
+                    {name: '反馈事件总数', value: 7312},
                 ],
                 jqtjjcSource: [
-                    {name: '处警时间占比', value: 85, radius: '65%'},
-                    {name: '有效警情占比', value: 90, radius: '75%'},
-                    {name: '反馈事件占比', value: 95, radius: '65%'}
+                    {name: '处警事件占比', value: 45, radius: '65%'},
+                    {name: '有效警情占比', value: 21, radius: '75%'},
+                    {name: '反馈事件占比', value: 63, radius: '65%'}
                 ],
-                //    近期警情统计
+                //    近期警情统计  y
                 jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500],
+                //  近期警情统计  x
+                jqjqtjXdata:['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
+
                 //    警情分类数据分析
                 jqflsjfxSource: [
                     {name: '刑事', value: 1300},
@@ -453,14 +467,14 @@
                 let myChart = this.$echarts.init(document.getElementById('jqjqtjChart'));
                 this.chartsObj.jqjqtjChart = myChart;
                 let sourceArr = this.jqjqtjScoure;
-                let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
+                // let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
                 let option = this.option;
                 option.series.data = sourceArr;
                 option.series.itemStyle = {
                     color: this.gradient(['#00dce4', '#529fff'])
                 };
                 option.series.barWidth = 20 * this.scale;
-                option.xAxis.data = dateArr;
+                option.xAxis.data = this.jqjqtjXdata;
                 option.xAxis.axisLabel = {
                     fontSize: 20 * this.scale,
                     interval: 0,
@@ -1247,13 +1261,239 @@
                         option[i].style.display = 'none';
                     }
                 }
-            }
+            },
+            // 警情统计监测  左上角
+            getJqtj(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[0],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        tjTime: 20160909,
+                    }
+                })
+                .then(function (res) {
+                    // console.log(res);
+                    // console.log(res['data'][0]);
+                    // cjsl: 14020      //处警事件总数 // fksl: 7419   //反馈事件总数 // hb: 0      //环比
+                    // jjsl: 18669    //报警事件总数 // yxjq: 4887  //有效警情总数
+                    this.jqtjjcData[0]['value'] = res['data'][0]['jjsl'];
+                    this.jqtjjcData[1]['value'] = res['data'][0]['yxjq'];
+                    this.jqtjjcData[2]['value'] = res['data'][0]['cjsl'];
+                    this.jqtjjcData[3]['value'] = res['data'][0]['fksl'];
+
+                    // 处警事件占比
+                    let sum1 = res['data'][0]['cjsl']/res['data'][0]['yxjq'];
+                    // console.log(sum);
+                    // 有效警情占比
+                    let sum2 = res['data'][0]['yxjq']/res['data'][0]['jjsl'];
+                    // 反馈事件占比
+                    let sum3 = res['data'][0]['fksl']/res['data'][0]['cjsl'];
+
+                    this.jqtjjcSource[0]['value'] = sum1.toFixed(2) * 100;
+                    this.jqtjjcSource[1]['value'] = sum2.toFixed(2) * 100;
+                    this.jqtjjcSource[2]['value'] = sum3.toFixed(2) * 100;
+
+                    console.log(this.jqtjjcSource)
+                    this.panChart();
+                }.bind(this))
+            },
+            // 近期警情统计  左 中
+            getJqjq(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[1],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        startTime : 20160909,  //开始 
+                        endTime :  20160915     //结束
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                    let y = [];
+                    let x = [];
+                    res['data'].forEach(item=>{
+                        // console.log(item);
+                        x.push(item['tjrq']);
+                        y.push(item['jjsl']);
+                    })
+                    console.log(y);
+                    console.log(x);
+                    this.jqjqtjScoure = y;
+                    // this.jqjqtjChart();
+                    
+                    
+
+                //    近期警情统计  y
+                // jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500]
+                // //  近期警情统计  x
+                // jqjqtjXdata:['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
+
+                  }.bind(this))
+            },
+            // 警情分类数据分析
+            getFlsj(){
+
+            },
+            // 地图
+            getMapData(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[3],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        tjTime : 20160909,  //今天 
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })
+
+            },
+            //接警类型数据分析    饼
+            getJjlx(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[4],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        tjTime : 20160909,  //今天 
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })   
+            },
+            // 近七日接警类型数据分析    右边
+            getJjlxSeven(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[5],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        startTime : '20160909',
+                        endTime : '20160915',
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })   
+            },
+            // 今日报警方式数据分析
+            getBjfs(){
+                this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[6],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        tjTime : 20160909,  //今天 
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })   
+
+            },
+            // 近七日报警方式数据分析
+            getBjfsSeven(){
+                 this.$http({
+                    method: 'post',
+                    url: this.apiRoot  + this.findUrl[7],
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
+                    transformRequest: [function (data) {
+                        let ret = '';
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }],
+                    // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
+                    crossDomain: true,
+                    data: {
+                        startTime : '20160909',
+                        endTime : '20160915',
+                    }
+                })
+                .then(function (res) {
+                    console.log(res);
+                })   
+                
+            },
+
+            // 今日来话类型数据分析
+
+            // 近七日来话类型数据分析
+
+
+
         },
         mounted() {
             this.getScale();
             this.selectedItem();
             this.change();
             this.renderChart();
+            // this.getJqtj();
+            // this.getJqjq();
+            // this.getMapData();
+            // this.getJjlx();
+            // this.getJjlxSeven();
+            // this.getBjfs();
+            // this.getBjfsSeven();
         }
     }
 </script>
