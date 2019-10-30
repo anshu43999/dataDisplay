@@ -47,7 +47,7 @@
                 //    所有的图标对象
                 chartsObj: {},
                 //坐标轴颜色
-                axisesColor: '#0057ab',
+                axisesColor: '#36b2ae',
                 //标题
                 chartTitle: [],
                 jqflsjfxSource: [
@@ -496,6 +496,7 @@
             },
             selectItem(e){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
+                if(e.target.nodeName == 'UL') return;
                 item.forEach((value) => {
                     value.classList.remove('active');
                 });

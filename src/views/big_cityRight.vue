@@ -126,7 +126,7 @@
                 proportionColor: [],
                 title: [],
                 chartsObj:{},
-                axisesColor: '#0057ab',
+                axisesColor: '#36b2ae',
                 dateArr:['10-1','10-2','10-3','10-4','10-5','10-6','10-7'],
                 position:[],
                 //细类1
