@@ -35,7 +35,7 @@
                     <div class="filter">
                         <div class="iconBox"></div>
                         <i class="iconfont iconguolv"></i>
-                        <div class="option">
+                        <div data-id="jqfl" class="option">
                             <div class="filterTitle">
                                 <div>时间筛选</div>
                             </div>
@@ -102,7 +102,7 @@
                         <div class="filter">
                             <div class="iconBox"></div>
                             <i class="iconfont iconguolv"></i>
-                            <div class="option">
+                            <div data-id="jjlx" class="option">
                                 <div class="filterTitle">
                                     <div>时间筛选</div>
                                 </div>
@@ -124,7 +124,7 @@
                         <div class="filter">
                             <div class="iconBox"></div>
                             <i class="iconfont iconguolv"></i>
-                            <div class="option">
+                            <div data-id="bjfs" class="option">
                                 <div class="filterTitle">
                                     <div>时间筛选</div>
                                 </div>
@@ -146,7 +146,7 @@
                         <div class="filter">
                             <div class="iconBox"></div>
                             <i class="iconfont iconguolv"></i>
-                            <div class="option">
+                            <div data-id="lhlx" class="option">
                                 <div class="filterTitle">
                                     <div>时间筛选</div>
                                 </div>
@@ -179,9 +179,11 @@
         components: {MyHeader},
         data() {
             return {
+                //今天的日期
+                todayIndex: '',
                 select: true,
                 // 接口
-                findUrl : [
+                findUrl: [
                     'recJQTJB/findJQNum',//警情统计监测
                     'recJQTJB/findJQSevenDayShen',//近期警情统计
                     '',//警情分类数据分析
@@ -196,7 +198,7 @@
                 //    所有的图标对象
                 chartsObj: {},
                 //坐标轴颜色
-                axisesColor: '#0057ab',
+                axisesColor: '#04d5ce',
                 //缩放值
                 scale: 1,
                 //筛选选项
@@ -221,7 +223,7 @@
                 //    近期警情统计  y
                 jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500],
                 //  近期警情统计  x
-                jqjqtjXdata:['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
+                jqjqtjXdata: ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
 
                 //    警情分类数据分析
                 jqflsjfxSource: [
@@ -383,9 +385,10 @@
                                     },
                                     detail: {
                                         show: true,
-                                        offsetCenter: [0, '90%'],
+                                        offsetCenter: [0, '110%'],
                                         textStyle: {
-                                            fontSize: 20 * that.scale,
+                                            fontSize: 30 * that.scale,
+                                            color:that.axisesColor,
                                         },
                                         formatter: [
                                             '{value}% ' + (item.unit || ''),
@@ -394,7 +397,8 @@
                                         rich: {
                                             name: {
                                                 fontSize: 22 * that.scale,
-                                                lineHeight: 70 * that.scale,
+                                                lineHeight: 60 * that.scale,
+                                                color:that.axisesColor
                                             }
                                         }
                                     },
@@ -421,9 +425,9 @@
                         });
                         return result;
                     })(),
-                    tooltip:{
-                        formatter:function (params) {
-                            return params.seriesName+'：'+params.data.value+'%';
+                    tooltip: {
+                        formatter: function (params) {
+                            return params.seriesName + '：' + params.data.value + '%';
                         }
                     }
                 };
@@ -435,16 +439,16 @@
                 this.chartsObj.jqjqtjChart = myChart;
                 let sourceArr = this.jqjqtjScoure;
                 let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
-                let option={
+                let option = {
                     xAxis: {
                         type: 'category',
-                            splitLine: {
+                        splitLine: {
                             show: false
                         },
                         axisLine: {
                             show: true,
-                                lineStyle: {
-                                color: '#0057ab'
+                            lineStyle: {
+                                color: this.axisesColor
                             }
                         },
                         axisTick: {
@@ -462,8 +466,8 @@
                         },
                         axisLine: {
                             show: true,
-                                lineStyle: {
-                                color: '#0057ab'
+                            lineStyle: {
+                                color: this.axisesColor
                             }
                         },
                         axisTick: {
@@ -476,18 +480,18 @@
                     },
                     series: {
                         type: 'bar',
-                            stack: 'chart',
-                        data:sourceArr,
-                        itemStyle:{
+                        stack: 'chart',
+                        data: sourceArr,
+                        itemStyle: {
                             color: this.gradient(['#00dce4', '#529fff'])
                         },
                         barWidth: 20 * this.scale
                     },
                     grid: {
                         left: '9%',
-                            right: '5%',
-                            top: '5%',
-                            bottom: '15%'
+                        right: '5%',
+                        top: '5%',
+                        bottom: '15%'
                     },
                     tooltip: {}
                 };
@@ -502,7 +506,7 @@
                 sourceArr.forEach(value => {
                     xData.push(value.name);
                 });
-                let option={
+                let option = {
                     xAxis: {
                         type: 'category',
                         splitLine: {
@@ -511,13 +515,13 @@
                         axisLine: {
                             show: true,
                             lineStyle: {
-                                color: '#0057ab'
+                                color: this.axisesColor
                             }
                         },
                         axisTick: {
                             show: false
                         },
-                        axisLabel : {
+                        axisLabel: {
                             fontSize: 20 * this.scale,
                             rotate: 30,
                             interval: 0,
@@ -554,7 +558,7 @@
                         axisLine: {
                             show: true,
                             lineStyle: {
-                                color: '#0057ab'
+                                color: this.axisesColor
                             }
                         },
                         axisTick: {
@@ -567,8 +571,8 @@
                     series: {
                         type: 'bar',
                         stack: 'chart',
-                        data:sourceArr,
-                        itemStyle:{
+                        data: sourceArr,
+                        itemStyle: {
                             color: this.gradient(['#fcc60a', '#f5834a'])
                         },
                         barWidth: 20 * this.scale
@@ -644,58 +648,58 @@
                                     show: true,
                                     formatter: function (params) {
                                         // console.log(params.data.name, params.data.value);
-                                        let style='';
-                                        if (params.data.value<that.grading[0]){
-                                            style='colorZero';
-                                        }else if (params.data.value>=that.grading[0]&&params.data.value<=that.grading[1]){
-                                            style='colorOne';
-                                        }else if (params.data.value>=that.grading[1]&&params.data.value<=that.grading[2]) {
-                                            style='colorTwo';
-                                        }else if (params.data.value>=that.grading[2]&&params.data.value<=that.grading[3]) {
-                                            style='colorThere';
-                                        }else {
-                                            style='colorFour';
+                                        let style = '';
+                                        if (params.data.value < that.grading[0]) {
+                                            style = 'colorZero';
+                                        } else if (params.data.value >= that.grading[0] && params.data.value <= that.grading[1]) {
+                                            style = 'colorOne';
+                                        } else if (params.data.value >= that.grading[1] && params.data.value <= that.grading[2]) {
+                                            style = 'colorTwo';
+                                        } else if (params.data.value >= that.grading[2] && params.data.value <= that.grading[3]) {
+                                            style = 'colorThere';
+                                        } else {
+                                            style = 'colorFour';
                                         }
                                         if (params.data.value1) {
-                                            return  params.name+'-{'+style+'|'+params.data.value1 + '}';
+                                            return params.name + ' - {' + style + '|' + params.data.value1 + '}';
                                         } else {
                                             return params.name
                                         }
                                     },
                                     position: 'inside',
-                                    fontSize:8,
-                                    fontWeight:'normal',
+                                    fontSize: 8,
+                                    fontWeight: 'normal',
                                     color: '#1af7f1',
                                     rich: {
                                         colorZero: {
-                                            color: '#c6ffe5',
+                                            color: '#88ffc6',
                                             fontSize: 12,
-                                            fontFamily:'heijian',
-                                            fontWeight:'bold'
+                                            fontFamily: 'heijian',
+                                            fontWeight: 'bold',
                                         },
                                         colorOne: {
                                             color: '#ffe71b',
                                             fontSize: 12,
-                                            fontFamily:'heijian',
-                                            fontWeight:'bold'
+                                            fontFamily: 'heijian',
+                                            fontWeight: 'bold',
                                         },
                                         colorTwo: {
                                             color: '#ffac1b',
                                             fontSize: 12,
-                                            fontFamily:'heijian',
-                                            fontWeight:'bold'
+                                            fontFamily: 'heijian',
+                                            fontWeight: 'bold',
                                         },
                                         colorThere: {
                                             color: '#ff6600',
                                             fontSize: 12,
-                                            fontFamily:'heijian',
-                                            fontWeight:'bold'
+                                            fontFamily: 'heijian',
+                                            fontWeight: 'bold',
                                         },
-                                        colorFour:{
+                                        colorFour: {
                                             color: '#e12d00',
                                             fontSize: 12,
-                                            fontFamily:'heijian',
-                                            fontWeight:'bold'
+                                            fontFamily: 'heijian',
+                                            fontWeight: 'bold',
                                         }
                                     }
                                 },
@@ -707,7 +711,7 @@
                                 emphasis: {
                                     label: {
                                         show: true,
-                                        color:'#fff'
+                                        color: '#fff'
                                     },
                                     areaColor: '#5a3cff',
                                 }
@@ -720,7 +724,7 @@
                         pieces: [{
                             max: that.grading[0],
                             label: '一级',
-                            color: '#47bef5'
+                            color: '#5ea2f5'
                             /*color: new that.$echarts.graphic.LinearGradient(
                                 //右，下，左，上
                                 0, 0, 0, 1, [{
@@ -890,7 +894,7 @@
                             return a.value - b.value;
                         }),
                     }, {
-                        name:'内圈',
+                        name: '内圈',
                         type: 'pie',
                         radius: ['10%', '12%'],
                         center: ['50%', '50%'],
@@ -923,8 +927,8 @@
                         data: [
                             {value: 10},
                         ],
-                        tooltip:{
-                            show:false
+                        tooltip: {
+                            show: false
                         }
                     }]
                 };
@@ -978,8 +982,8 @@
                         axisTick: {
                             show: false
                         },
-                        axisLabel:{
-                            fontSize:20*this.scale
+                        axisLabel: {
+                            fontSize: 20 * this.scale
                         },
                         data: sourceArr['date']
                     },
@@ -1001,8 +1005,8 @@
                         axisTick: {
                             show: false
                         },
-                        axisLabel:{
-                            fontSize:20*this.scale
+                        axisLabel: {
+                            fontSize: 20 * this.scale
                         },
                     },
                     series: seriesArr,
@@ -1023,7 +1027,7 @@
             },
             sevensjfx1(chartContainer, sourceArr, colorList) {
                 let seriesArr = [];
-                let dateArr = ['10-1','10-2','10-3','10-4','10-5','10-6','10-7'];
+                let dateArr = ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'];
                 let myChart = this.$echarts.init(document.getElementById(chartContainer));
                 this.chartsObj[chartContainer] = myChart;
                 for (let i = 0; i < sourceArr.length; i++) {
@@ -1069,8 +1073,8 @@
                         axisTick: {
                             show: false
                         },
-                        axisLabel:{
-                            fontSize:20*this.scale
+                        axisLabel: {
+                            fontSize: 20 * this.scale
                         },
                         data: dateArr
                     },
@@ -1092,8 +1096,8 @@
                         axisTick: {
                             show: false
                         },
-                        axisLabel:{
-                            fontSize:20*this.scale
+                        axisLabel: {
+                            fontSize: 20 * this.scale
                         },
                     },
                     series: seriesArr,
@@ -1298,6 +1302,15 @@
                         ], that.refreshCharts)
                     },
                     loadData() {
+                        // that.getJqtj();
+                        /*that.getJqjq();
+                        that.getFlsj();
+                        that.getMapData();
+                        that.getJjlx();
+                        that.getJjlxSeven();
+                        that.getBjfs();
+                        that.getBjfsSeven();*/
+
                         that.panChart();
                         that.jqjqtjChart();
                         that.jqflsjfxChart();
@@ -1374,61 +1387,73 @@
             },
             //选择选项
             selectItem(e) {
-                let item = document.querySelectorAll('.option>.filterItem');
-                item.forEach((value) => {
-                    value.classList.remove('active');
-                    console.log(value);
-                });
-                switch (e.target.innerHTML) {
-                    case'近7日':
-                        let date1 = new Date();
-                        let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
-                        let timestamp = (new Date()).getTime();
-                        let day = timestamp - 6 * 24 * 60 * 60 * 1000;
-                        let date2 = new Date(day);
-                        let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
-                        e.target.parentNode.parentNode.parentNode.style.display = 'none';
-                        let type1 = e.target.getAttribute('data-id');
-                        this[type1].start = start1;
-                        this[type1].end = end1;
-                        this[type1].per = 'week';
-                        this.start=start1;
-                        console.log(e.target);
-                        e.target.firstChild.firstChild.classList.add('active');
-                        break;
-                    case'上周':
-                        let d = new Date();
+                let item = document.querySelectorAll('.option');
+                let type=e.target.getAttribute('data-id');
+                item.forEach(value => {
+                    let children=value.childNodes[1].childNodes;
+                    if(value.getAttribute('data-id')===type){
+                        switch (e.target.innerHTML) {
+                            case'近7日':
+                                let date1 = new Date();
+                                let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                                let timestamp = (new Date()).getTime();
+                                let day = timestamp - 6 * 24 * 60 * 60 * 1000;
+                                let date2 = new Date(day);
+                                let end1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                                e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                                let type1 = e.target.getAttribute('data-id');
+                                this[type1].start = start1;
+                                this[type1].end = end1;
+                                this[type1].per = 'week';
+                                this.start = start1;
+                                // console.log(value.childNodes[1].childNodes);
+                                for (let i=0;i<children.length;i++){
+                                    children[i].childNodes[0].classList.remove('active');
+                                }
+                                e.target.classList.add('active');
+                                break;
+                            case'上周':
+                                let d = new Date();
 // set to Monday of this week
-                        d.setDate(d.getDate() - (d.getDay() + 6) % 7);
+                                d.setDate(d.getDate() - (d.getDay() + 6) % 7);
 // set to previous Monday
-                        let date3 = new Date(d.setDate(d.getDate() - 7));
-                        let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
+                                let date3 = new Date(d.setDate(d.getDate() - 7));
+                                let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
 // create new date of day before
-                        let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6);
-                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
-                        e.target.parentNode.parentNode.parentNode.style.display = 'none';
-                        let type2 = e.target.getAttribute('data-id');
-                        this[type2].start = Monday;
-                        this[type2].end = Sunday;
-                        this[type2].per = 'lastWeek';
-                        e.target.childNodes[1].firstChild.classList.add('active');
-                        break;
-                    case'近半年':
-                        let dt = new Date();
-                        let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
-                        dt.setMonth(dt.getMonth() - 5);
-                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString();
-                        e.target.parentNode.parentNode.parentNode.style.display = 'none';
-                        let type3 = e.target.getAttribute('data-id');
-                        this[type3].start = today;
-                        this[type3].end = halfYear;
-                        this[type3].per = 'halfYear';
-                        e.target.childNodes[2].firstChild.classList.add('active');
-                        break;
-                    default:
-                        console.log('false');
-                        break;
-                }
+                                let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6);
+                                let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
+                                e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                                let type2 = e.target.getAttribute('data-id');
+                                this[type2].start = Monday;
+                                this[type2].end = Sunday;
+                                this[type2].per = 'lastWeek';
+                                for (let i=0;i<children.length;i++){
+                                    children[i].childNodes[0].classList.remove('active');
+                                }
+                                e.target.classList.add('active');
+                                break;
+                            case'近半年':
+                                let dt = new Date();
+                                let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
+                                dt.setMonth(dt.getMonth() - 5);
+                                let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString();
+                                e.target.parentNode.parentNode.parentNode.style.display = 'none';
+                                let type3 = e.target.getAttribute('data-id');
+                                this[type3].start = today;
+                                this[type3].end = halfYear;
+                                this[type3].per = 'halfYear';
+                                for (let i=0;i<children.length;i++){
+                                    children[i].childNodes[0].classList.remove('active');
+                                }
+                                e.target.classList.add('active');
+                                break;
+                            default:
+                                console.log('false');
+                                break;
+                        }
+                    }
+                });
+
                 sessionStorage.setItem('jqfl', JSON.stringify(this.jqfl));
                 sessionStorage.setItem('jjlx', JSON.stringify(this.jjlx));
                 sessionStorage.setItem('bjfs', JSON.stringify(this.bjfs));
@@ -1453,7 +1478,7 @@
             },
             //获取或保存筛选时间
             setperiod() {
-                if (sessionStorage.getItem('jqfl')&&sessionStorage.getItem('jjlx')&&sessionStorage.getItem('bjfs')&&sessionStorage.getItem('lhlx')) {
+                if (sessionStorage.getItem('jqfl') && sessionStorage.getItem('jjlx') && sessionStorage.getItem('bjfs') && sessionStorage.getItem('lhlx')) {
                     this.jqfl = JSON.parse(sessionStorage.getItem('jqfl'));
                     this.jjlx = JSON.parse(sessionStorage.getItem('jjlx'));
                     this.bjfs = JSON.parse(sessionStorage.getItem('bjfs'));
@@ -1487,10 +1512,10 @@
                 }
             },
             // 警情统计监测  左上角
-            getJqtj(){
+            getJqtj() {
                 this.$http({
                     method: 'post',
-                    url: this.apiRoot  + this.findUrl[0],
+                    url: this.apiRoot + this.findUrl[0],
                     headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
                     transformRequest: [function (data) {
                         let ret = '';
@@ -1505,37 +1530,49 @@
                         tjTime: 20160909,
                     }
                 })
-                .then(function (res) {
-                    // console.log(res);
-                    // console.log(res['data'][0]);
-                    // cjsl: 14020      //处警事件总数 // fksl: 7419   //反馈事件总数 // hb: 0      //环比
-                    // jjsl: 18669    //报警事件总数 // yxjq: 4887  //有效警情总数
-                    this.jqtjjcData[0]['value'] = res['data'][0]['jjsl'];
-                    this.jqtjjcData[1]['value'] = res['data'][0]['yxjq'];
-                    this.jqtjjcData[2]['value'] = res['data'][0]['cjsl'];
-                    this.jqtjjcData[3]['value'] = res['data'][0]['fksl'];
+                    .then(function (res) {
+                        // console.log(res);
+                        // console.log(res['data'][0]);
+                        // cjsl: 14020      //处警事件总数 // fksl: 7419   //反馈事件总数 // hb: 0      //环比
+                        // jjsl: 18669    //报警事件总数 // yxjq: 4887  //有效警情总数
+                        this.jqtjjcData[0]['value'] = res['data'][0]['jjsl'];
+                        this.jqtjjcData[1]['value'] = res['data'][0]['yxjq'];
+                        this.jqtjjcData[2]['value'] = res['data'][0]['cjsl'];
+                        this.jqtjjcData[3]['value'] = res['data'][0]['fksl'];
 
-                    // 处警事件占比
-                    let sum1 = res['data'][0]['cjsl']/res['data'][0]['yxjq'];
-                    // console.log(sum);
-                    // 有效警情占比
-                    let sum2 = res['data'][0]['yxjq']/res['data'][0]['jjsl'];
-                    // 反馈事件占比
-                    let sum3 = res['data'][0]['fksl']/res['data'][0]['cjsl'];
+                        // 处警事件占比
+                        let sum1 = res['data'][0]['cjsl'] / res['data'][0]['yxjq'];
+                        // console.log(sum);
+                        // 有效警情占比
+                        let sum2 = res['data'][0]['yxjq'] / res['data'][0]['jjsl'];
+                        // 反馈事件占比
+                        let sum3 = res['data'][0]['fksl'] / res['data'][0]['cjsl'];
 
-                    this.jqtjjcSource[0]['value'] = sum1.toFixed(2) * 100;
-                    this.jqtjjcSource[1]['value'] = sum2.toFixed(2) * 100;
-                    this.jqtjjcSource[2]['value'] = sum3.toFixed(2) * 100;
+                        if (sum1 > 1) {
+                            this.jqtjjcSource[0]['value'] = 100
+                        } else {
+                            this.jqtjjcSource[0]['value'] = sum1.toFixed(2) * 100;
+                        }
+                        if (sum2 > 1) {
+                            this.jqtjjcSource[1]['value'] = 100;
+                        } else {
+                            this.jqtjjcSource[1]['value'] = sum2.toFixed(2) * 100;
+                        }
+                        if (sum3 > 1) {
+                            this.jqtjjcSource[2]['value'] = 100;
+                        } else {
+                            this.jqtjjcSource[2]['value'] = sum3.toFixed(2) * 100;
+                        }
 
-                    console.log(this.jqtjjcSource)
-                    this.panChart();
-                }.bind(this))
+                        console.log(this.jqtjjcSource);
+                        this.panChart();
+                    }.bind(this))
             },
             // 近期警情统计  左 中
-            getJqjq(){
+            getJqjq() {
                 this.$http({
                     method: 'post',
-                    url: this.apiRoot  + this.findUrl[1],
+                    url: this.apiRoot + this.findUrl[1],
                     headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
                     transformRequest: [function (data) {
                         let ret = '';
@@ -1547,42 +1584,41 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        startTime : 20160909,  //开始 
-                        endTime :  20160915     //结束
+                        startTime: 20160909,  //开始
+                        endTime: 20160915     //结束
                     }
                 })
-                .then(function (res) {
-                    console.log(res);
-                    let y = [];
-                    let x = [];
-                    res['data'].forEach(item=>{
-                        // console.log(item);
-                        x.push(item['tjrq']);
-                        y.push(item['jjsl']);
-                    });
-                    console.log(y);
-                    console.log(x);
-                    this.jqjqtjScoure = y;
-                    // this.jqjqtjChart();
-                    
-                    
+                    .then(function (res) {
+                        console.log(res);
+                        let y = [];
+                        let x = [];
+                        res['data'].forEach(item => {
+                            // console.log(item);
+                            x.push(item['tjrq']);
+                            y.push(item['jjsl']);
+                        });
+                        console.log(y);
+                        console.log(x);
+                        this.jqjqtjScoure = y;
+                        this.jqjqtjChart();
 
-                //    近期警情统计  y
-                // jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500]
-                // //  近期警情统计  x
-                // jqjqtjXdata:['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
 
-                  }.bind(this))
+                        //    近期警情统计  y
+                        // jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500]
+                        // //  近期警情统计  x
+                        // jqjqtjXdata:['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
+
+                    }.bind(this))
             },
             // 警情分类数据分析
-            getFlsj(){
+            getFlsj() {
 
             },
             // 地图
-            getMapData(){
+            getMapData() {
                 this.$http({
                     method: 'post',
-                    url: this.apiRoot  + this.findUrl[3],
+                    url: this.apiRoot + this.findUrl[3],
                     headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
                     transformRequest: [function (data) {
                         let ret = '';
@@ -1594,19 +1630,19 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        tjTime : 20160909,  //今天 
+                        tjTime: 20160909,  //今天
                     }
                 })
-                .then(function (res) {
-                    console.log(res);
-                })
+                    .then(function (res) {
+                        console.log(res);
+                    })
 
             },
             //接警类型数据分析    饼
-            getJjlx(){
+            getJjlx() {
                 this.$http({
                     method: 'post',
-                    url: this.apiRoot  + this.findUrl[4],
+                    url: this.apiRoot + this.findUrl[4],
                     headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
                     transformRequest: [function (data) {
                         let ret = '';
@@ -1618,18 +1654,18 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        tjTime : 20160909,  //今天 
+                        tjTime: 20160909,  //今天
                     }
                 })
-                .then(function (res) {
-                    console.log(res);
-                })   
+                    .then(function (res) {
+                        console.log(res);
+                    })
             },
             // 近七日接警类型数据分析    右边
-            getJjlxSeven(){
+            getJjlxSeven() {
                 this.$http({
                     method: 'post',
-                    url: this.apiRoot  + this.findUrl[5],
+                    url: this.apiRoot + this.findUrl[5],
                     headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
                     transformRequest: [function (data) {
                         let ret = '';
@@ -1641,19 +1677,19 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        startTime : '20160909',
-                        endTime : '20160915',
+                        startTime: '20160909',
+                        endTime: '20160915',
                     }
                 })
-                .then(function (res) {
-                    console.log(res);
-                })   
+                    .then(function (res) {
+                        console.log(res);
+                    })
             },
             // 今日报警方式数据分析
-            getBjfs(){
+            getBjfs() {
                 this.$http({
                     method: 'post',
-                    url: this.apiRoot  + this.findUrl[6],
+                    url: this.apiRoot + this.findUrl[6],
                     headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
                     transformRequest: [function (data) {
                         let ret = '';
@@ -1665,19 +1701,19 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        tjTime : 20160909,  //今天 
+                        tjTime: 20160909,  //今天
                     }
                 })
-                .then(function (res) {
-                    console.log(res);
-                })   
+                    .then(function (res) {
+                        console.log(res);
+                    })
 
             },
             // 近七日报警方式数据分析
-            getBjfsSeven(){
-                 this.$http({
+            getBjfsSeven() {
+                this.$http({
                     method: 'post',
-                    url: this.apiRoot  + this.findUrl[7],
+                    url: this.apiRoot + this.findUrl[7],
                     headers: {'Content-Type': 'application/x-www-form-urlencoded', 'crossDomain': true},
                     transformRequest: [function (data) {
                         let ret = '';
@@ -1689,22 +1725,28 @@
                     // withCredentials: true,// 允许携带token ,这个是解决跨域产生的相关问题
                     crossDomain: true,
                     data: {
-                        startTime : '20160909',
-                        endTime : '20160915',
+                        startTime: '20160909',
+                        endTime: '20160915',
                     }
                 })
-                .then(function (res) {
-                    console.log(res);
-                })   
-                
+                    .then(function (res) {
+                        console.log(res);
+                    })
+
             },
 
             // 今日来话类型数据分析
 
             // 近七日来话类型数据分析
 
+            getDate(){
+                let date=new Date();
+                this.todayIndex=date.getFullYear().toString()+(date.getMonth()+1).toString()+date.getDate().toString();
+                console.log(this.todayIndex);
+            }
         },
         mounted() {
+            this.getDate();
             this.setperiod();
             this.getScale();
             this.selectedItem();
@@ -1728,6 +1770,7 @@
         font-family: heijian;
         src: url('../assets/style/font/heijian.ttf');
     }
+
     main {
         display: flex;
         flex-direction: row;
@@ -1890,14 +1933,13 @@
                 //数据
                 .statistics {
                     width: 100%;
-                    height: 2.25rem;
+                    /*height: 2.25rem;*/
                     display: flex;
                     justify-content: space-between;
 
                     li {
-                        transform: scale(0.64);
-                        transform-origin: top;
-                        height: 3.69rem;
+                        transform: scale(0.7);
+                        transform-origin: center;
 
                         p {
                             text-align: center;
@@ -1906,6 +1948,12 @@
                             &:first-child {
                                 margin-bottom: 0.91rem;
                                 color: #00a8ff;
+                            }
+
+                            &:nth-child(2){
+                                transform: scale(1.5);
+                                font-family: heijian;
+                                letter-spacing: 2px;
                             }
                         }
                     }

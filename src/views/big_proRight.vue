@@ -127,7 +127,7 @@
                 //图表公用
                 refreshCharts: [],
                 chartsObj: {},
-                axisesColor: '#0057ab',
+                axisesColor: '#36b2ae',
                 //缩放值
                 scale: 1,
                 //标题
