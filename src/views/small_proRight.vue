@@ -496,6 +496,7 @@
             },
             selectItem(e){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
+                if(e.target.nodeName == 'UL') return;
                 item.forEach((value) => {
                     value.classList.remove('active');
                 });
