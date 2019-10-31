@@ -97,7 +97,7 @@
                         let start1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
                         this.myPeriod.per='today';
                         this.myPeriod.date=start1;
-                        this.startDate=end1;
+                        this.startDate=start1;
                         break;
                     case "昨天":
                         let timestamp = (new Date()).getTime();
