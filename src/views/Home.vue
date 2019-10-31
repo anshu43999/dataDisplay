@@ -293,11 +293,11 @@
                 jrrlhlxsjfxColor: ['#6c96ff', '#4160fb', '#2626e7', '#e344ff', '#00b3e9', '#803ff7', '#6905c6', '#17fff3'],
                 //    近七日接警类型数据分析
                 sevenjjlxsjfxSource: [
-                    /*{name: '110报警', value: [436, 413, 439, 506, 431, 426, 434]},
+                    {name: '110报警', value: [436, 413, 439, 506, 431, 426, 434]},
                     {name: '122报警', value: [320, 370, 350, 412, 346, 348, 427]},
                     {name: '119报警', value: [240, 274, 245, 260, 248, 278, 272]},
                     {name: '综合报警', value: [142, 152, 107, 168, 146, 164, 151]},
-                    {name: '其他接警类型', value: [14, 15, 14, 10, 12, 15, 17]},*/
+                    {name: '其他接警类型', value: [14, 15, 14, 10, 12, 15, 17]},
                 ],
                 // sevenjjlxsjfxSource: {},
                 //    近七日报警方式数据分析
@@ -1054,138 +1054,6 @@
                         break;
                 }
             },
-            //    数据转换
-            /*change() {
-                let dataArr = [];
-                let data = {
-                    "sevenDays": {
-                        "122报警": [
-                            {
-                                "tjrq": "20191008",
-                                "jjlxdm": "122报警",
-                                "jjsl": 54
-                            },
-                            {
-                                "tjrq": "20191007",
-                                "jjlxdm": "122报警",
-                                "jjsl": 74
-                            },
-                            {
-                                "tjrq": "20191006",
-                                "jjlxdm": "122报警",
-                                "jjsl": 92
-                            },
-                            {
-                                "tjrq": "20191005",
-                                "jjlxdm": "122报警",
-                                "jjsl": 69
-                            },
-                            {
-                                "tjrq": "20191004",
-                                "jjlxdm": "122报警",
-                                "jjsl": 58
-                            },
-                            {
-                                "tjrq": "20191003",
-                                "jjlxdm": "122报警",
-                                "jjsl": 92
-                            }
-                        ],
-                        "110报警": [
-                            {
-                                "tjrq": "20191008",
-                                "jjlxdm": "110报警",
-                                "jjsl": 558
-                            },
-                            {
-                                "tjrq": "20191007",
-                                "jjlxdm": "110报警",
-                                "jjsl": 371
-                            },
-                            {
-                                "tjrq": "20191006",
-                                "jjlxdm": "110报警",
-                                "jjsl": 506
-                            },
-                            {
-                                "tjrq": "20191005",
-                                "jjlxdm": "110报警",
-                                "jjsl": 439
-                            },
-                            {
-                                "tjrq": "20191004",
-                                "jjlxdm": "110报警",
-                                "jjsl": 413
-                            },
-                            {
-                                "tjrq": "20191003",
-                                "jjlxdm": "110报警",
-                                "jjsl": 436
-                            }
-                        ],
-                        "119报警": [
-                            {
-                                "tjrq": "20191008",
-                                "jjlxdm": "119报警",
-                                "jjsl": 5
-                            },
-                            {
-                                "tjrq": "20191007",
-                                "jjlxdm": "119报警",
-                                "jjsl": 8
-                            },
-                            {
-                                "tjrq": "20191006",
-                                "jjlxdm": "119报警",
-                                "jjsl": 10
-                            },
-                            {
-                                "tjrq": "20191005",
-                                "jjlxdm": "119报警",
-                                "jjsl": 9
-                            },
-                            {
-                                "tjrq": "20191004",
-                                "jjlxdm": "119报警",
-                                "jjsl": 3
-                            },
-                            {
-                                "tjrq": "20191003",
-                                "jjlxdm": "119报警",
-                                "jjsl": 14
-                            }
-                        ],
-                    }
-                };
-                // console.log(data.sevenDays["110报警"]);
-                let date = [];
-                let dateArr = [];
-                let data1 = [];
-                for (let i = 0; i < data.sevenDays["122报警"].length; i++) {
-                    date.push(data.sevenDays["122报警"][i].tjrq);
-                    data1.push(data.sevenDays["122报警"][i].jjsl)
-                }
-                for (let i = 0; i < date.length; i++) {
-                    let Y = date[i].slice(0, 4);
-                    let M = date[i].slice(4, 6);
-                    let D = date[i].slice(6, 8);
-                    dateArr[i] = M + '-' + D;
-                }
-                let data2 = [];
-                for (let i = 0; i < data.sevenDays["110报警"].length; i++) {
-                    data2.push(data.sevenDays["110报警"][i].jjsl)
-                }
-                let data3 = [];
-                for (let i = 0; i < data.sevenDays["119报警"].length; i++) {
-                    data3.push(data.sevenDays["119报警"][i].jjsl)
-                }
-                dataArr.push({name: '122报警', value: data1});
-                dataArr.push({name: '110报警', value: data2});
-                dataArr.push({name: '119报警', value: data3});
-                this.sevenjjlxsjfxSource.data = dataArr;
-                this.sevenjjlxsjfxSource.date = dateArr;
-                this.sevenjjlxsjfxSource.color = ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'];
-            },*/
             //柱状图渐变
             gradient(colorList) {
                 return new this.$echarts.graphic.LinearGradient(
@@ -1232,18 +1100,18 @@
                         that.getLhlx();
                         that.getLhlxSeven();
 
+                        // let xData=[1,2,3,4,5,6,7];
                         // that.panChart();
                         // that.jqjqtjChart();
-                        // that.jqflsjfxChart();
+                        // that.jqflsjfxChart(that.jqjqtjScoure);
                         // that.mapChart();
-                        //console.log(that.sevenjjlxsjfxSource);
-                        // that.jrPieChart('jrPieChart', that.jrjjlxsjfxSourceSource, that.jrjjlxsjfxSourceColor);
-                        // that.jrPieChart('jrbjfssjfxChart', that.jrbjfssjfxSource, that.jrbjfssjfxColor);
-                        // that.jrPieChart('jrrlhlxsjfxChart', that.jrrlhlxsjfxSource, that.jrrlhlxsjfxColor);
-                        // that.sevensjfx('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor);
-                        // that.sevensjfx1('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor);
-                        // that.sevensjfx1('sevenbjfssjfxChart', that.sevenbjfssjfxSource, that.jrbjfssjfxColor);
-                        // that.sevensjfx1('sevenlhlxsjfxChart', that.sevenlhlxsjfxSource, that.jrrlhlxsjfxColor);
+                        // that.jrPieChart('jrPieChart', that.jrjjlxsjfxSourceSource, that.jrjjlxsjfxSourceColor,xData);
+                        // that.jrPieChart('jrbjfssjfxChart', that.jrbjfssjfxSource, that.jrbjfssjfxColor,xData);
+                        // that.jrPieChart('jrrlhlxsjfxChart', that.jrrlhlxsjfxSource, that.jrrlhlxsjfxColor,xData);
+                        // that.sevensjfx1('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor,xData);
+                        // that.sevensjfx1('sevenjjlxsjfxChart', that.sevenjjlxsjfxSource, that.jrjjlxsjfxSourceColor,xData);
+                        // that.sevensjfx1('sevenbjfssjfxChart', that.sevenbjfssjfxSource, that.jrbjfssjfxColor,xData);
+                        // that.sevensjfx1('sevenlhlxsjfxChart', that.sevenlhlxsjfxSource, that.jrrlhlxsjfxColor,xData);
                     },
                 };
                 Index.init();
@@ -1333,10 +1201,10 @@
                                 d.setDate(d.getDate() - (d.getDay() + 6) % 7);
 // set to previous Monday
                                 let date3 = new Date(d.setDate(d.getDate() - 7));
-                                let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
+                                let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString().padStart(2, '0') + date3.getDate().toString().padStart(2, '0');
 // create new date of day before
                                 let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6);
-                                let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
+                                let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString().padStart(2, '0') + date4.getDate().toString().padStart(2, '0');
                                 e.target.parentNode.parentNode.parentNode.style.display = 'none';
                                 let type2 = e.target.getAttribute('data-id');
                                 this[type2].end = Sunday;
@@ -1349,9 +1217,9 @@
                                 break;
                             case'近半年':
                                 let dt = new Date();
-                                let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
+                                let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
                                 dt.setMonth(dt.getMonth() - 5);
-                                let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString();
+                                let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
                                 e.target.parentNode.parentNode.parentNode.style.display = 'none';
                                 let type3 = e.target.getAttribute('data-id');
                                 this[type3].end = today;
@@ -1417,11 +1285,11 @@
                     this.lhlx = JSON.parse(sessionStorage.getItem('lhlx'));
                 } else {
                     let date1 = new Date();
-                    let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                    let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
                     let timestamp = (new Date()).getTime();
                     let day = timestamp - 6 * 24 * 60 * 60 * 1000;
                     let date2 = new Date(day);
-                    let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                    let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
                     this.jjlx.end = end1;
                     this.jjlx.start = start1;
                     this.jjlx.per = 'week';
@@ -1434,8 +1302,6 @@
                     this.lhlx.end = end1;
                     this.lhlx.start = start1;
                     this.lhlx.per = 'week';
-                    this.end = end1;
-                    this.start = start1;
                     sessionStorage.setItem('jqfl', JSON.stringify(this.jqfl));
                     sessionStorage.setItem('jjlx', JSON.stringify(this.jjlx));
                     sessionStorage.setItem('bjfs', JSON.stringify(this.bjfs));
@@ -1967,11 +1833,11 @@
             //获取7天日期
             getDate() {
                 let date = new Date();
-                this.todayIndex = date.getFullYear().toString() + (date.getMonth() + 1).toString() + date.getDate().toString();
+                this.todayIndex = date.getFullYear().toString() + (date.getMonth() + 1).toString().padStart(2, '0') + date.getDate().toString().padStart(2, '0');
                 let timestamp = date.getTime();
                 let day = timestamp - 6 * 24 * 60 * 60 * 1000;
                 let date2 = new Date(day);
-                this.sevenDaysAgo = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                this.sevenDaysAgo = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
             },
         },
         mounted() {

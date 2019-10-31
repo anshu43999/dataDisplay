@@ -94,11 +94,11 @@
                 switch (e.target.innerText) {
                     case "近7日":
                         let date1 = new Date();
-                        let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString() + date1.getDate().toString();
+                        let end1 = date1.getFullYear().toString() + (date1.getMonth() + 1).toString().padStart(2, '0') + date1.getDate().toString().padStart(2, '0');
                         let timestamp = (new Date()).getTime();
                         let day = timestamp - 6 * 24 * 60 * 60 * 1000;
                         let date2 = new Date(day);
-                        let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString() + date2.getDate().toString();
+                        let start1 = date2.getFullYear().toString() + (date2.getMonth() + 1).toString().padStart(2, '0') + date2.getDate().toString().padStart(2, '0');
                         this.myPeriod.per='week';
                         this.myPeriod.start=start1;
                         this.myPeriod.end=end1;
@@ -111,10 +111,10 @@
                         d.setDate(d.getDate() - (d.getDay() + 6) % 7);
 // set to previous Monday
                         let date3 = new Date(d.setDate(d.getDate() - 7));
-                        let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString() + date3.getDate().toString();
+                        let Monday = date3.getFullYear().toString() + (date3.getMonth() + 1).toString().padStart(2, '0') + date3.getDate().toString().padStart(2, '0');
 // create new date of day before
                         let date4 = new Date(d.getFullYear(), d.getMonth(), d.getDate() + 6);
-                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString() + date4.getDate().toString();
+                        let Sunday = date4.getFullYear().toString() + (date4.getMonth() + 1).toString().padStart(2, '0') + date4.getDate().toString().padStart(2, '0');
                         this.myPeriod.per='lastWeek';
                         this.myPeriod.start=Monday;
                         this.myPeriod.end=Sunday;
@@ -123,9 +123,9 @@
                         break;
                     case "近半年":
                         let dt = new Date();
-                        let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString() + dt.getDate().toString();
+                        let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
                         dt.setMonth(dt.getMonth() - 5);
-                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString();
+                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
                         this.myPeriod.per='halfYear';
                         this.myPeriod.start=today;
                         this.myPeriod.end=halfYear;

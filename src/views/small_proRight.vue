@@ -493,9 +493,12 @@
                 this.endDate=this.myPeriod.end;
             },
             selectedItem(){
-                let item = document.querySelectorAll('.selectListBox>ul>li>div');
-                item[0].classList.add('active');
-                console.log(item[0]);
+               /* let item = document.querySelectorAll('.selectListBox>ul>li>div');
+                setTimeout(function () {
+                    item[0].classList.add('active');
+                },100);
+                // item[0].classList.add('active');
+                console.log(item[0]);*/
             },
             selectItem(e){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
@@ -569,6 +572,8 @@
                                 that.selectOptions.push(narr[i].name);
                             }
                         }
+                        console.log(that.totalSource[0].dataArr);
+                        // this.detailChart(that.totalSource[0].dataArr);
                     })
             },
         },
