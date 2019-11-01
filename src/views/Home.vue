@@ -208,7 +208,7 @@
                 //缩放值
                 scale: 1,
                 //筛选选项
-                periodArr: ['近7日', '上周', '近半年'],
+                periodArr: ['近7日', '上周', '上上周'],
                 // periodArr1: ['今天', '昨天', '前三天'],
                 //默认获取本周数据
                 jqfl: {start: '', end: '', per: ''},
@@ -1215,15 +1215,22 @@
                                 }
                                 e.target.classList.add('active');
                                 break;
-                            case'近半年':
+                            case'上上周':
                                 let dt = new Date();
-                                let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
-                                dt.setMonth(dt.getMonth() - 5);
-                                let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
+                                // set to Monday of this week
+                                dt.setDate(dt.getDate() - (dt.getDay() + 6) % 7);
+                                // set to previous Monday
+                                let date5 = new Date(dt.setDate(dt.getDate() - 14));
+
+                                let beforeMonday = date5.getFullYear().toString() + ((date5.getMonth() + 1).toString()).padStart(2,0) + (date5.getDate().toString()).padStart(2,0);
+                                // create new date of day before
+                                let date6 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 6);
+                                let beforeSunday = date6.getFullYear().toString() + ((date6.getMonth() + 1).toString()).padStart(2,0) + (date6.getDate().toString()).padStart(2,0);
+
                                 e.target.parentNode.parentNode.parentNode.style.display = 'none';
                                 let type3 = e.target.getAttribute('data-id');
-                                this[type3].end = today;
-                                this[type3].start = halfYear;
+                                this[type3].end = beforeSunday;
+                                this[type3].start = beforeMonday;
                                 this[type3].per = 'halfYear';
                                 for (let i = 0; i < children.length; i++) {
                                     children[i].childNodes[0].classList.remove('active');

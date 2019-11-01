@@ -44,7 +44,7 @@
                 //缩放值
                 scale: 1,
                 //筛选
-                periodArr: ['近7日', '上周', '近半年'],
+                periodArr: ['近7日', '上周', '上上周'],
                 typeAnalyze: '111111',    //判断点击的类型
                 filter_show: true,
 
@@ -121,16 +121,23 @@
                         this.startDate=Monday;
                         this.endDate=Sunday;
                         break;
-                    case "近半年":
+                    case "上上周":
                         let dt = new Date();
-                        let today = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
-                        dt.setMonth(dt.getMonth() - 5);
-                        let halfYear = dt.getFullYear().toString() + (dt.getMonth() + 1).toString().padStart(2, '0') + dt.getDate().toString().padStart(2, '0');
+                        // set to Monday of this week
+                        dt.setDate(dt.getDate() - (dt.getDay() + 6) % 7);
+                        // set to previous Monday
+                        let date5 = new Date(dt.setDate(dt.getDate() - 14));
+
+                        let beforeMonday = date5.getFullYear().toString() + ((date5.getMonth() + 1).toString()).padStart(2,0) + (date5.getDate().toString()).padStart(2,0);
+                        // create new date of day before
+                        let date6 = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate() + 6);
+                        let beforeSunday = date6.getFullYear().toString() + ((date6.getMonth() + 1).toString()).padStart(2,0) + (date6.getDate().toString()).padStart(2,0);
+
                         this.myPeriod.per='halfYear';
-                        this.myPeriod.start=today;
-                        this.myPeriod.end=halfYear;
-                        this.startDate=today;
-                        this.endDate=halfYear;
+                        this.myPeriod.start=beforeMonday;
+                        this.myPeriod.end=beforeSunday;
+                        this.startDate=beforeMonday;
+                        this.endDate=beforeSunday;
                         break;
                     default:
                         console.log('false');
