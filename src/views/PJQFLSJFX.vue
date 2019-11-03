@@ -22,7 +22,7 @@
             </div>
 
             <div class="r">
-                <router-view :typeAnalyze='typeAnalyze' @filter_btn='filter_btn'></router-view>
+                <router-view ref="child" :typeAnalyze='typeAnalyze' @filter_btn='filter_btn' :is-click="isClick"></router-view>
             </div>
         </main>
     </div>
@@ -50,9 +50,14 @@
 
                 //筛选时间
                 myPeriod:{},
-                pageName:'',
                 startDate:'',
                 endDate:'',
+            //    行政区划代码
+                xzqhdm:'',
+                cityPage:'',
+                cityData:[],
+
+                isClick:false
             }
         },
         methods: {
@@ -61,9 +66,6 @@
                 switch(this.$route.query.title){
                     case '全省警情分类数据分析':
                         this.myPeriod = JSON.parse(sessionStorage.getItem('jqfl'));
-                        this.pageName='jqfl';
-                        this.startDate=this.myPeriod.start;
-                        this.endDate=this.myPeriod.end;
                         break;
                     default:
                         console.log('false');
@@ -121,8 +123,8 @@
                     default:
                         console.log('false');
                 }
-                // console.log(this.startDate);
-                sessionStorage.setItem(this.pageName,JSON.stringify(this.myPeriod));
+                sessionStorage.setItem('jqfl',JSON.stringify(this.myPeriod));
+                this.isClick=true;
             },
             filter_btn(v) {
                 // this.filter_show = false;
@@ -131,6 +133,7 @@
             },
         },
         mounted() {
+            // console.log(this.$children);
             this.getStorage();
             this.selectedItem();
         },
@@ -139,7 +142,9 @@
                 handler(val, oldVal){
                     // console.log(val,oldVal);//但是这两个值打印出来却都是一样的
                     // console.log(val.per,oldVal.per);
-                    // console.log(this.$children[2].renderChart());
+                    // console.clear();
+                    // console.log(this.$children[2]);
+                    // console.log(val);
                     this.$children[2].renderChart()
                 },
                 deep:true

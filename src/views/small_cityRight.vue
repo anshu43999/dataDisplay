@@ -23,8 +23,8 @@
                 <h3>{{this.chartTitle[2]}}</h3>
                 <div class="selectListBox">
                     <ul @click="selectItem">
-                        <li v-for="item in jqflsjfxSource" :key="item.name">
-                            <div>{{item.name}}</div>
+                        <li v-for="item in selectOptions" :key="item">
+                            <div>{{item}}</div>
                         </li>
                     </ul>
                 </div>
@@ -41,7 +41,21 @@
         props: ['typeAnalyze'],
         data(){
             return {
+                sxCityObj: {
+                    '临汾市': 141000,
+                    '吕梁市': 141100,
+                    '大同市': 140200,
+                    '太原市': 140100,
+                    '忻州市': 140900,
+                    '晋中市': 140700,
+                    '晋城市': 140500,
+                    '朔州市': 140600,
+                    '运城市': 140800,
+                    '长治市': 140400,
+                    '阳泉市': 140300,
+                },
                 scale: 1,
+                selectOptions:[],
                 //需要刷新的图表
                 refreshCharts: [],
                 //    所有的图标对象
@@ -50,8 +64,9 @@
                 axisesColor: '#36b2ae',
                 //标题
                 chartTitle: [],
+                totalSource:[],
                 jqflsjfxSource: [
-                    {name: '刑事', value: 1300},
+                    /*{name: '刑事', value: 1300},
                     {name: '行政(治安)', value: 1500},
                     {name: '交通类', value: 900},
                     {name: '消防救援', value: 900},
@@ -61,10 +76,10 @@
                     {name: '纠纷', value: 1400},
                     {name: '灾害事故', value: 800},
                     {name: '举报', value: 850},
-                    {name: '投诉监督', value: 700}
+                    {name: '投诉监督', value: 700}*/
                 ],
                 proportionSource: [
-                    {name: '刑事', value: 23.5},
+                    /*{name: '刑事', value: 23.5},
                     {name: '行政(治安)', value: 14},
                     {name: '交通类', value: 13.45},
                     {name: '消防救援', value: 23},
@@ -74,10 +89,10 @@
                     {name: '纠纷', value: 45},
                     {name: '灾害事故', value: 43},
                     {name: '举报', value: 15.5},
-                    {name: '投诉监督', value: 12}
+                    {name: '投诉监督', value: 12}*/
                 ],
                 detailSource:   [
-                    {name: '危害国家安全', value: 3},
+                    /*{name: '危害国家安全', value: 3},
                     {name: '危害公共安全', value: 12},
                     {name: '防火', value: 4},
                     {name: '爆炸', value: 1},
@@ -97,7 +112,7 @@
                     {name: '金融诈骗 ', value: 9},
                     {name: '侵犯财产 ', value: 6},
                     {name: '破坏环境资源 ', value: 16},
-                    {name: '其他刑事警情 ', value: 15},
+                    {name: '其他刑事警情 ', value: 15},*/
                 ],
             }
         },
@@ -116,10 +131,10 @@
             //柱状图
             barChart() {
                 let xData = [];
-                this.jqflsjfxSource.forEach(value => {
+                let sourceArr = this.jqflsjfxSource;
+                sourceArr.forEach(value => {
                     xData.push(value.name);
                 });
-                let sourceArr = this.jqflsjfxSource;
                 let myChart = this.$echarts.init(document.getElementById('bar'));
                 this.chartsObj['bar'] = myChart;
                 let colorList = ['#fcc60a', '#f5834a'];
@@ -316,7 +331,7 @@
                     },
                     tooltip: {
                         formatter:function (params) {
-                            return params.marker+params.data.name+'：'+params.data.value+'%';
+                            // return params.marker+params.data.name+'：'+params.data.value+'%';
                         }
                     },
                     grid: {
@@ -475,10 +490,10 @@
                         Public.chartsReDraw(that.chartsObj, null, [], this.refreshCharts)
                     },
                     loadData() {
-                        that.barChart();
-                        that.percent();
-                        that.detailChart();
-                        that.detailProportionChart();
+                        that.getCityDataDetail();
+                        that.getCityData();
+                        /*that.detailChart();
+                        that.detailProportionChart();*/
                     },
                 };
                 Index.init();
@@ -489,12 +504,23 @@
             },
             selectItem(e){
                 let item = document.querySelectorAll('.selectListBox>ul>li>div');
+                if(e.target.nodeName == 'UL') return;
                 item.forEach((value) => {
                     value.classList.remove('active');
                 });
-                e.target.classList.add('active')
+                e.target.classList.add('active');
+                this.totalSource.forEach(value => {
+                    if (e.target.innerText===value.name){
+                        this.detailSource=value.dataArr;
+                        this.detailChart();
+                        this.detailProportionChart();
+                    }
+                })
             },
+
             getCityData(){
+                this.myPeriod = JSON.parse(sessionStorage.getItem('jqfl'));
+                this.getXzqh();
                 let that=this;
                 this.$http({
                     method: 'post',
@@ -512,37 +538,45 @@
                     data: {
                         // startTime: this.jjlx.start,
                         // endTime: this.jjlx.end,
-                        tjTime: '20160909',
-                        xzqhdm:'140300'
+                        tjTime: that.myPeriod.date,
+                        xzqhdm:that.xzqhdm
                     }
                 })
                     .then(function (res) {
-                        console.log(res);
-                        /*let r =[];
-                        let narr=[];
-                        for(let i =0;i<res.data.length;i++){
-                            // arr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl});
-                            let n = r.indexOf(res.data[i].sjdmmc);
-                            if(n == -1){
-                                r.push(res.data[i].sjdmmc);
-                                narr.push({"name":res.data[i].sjdmmc,dataArr:[{name:res.data[i].fldmmc,value:res.data[i].jjsl}]});
-                            }else{
-                                narr[n].dataArr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl})
+                        // console.log(res);
+                        let arr=[];
+                        res.data.map(item => {
+                            item.name = item.fldmmc;
+                            item.value = item.jjsl;
+                            delete item.fldmmc;
+                            delete item.jjsl;
+                            delete item.fllx;
+                            delete item.xzqhdm;
+                            return item;
+                        });
+                        let total=0;
+                        for (let i = 0; i < res.data.length; i++) {
+                            total+=res.data[i].value;
+                            if (res.data[i].name === undefined) {
+                                res.data.slice(i, 1);
+                            } else {
+                                arr.push(res.data[i]);
                             }
                         }
-                        console.log(narr);
-                        that.totalSource=narr;
-                        for (let i=0;i<narr.length;i++){
-                            if (narr[i].name===undefined){
-                                narr.slice(i,1);
-                            }else {
-                                that.selectOptions.push(narr[i].name);
-                            }
-                        }*/
-                        // console.log(that.selectOptions);
+                        that.jqflsjfxSource=arr;
+                        that.barChart();
+                        let data=[];
+                        for (let i=0;i<arr.length;i++){
+                            data.push({name:arr[i].name,value:Math.round((arr[i].value/total)*100)});
+                        }
+                        that.proportionSource=data;
+                        // console.log(data);
+                        that.percent();
                     })
             },
-            getCityData1(){
+            getCityDataDetail(){
+                this.myPeriod = JSON.parse(sessionStorage.getItem('jqfl'));
+                this.getXzqh();
                 let that=this;
                 this.$http({
                     method: 'post',
@@ -560,13 +594,13 @@
                     data: {
                         // startTime: this.jjlx.start,
                         // endTime: this.jjlx.end,
-                        tjTime: '20160909',
-                        xzqhdm:'140300'
+                        tjTime: that.myPeriod.date,
+                        xzqhdm:that.xzqhdm
                     }
                 })
                     .then(function (res) {
-                        console.log(res);
-                        /*let r =[];
+                        // console.log(res);
+                        let r =[];
                         let narr=[];
                         for(let i =0;i<res.data.length;i++){
                             // arr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl});
@@ -578,23 +612,25 @@
                                 narr[n].dataArr.push({name:res.data[i].fldmmc,value:res.data[i].jjsl})
                             }
                         }
-                        console.log(narr);
+                        // console.log(narr);
                         that.totalSource=narr;
-                        for (let i=0;i<narr.length;i++){
-                            if (narr[i].name===undefined){
-                                narr.slice(i,1);
-                            }else {
-                                that.selectOptions.push(narr[i].name);
-                            }
-                        }*/
-                        // console.log(that.selectOptions);
-                    })
+                        that.detailSource=that.totalSource[0].dataArr;
+                        that.detailChart();
+                        that.detailProportionChart();
+                    }).then(()=>{
+                    that.selectedItem();
+                })
+            },
+
+            getXzqh(){
+                let xzqh=this.$route.query.city;
+                this.xzqhdm=this.sxCityObj[xzqh];
             },
             pdFilter_btn(){
                 let str = this.$route.query.title;
 
                 str = str.substring(0,1);
-                console.log(str);
+                // console.log(str);
 
                 if(str == '全'){
                     this.$emit('filter_btn',true)
@@ -604,12 +640,12 @@
             }
         },
         mounted() {
+            // console.log(this.cityData);
             this.pdFilter_btn();
             this.getScale();
             this.setName();
             this.renderChart();
-            this.selectedItem();
-            this.getCityData1();
+            // this.selectedItem();
         },
     }
 </script>

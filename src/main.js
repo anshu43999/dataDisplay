@@ -6,6 +6,7 @@ import App from './App.vue'
 // import 'element-ui/lib/theme-chalk/index.css'
 // import ElementUI from 'element-ui'
 import echarts from 'echarts'
+import 'echarts-gl'
 // import '../public/static/style/common.scss'
 // import './assets/style/common/common.css'
 import './assets/style/font/iconfont.css'
@@ -13,6 +14,7 @@ import './assets/style/font/iconfont.css'
 import store from './store/index'
 import axios from 'axios'
 import router from './router/index'
+
 //import 'vue2-animate/dist/vue2-animate.min.css';
 // import 'babel-polyfill'
 Vue.prototype.$http = axios;

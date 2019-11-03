@@ -170,16 +170,18 @@
                 </div>
             </div>
         </main>
+        <my-setting></my-setting>
     </div>
 </template>
 
 <script>
     import MyHeader from "../components/Header";
-    // import sevensjfx from '../assets/js/sevenChart'
+    import MySetting from "../components/Setting";
+    // import gl from "../assets/js/GL"
 
     export default {
         name: "Test",
-        components: {MyHeader},
+        components: {MyHeader,MySetting},
         data() {
             return {
                 //今天的日期
@@ -218,24 +220,24 @@
                 bjfs: {start: '', end: '', per: ''},
                 //警情统计监测
                 jqtjjcData: [
-                    {name: '报警事件总数', value: 4512},
-                    {name: '有效警情总数', value: 2361},
-                    {name: '处警事件总数', value: 2316},
-                    {name: '反馈事件总数', value: 7312},
+                    {name: '报警事件总数', value: 0},
+                    {name: '有效警情总数', value: 0},
+                    {name: '处警事件总数', value: 0},
+                    {name: '反馈事件总数', value: 0},
                 ],
                 jqtjjcSource: [
-                    {name: '处警事件占比', value: 45, radius: '65%'},
-                    {name: '有效警情占比', value: 21, radius: '75%'},
-                    {name: '反馈事件占比', value: 63, radius: '65%'}
+                    {name: '处警事件占比', value: 0, radius: '65%'},
+                    {name: '有效警情占比', value: 0, radius: '75%'},
+                    {name: '反馈事件占比', value: 0, radius: '65%'}
                 ],
                 //    近期警情统计  y
-                jqjqtjScoure: [900, 1100, 700, 900, 1000, 600, 500],
+                jqjqtjScoure: [],
                 //  近期警情统计  x
                 // jqjqtjXdata: ['10-1', '10-2', '10-3', '10-4', '10-5', '10-6', '10-7'],
 
                 //    警情分类数据分析
                 jqflsjfxSource: [
-                    {name: '刑事'},
+                    /*{name: '刑事'},
                     {name: '行政(治安)'},
                     {name: '交通类'},
                     {name: '消防救援'},
@@ -245,81 +247,81 @@
                     {name: '纠纷'},
                     {name: '灾害事故'},
                     {name: '举报'},
-                    {name: '投诉监督'}
+                    {name: '投诉监督'}*/
                 ],
                 grading: [0.2, 0.4, 0.6, 0.8, 1],
                 mapSource: [
-                    {name: "太原市", value: 80, value1: 5000},
-                    {name: "长治市", value: 30, value1: 4000},
-                    {name: "朔州市", value: 4, value1: 3000},
-                    {name: "运城市", value: 32, value1: 2000},
-                    {name: "大同市", value: 30, value1: 4000},
-                    {name: "晋城市", value: 10, value1: 3000},
-                    {name: "晋中市", value: 21, value1: 3600},
-                    {name: "临汾市", value: 5, value1: 4000},
-                    {name: "忻州市", value: 5, value1: 4000},
-                    {name: "阳泉市", value: 10, value1: 2000},
-                    {name: "吕梁市", value: 20, value1: 1600},
+                    {name: "太原市", value: 0, value1: 5000},
+                    {name: "长治市", value: 0, value1: 4000},
+                    {name: "朔州市", value: 0, value1: 3000},
+                    {name: "运城市", value: 0, value1: 2000},
+                    {name: "大同市", value: 0, value1: 4000},
+                    {name: "晋城市", value: 0, value1: 3000},
+                    {name: "晋中市", value: 0, value1: 3600},
+                    {name: "临汾市", value: 0, value1: 4000},
+                    {name: "忻州市", value: 0, value1: 4000},
+                    {name: "阳泉市", value: 0, value1: 2000},
+                    {name: "吕梁市", value: 0, value1: 1600},
                 ],
-                mapData: {name: '报警事件总数', value: 96666},
+                mapData: {name: '报警事件总数', value: 0},
                 //    今日接警类型数据分析、今日来话类型数据分析
                 jrjjlxsjfxSourceSource: [
-                    {name: '110报警', value: 200},
-                    {name: '122报警', value: 155},
-                    {name: '119报警', value: 263},
-                    {name: '综合报警', value: 145},
-                    {name: '其他接警类型', value: 155}
+                    /*{name: '110报警', value: 0},
+                    {name: '122报警', value: 0},
+                    {name: '119报警', value: 0},
+                    {name: '综合报警', value: 0},
+                    {name: '其他接警类型', value: 0}*/
                 ],
                 jrjjlxsjfxSourceColor: ['#05dbb0', '#00a3c0', '#4160fd', '#bd0fdc', '#803ff7'],
                 //    今日报警方式数据分析
                 jrbjfssjfxSource: [
-                    {name: '电话报警', value: 200},
-                    {name: '来人（来电）报警', value: 155},
-                    {name: '技防报警', value: 263},
-                    {name: '短信报警', value: 145},
-                    {name: '其他报警方式', value: 155}
+                   /* {name: '电话报警', value: 0},
+                    {name: '来人（来电）报警', value: 0},
+                    {name: '技防报警', value: 0},
+                    {name: '短信报警', value: 0},
+                    {name: '其他报警方式', value: 0}*/
                 ],
                 jrbjfssjfxColor: ['#ffd75d', '#00a3c0', '#0d28a6', '#e344ff', '#6400cb'],
                 //    今日来话类型数据分析
                 jrrlhlxsjfxSource: [
-                    {name: '报警求助、举报投诉', value: 200},
-                    {name: '处警反馈', value: 155},
-                    {name: '信息咨询', value: 263},
-                    {name: '短信报警', value: 145},
-                    {name: '重复报警', value: 155},
-                    {name: '骚扰电话', value: 231},
-                    {name: '系统测试', value: 251},
-                    {name: '其他来话类型', value: 134},
+                    /*{name: '报警求助、举报投诉', value: 0},
+                    {name: '处警反馈', value: 0},
+                    {name: '信息咨询', value: 0},
+                    {name: '短信报警', value: 0},
+                    {name: '重复报警', value: 0},
+                    {name: '骚扰电话', value: 0},
+                    {name: '系统测试', value: 0},
+                    {name: '其他来话类型', value: 0},*/
                 ],
                 jrrlhlxsjfxColor: ['#6c96ff', '#4160fb', '#2626e7', '#e344ff', '#00b3e9', '#803ff7', '#6905c6', '#17fff3'],
                 //    近七日接警类型数据分析
                 sevenjjlxsjfxSource: [
-                    {name: '110报警', value: [436, 413, 439, 506, 431, 426, 434]},
-                    {name: '122报警', value: [320, 370, 350, 412, 346, 348, 427]},
-                    {name: '119报警', value: [240, 274, 245, 260, 248, 278, 272]},
-                    {name: '综合报警', value: [142, 152, 107, 168, 146, 164, 151]},
-                    {name: '其他接警类型', value: [14, 15, 14, 10, 12, 15, 17]},
+                    /*{name: '110报警', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '122报警', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '119报警', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '综合报警', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '其他接警类型', value: [0, 0, 0, 0, 0, 0, 0]},*/
                 ],
                 // sevenjjlxsjfxSource: {},
                 //    近七日报警方式数据分析
                 sevenbjfssjfxSource: [
-                    {name: '电话报警', value: [436, 413, 439, 506, 431, 426, 434]},
-                    {name: '来人来电报警', value: [320, 370, 350, 412, 346, 348, 427]},
-                    {name: '技防报警', value: [240, 274, 245, 260, 248, 278, 272]},
-                    {name: '短信报警', value: [142, 152, 107, 168, 146, 164, 151]},
-                    {name: '其他报警方式', value: [14, 15, 14, 10, 12, 15, 17]}
+                   /* {name: '电话报警', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '来人来电报警', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '技防报警', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '短信报警', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '其他报警方式', value: [0, 0, 0, 0, 0, 0, 0]}*/
                 ],
                 // sevenbjfssjfxSource:{},
                 //    近七日来话类型数据分析
                 //    近七日来话类型数据分析
                 sevenlhlxsjfxSource: [
-                    {name: '报警求助、举报投诉', value: [560, 525, 494, 568, 516, 554, 523]},
-                    {name: '处警反馈', value: [451, 450, 438, 443, 468, 461, 431]},
-                    {name: '信息咨询', value: [382, 380, 351, 384, 345, 387, 364]},
-                    {name: '重复报警', value: [301, 298, 310, 320, 316, 302, 286]},
-                    {name: '骚扰电话', value: [230, 231, 204, 215, 228, 209, 232]},
-                    {name: '系统测试', value: [123, 130, 128, 110, 125, 135, 120]},
-                    {name: '其他来话类型', value: [15, 13, 20, 18, 16, 17, 18]}
+                    /*{name: '报警求助、举报投诉', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '处警反馈', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '信息咨询', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '重复报警', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '骚扰电话', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '系统测试', value: [0, 0, 0, 0, 0, 0, 0]},
+                    {name: '其他来话类型', value: [0, 0, 0, 0, 0, 0, 0]}*/
                 ],
                 // sevenlhlxsjfxSource:{}
             }
@@ -474,21 +476,6 @@
                     },
                 };
                 myChart.setOption(option);
-                myChart.on('click',function (params) {
-                    console.log(params);
-                    if (params.componentType === 'axisLine') {
-                        if (params.seriesType === 'graph') {
-                            if (params.dataType === 'edge') {
-                                // 点击到了 graph 的 edge（边）上。
-                                console.log(1);
-                            }
-                            else {
-                                // 点击到了 graph 的 node（节点）上。
-                                console.log(2);
-                            }
-                        }
-                    }
-                })
             },
             //    近期警情统计
             jqjqtjChart(dateArr) {
@@ -691,89 +678,83 @@
                         },
                         {
                             map: map,
-                            type: 'map',
-                            mapType: map,
-                            roam: false,
+                            type: 'map3D',
+                            roam: true,
                             data: data,
-                            zoom: 1.18,   //这里是关键，一定要放在 series中
                             nameMap: {
                                 '山西省': '山西省'
                             },
+                            shading: 'realistic',//光照
+                            light: {
+                                main: {//主光源设置
+                                    intensity: 2,//主光源强度
+                                    shadow: false,//主光源是否投射阴影
+                                    shadowQuality: 'low',//阴影的质量
+                                    alpha: 120, //主光源绕 x 轴偏离的角度
+                                    beta: 190 //主光源绕 y 轴偏离的角度
+                                },
+                                ambient: { //全局的环境光设置。
+                                    intensity: 0//环境光的强度
+                                }
+                            },
+                            boxWidth:100,
+                            viewControl: {//用于鼠标的旋转，缩放等视角控制
+                                distance: 250,//默认视角距离主体的距离
+                                panMouseButton: 'left',//平移操作使用的鼠标按键
+                                rotateMouseButton: 'right',//旋转操作使用的鼠标按键
+                                alpha: 60 // 让canvas在x轴有一定的倾斜角度
+                            },
+                            postEffect: {//后处理特效的相关配置，后处理特效可以为画面添加高光，景深，环境光遮蔽（SSAO），调色等效果。可以让整个画面更富有质感。
+                                enable: true,
+                                bloom: {//光晕
+                                    enable: false
+                                },
+                                SSAO: {//屏幕空间环境光遮蔽
+                                    radius: 1,//环境光遮蔽的强度。值越大颜色越深。
+                                    intensity: 1,//环境光遮蔽的强度。值越大颜色越深。
+                                    enable: true
+                                },
+                                depthOfField: {//景深
+                                    enable: false,
+                                    focalRange: 10,//完全聚焦的区域范围，在此范围内的物体时完全清晰的，不会有模糊
+                                    blurRadius: 10,//焦外的模糊半径
+                                    fstop: 1//焦外的模糊半径
+                                }
+                            },
+                            temporalSuperSampling: {//分帧超采样。在开启 postEffect 后，WebGL 默认的 MSAA 会无法使用,分帧超采样用来解决锯齿的问题
+                                enable: true
+                            },
+                            itemStyle: {//三维图形的视觉属性
+                                color: '#2355ac',//地图颜色
+                                borderWidth: 1,
+                                borderColor: '#000'
+                            },
+                            regionHeight: 10,
                             label: {
                                 normal: {
                                     show: true,
                                     formatter: function (params) {
-                                        // console.log(params.data.name, params.data.value);
-                                        let style = '';
-                                        if (params.data.value < that.grading[0]) {
-                                            style = 'colorZero';
-                                        } else if (params.data.value >= that.grading[0] && params.data.value <= that.grading[1]) {
-                                            style = 'colorOne';
-                                        } else if (params.data.value >= that.grading[1] && params.data.value <= that.grading[2]) {
-                                            style = 'colorTwo';
-                                        } else if (params.data.value >= that.grading[2] && params.data.value <= that.grading[3]) {
-                                            style = 'colorThere';
-                                        } else {
-                                            style = 'colorFour';
-                                        }
-                                        if (params.data.value1) {
-                                            return params.name + ' - {' + style + '|' + params.data.value1 + '}';
-                                        } else {
-                                            return params.name
-                                        }
+                                        return params.name
                                     },
                                     position: 'inside',
-                                    fontSize: 8,
-                                    fontWeight: 'normal',
-                                    color: '#1af7f1',
-                                    rich: {
-                                        colorZero: {
-                                            color: '#88ffc6',
-                                            fontSize: 12,
-                                            fontFamily: 'heijian',
-                                            fontWeight: 'bold',
-                                        },
-                                        colorOne: {
-                                            color: '#ffe71b',
-                                            fontSize: 12,
-                                            fontFamily: 'heijian',
-                                            fontWeight: 'bold',
-                                        },
-                                        colorTwo: {
-                                            color: '#ffac1b',
-                                            fontSize: 12,
-                                            fontFamily: 'heijian',
-                                            fontWeight: 'bold',
-                                        },
-                                        colorThere: {
-                                            color: '#ff6600',
-                                            fontSize: 12,
-                                            fontFamily: 'heijian',
-                                            fontWeight: 'bold',
-                                        },
-                                        colorFour: {
-                                            color: '#e12d00',
-                                            fontSize: 12,
-                                            fontFamily: 'heijian',
-                                            fontWeight: 'bold',
-                                        }
+                                    textStyle: {
+                                        color: '#fff',
+                                        opacity: 1,                     // 字体透明度
+                                        backgroundColor: 'transparent',
+                                        fontSize:30*that.scale
                                     }
                                 },
                                 emphasis: {
-                                    show: true,
-                                }
-                            },
-                            itemStyle: {
-                                emphasis: {
-                                    label: {
-                                        show: true,
-                                        color: '#fff'
-                                    },
-                                    areaColor: '#5a3cff',
+                                    show: true
                                 }
                             },
                         },
                     ];
+                    option.tooltip={
+                        formatter:function (params) {
+                            return params.marker+params.data.name+'：'+params.data.value1
+                        }
+                    };
                     // let color=['rgba(255,0,0,0.2)','rgba(255,0,0,0.4)','rgba(255,0,0,0.6)','rgba(255,0,0,0.8)','rgba(255,0,0,1)'];
                     option.visualMap = {
                         type: 'piecewise',
@@ -781,97 +762,28 @@
                             max: that.grading[0],
                             label: '一级',
                             color: '#5ea2f5'
-                            /*color: new that.$echarts.graphic.LinearGradient(
-                                //右，下，左，上
-                                0, 0, 0, 1, [{
-                                    //0%位置的颜色
-                                    offset: 0,
-                                    color: 'rgb(15,135,91)'
-                                },
-                                    {
-                                        //100%位置的颜色
-                                        offset: 1,
-                                        color: 'rgb(83,205,156)'                                    }
-                                ]
-                            )*/
                         }, {
                             min: that.grading[0],
                             max: that.grading[1],
                             label: '二级',
                             color: '#3d8bea',
-                            /*color: new that.$echarts.graphic.LinearGradient(
-                                //右，下，左，上
-                                0, 0, 0, 1, [{
-                                    //0%位置的颜色
-                                    offset: 0,
-                                    color: 'rgb(21,179,171)'
-                                },
-                                    {
-                                        //100%位置的颜色
-                                        offset: 1,
-                                        color: 'rgb(127,245,238)'
-                                    }
-                                ]
-                            )*/
                         }, {
                             min: that.grading[1],
                             max: that.grading[2],
                             label: '三级',
                             color: '#2a5cc0',
-                            /*color: new that.$echarts.graphic.LinearGradient(
-                                //右，下，左，上
-                                0, 0, 0, 1, [{
-                                    //0%位置的颜色
-                                    offset: 0,
-                                    color: 'rgb(24,98,150)'
-                                },
-                                    {
-                                        //100%位置的颜色
-                                        offset: 1,
-                                        color: 'rgb(25,177,227)'
-                                    }
-                                ]
-                            )*/
                         },
                             {
                                 min: that.grading[2],
                                 max: that.grading[3],
                                 label: '四级',
                                 color: '#0f07b0'
-                                /*color: new that.$echarts.graphic.LinearGradient(
-                                    //右，下，左，上
-                                    0, 0, 0, 1, [{
-                                        //0%位置的颜色
-                                        offset: 0,
-                                        color: 'rgb(5,82,173)'
-                                    },
-                                        {
-                                            //100%位置的颜色
-                                            offset: 1,
-                                            color: 'rgb(72,124,251)'
-                                        }
-                                    ]
-                                )*/
                             },
                             {
                                 min: that.grading[3],
                                 // max: that.grading[4],
                                 label: '五级',
                                 color: '#060086'
-                                /*color: new that.$echarts.graphic.LinearGradient(
-                                    //右，下，左，上
-                                    0, 0, 0, 1, [{
-                                        //0%位置的颜色
-                                        offset: 0,
-                                        color: 'rgb(5,29,138)'
-                                    },
-                                        {
-                                            //100%位置的颜色
-                                            offset: 1,
-                                            color: 'rgb(25,62,236)'
-                                        }
-                                    ]
-                                )*/
                             }
                         ],
                         left: 'right',
@@ -1438,7 +1350,7 @@
                 })
                     .then(function (res) {
                         // console.log(res);
-                        // console.log(res['data'][0]);
+                        console.log(res['data'][0]['jjsl']);
                         // cjsl: 14020      //处警事件总数 // fksl: 7419   //反馈事件总数 // hb: 0      //环比
                         // jjsl: 18669    //报警事件总数 // yxjq: 4887  //有效警情总数
                         this.jqtjjcData[0]['value'] = res['data'][0]['jjsl'];
@@ -1455,6 +1367,7 @@
                         // 反馈事件占比
                         let sum3 = res['data'][0]['fksl'] / res['data'][0]['cjsl'];
 
+                        console.log(sum1,sum2,sum3);
                         if (sum1 > 1) {
                             this.jqtjjcSource[0]['value'] = 100
                         } else {
@@ -1548,7 +1461,6 @@
                     }
                 })
                     .then(function (res) {
-                        // console.log(res);
                         res.data.map(item => {
                             item.name = item.fldm;
                             item.value = item.jjsl;
@@ -1676,7 +1588,38 @@
                     }
                 })
                     .then(function (res) {
-                        // console.log(res);
+                        // console.log(res.data);
+                        // console.log(res.data.sevenDays);
+                        /*let s=JSON.parse(sessionStorage.getItem('jjlx'));
+                        let d=new Date(s.start.slice(0,4)+'-'+s.start.slice(4,6)+'-'+s.start.slice(6,8)).getTime();
+                        let dateArr1=[];
+                        for (let i=0;i<7;i++){
+                            let t=d+i* 24 * 60 * 60 * 1000;
+                            let d1=new Date(t);
+                            dateArr1.push(
+                                d1.getFullYear().toString()+
+                                (d1.getMonth()+1).toString().padStart(2, '0')+
+                                d1.getDate().toString().padStart(2, '0')
+                            );
+                        }*/
+                        // console.log(dateArr1);
+                        for (let i in res.data.sevenDays){
+                            if(res.data.sevenDays[i].length<7){
+                                /*for (let j=0;j<7;j++){
+                                    res.data.sevenDays[i].push({tjrq:dateArr1[j],jjsl:0,jjlxdm:i});
+                                }*/
+                                // console.log(i);
+                                delete res.data.sevenDays[i]
+                            }
+                        };
+                        // console.log(res.data.sevenDays);
+                        let data1=[];
+                        for (let i in res.data.sevenDays){
+                            data1.push(...res.data.sevenDays[i]);
+                        }
+                        // res.data=da;
+                        // console.log(data1);
+                        res.data=data1;
                         let r = [];
                         let narr = [];
                         for (let i = 0; i < res.data.length; i++) {
@@ -1720,6 +1663,45 @@
                         }
                         // console.log(narr1);
                         // that.sevenjjlxsjfxSource.log=narr1;
+                        /*let obj1 = res.data.sevenDays['110报警'];
+                        let str1 ;
+                        let qian ;
+                        let hou ;
+                        // console.log(obj6 );
+                        let dateArr = [];
+                        obj1.forEach((item,index)=>{
+                            str1 = item['tjrq'] ;
+                            str1 = str1.substring(4,8);
+                            qian = str1.substring(0,2);
+                            hou = str1.substring(2,4);
+                            str1 = qian + '-' + hou;
+                            dateArr.push(str1);
+                        });
+                        // console.log(dateArr);
+                        let sourceArr=[];
+
+                        obj1.forEach( (item,index)=>{
+                            sourceArr[index] = parseInt(item['jjsl'])
+                        } );
+                        // console.log(obj1);
+                        let obj2 = res.data.sevenDays['122报警'];
+                        obj2.forEach( (item,index)=>{
+                            sourceArr[index] = parseInt(item['jjsl'])
+                        } )
+                        let obj3 = res.data.sevenDays['119报警'];
+                        obj3.forEach( (item,index)=>{
+                            sourceArr[index] = parseInt(item['jjsl'])
+                        } )
+                        let obj4 = res.data.sevenDays['其他接警类型'];
+                        obj4.forEach( (item,index)=>{
+                            sourceArr[index] = parseInt(item['其他接警类型'])
+                        } );
+                        let obj5 = res.data.sevenDays['综合报警'];
+                        obj5.forEach( (item,index)=>{
+                            sourceArr[index] = parseInt(item['综合报警'])
+                        } );*/
+                        // console.log(sourceArr);
+
                         that.sevensjfx1('sevenjjlxsjfxChart', narr1, that.jrjjlxsjfxSourceColor, dateArr);
                     })
             },
@@ -1784,7 +1766,23 @@
                     }
                 })
                     .then(function (res) {
-                        // console.log(res);
+                        for (let i in res.data.sevenDays){
+                            if(res.data.sevenDays[i].length<7){
+                                /*for (let j=0;j<7;j++){
+                                    res.data.sevenDays[i].push({tjrq:dateArr1[j],jjsl:0,jjlxdm:i});
+                                }*/
+                                // console.log(i);
+                                delete res.data.sevenDays[i]
+                            }
+                        };
+                        // console.log(res.data.sevenDays);
+                        let data1=[];
+                        for (let i in res.data.sevenDays){
+                            data1.push(...res.data.sevenDays[i]);
+                        }
+                        // res.data=da;
+                        // console.log(data1);
+                        res.data=data1;
                         let r = [];
                         let narr = [];
                         for (let i = 0; i < res.data.length; i++) {
@@ -1891,6 +1889,23 @@
                 })
                     .then(function (res) {
                         // console.log(res);
+                        for (let i in res.data.sevenDays){
+                            if(res.data.sevenDays[i].length<7){
+                                /*for (let j=0;j<7;j++){
+                                    res.data.sevenDays[i].push({tjrq:dateArr1[j],jjsl:0,jjlxdm:i});
+                                }*/
+                                // console.log(i);
+                                delete res.data.sevenDays[i]
+                            }
+                        };
+                        // console.log(res.data.sevenDays);
+                        let data1=[];
+                        for (let i in res.data.sevenDays){
+                            data1.push(...res.data.sevenDays[i]);
+                        }
+                        // res.data=da;
+                        // console.log(data1);
+                        res.data=data1;
                         let r = [];
                         let narr = [];
                         for (let i = 0; i < res.data.length; i++) {
@@ -1955,9 +1970,7 @@
             this.setperiod();
             this.getScale();
             this.selectedItem();
-            // this.change();
             this.renderChart();
-            // this.getFlsj();
         }
     }
 </script>
@@ -1989,7 +2002,7 @@
             right: 0;
             width: 1.5rem;
             height: 1.5rem;
-            z-index: 999;
+            z-index: 1;
 
             .iconBox {
                 width: 100%;
@@ -1997,7 +2010,7 @@
                 position: absolute;
                 top: 0;
                 left: 0;
-                z-index: 999;
+                z-index: 1;
             }
 
             .iconguolv {
